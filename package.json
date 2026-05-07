@@ -1,1 +1,9 @@
 
+{
+  "scripts": {
+    "start": "npx serve -s . -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
