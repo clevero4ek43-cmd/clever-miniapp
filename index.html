@@ -18,24 +18,7 @@ body{
 background:linear-gradient(180deg,#f6f3ee 0%,#fdf6f8 100%);
 color:#35543d;
 }
-.hero{
-    display:grid;
-    grid-template-columns:220px 1fr 220px;
-    min-height:100vh;
-    align-items:center;
-}
 
-.hero-center{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:40px 30px;
-}
-
-.hero-video{
-    background:#f4f1ec;
-}
 header{
     padding:20px 20px 100px;
     background:white;
@@ -132,8 +115,11 @@ color:#666;
 </head>
 
 <body>
+<div class="hero">
 
-<header>
+    <div class="hero-video left"></div>
+
+    <div class="hero-center"><header>
 <img src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png"
         alt="КЛЕВЕР"
         style="
@@ -158,7 +144,11 @@ color:#666;
 </a>
 
 </header>
+    </div>
 
+    <div class="hero-video right"></div>
+
+</div>
 <section>
 
 <div class="cards">
