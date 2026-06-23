@@ -330,7 +330,7 @@ color:#666;
     <div id="cart-items"></div>
 
     <div class="cart-total">
-        Итого: <span id="cart-total">0 ₽</span>
+       Итого: <span id="cart-sum">0 ₽</span>
     </div>
 </div>
 
@@ -346,7 +346,7 @@ function addToCart(name, price){
 
 function renderCart(){
     const items = document.getElementById("cart-items");
-    const totalEl = document.getElementById("cart-total");
+    const totalEl = document.getElementById("cart-sum");
 
     items.innerHTML = "";
 
