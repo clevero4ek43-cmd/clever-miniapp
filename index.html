@@ -284,6 +284,12 @@ color:#666;
     transition:all .7s ease;
     pointer-events:none;
 }
+.flying-img{
+    position: fixed;
+    z-index: 9999;
+    border-radius: 50%;
+    pointer-events: none;
+}
 </style>
 
 </head>
@@ -420,19 +426,27 @@ function addToCart(name, price, img, btn){
     flying.classList.add("flying-img");
     document.body.appendChild(flying);
 
-    const rect = (btn || event.target).getBoundingClientRect();
-    const cartIcon = document.querySelector(".cart").getBoundingClientRect();
+    const rect = btn.getBoundingClientRect();
+const cartIcon = document.querySelector(".cart").getBoundingClientRect();
 
-    flying.style.left = rect.left + "px";
-    flying.style.top = rect.top + "px";
+flying.style.left = rect.left + "px";
+flying.style.top = rect.top + "px";
+flying.style.width = "40px";
+flying.style.height = "40px";
+flying.style.opacity = "1";
+flying.style.transition = "all 1.2s cubic-bezier(.6,-0.28,.74,.05)";
 
-    setTimeout(() => {
-        flying.style.left = cartIcon.left + "px";
-        flying.style.top = cartIcon.top + "px";
-        flying.style.width = "20px";
-        flying.style.height = "20px";
-        flying.style.opacity = "0";
-    }, 150);
+document.body.appendChild(flying);
+
+// чуть подождать чтобы браузер “увидел” стартовую точку
+setTimeout(() => {
+    flying.style.left = cartIcon.left + "px";
+    flying.style.top = cartIcon.top + "px";
+    flying.style.width = "10px";
+    flying.style.height = "10px";
+    flying.style.opacity = "0";
+    flying.style.transform = "rotate(360deg) scale(0.2)";
+}, 50);
 
     setTimeout(() => {
         flying.remove();
