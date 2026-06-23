@@ -354,6 +354,9 @@ color:#666;
 <script>
 let cart = [];
 let total = 0;
+    function toggleCart(){
+    document.getElementById("cart").classList.toggle("open");
+}
 
 function addToCart(name, price){
     cart.push({name, price});
