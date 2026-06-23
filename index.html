@@ -400,10 +400,10 @@ color:#666;
 <script>
 let cart = [];
 let total = 0;
-    function toggleCart(){
+
+function toggleCart(){
     document.getElementById("cart").classList.toggle("open");
 }
-
 
 function addToCart(name, price, img, btn){
     cart.push({name, price});
@@ -420,50 +420,44 @@ function addToCart(name, price, img, btn){
     // открыть корзину
     document.getElementById("cart").classList.add("open");
 
-    // летящий товар 
+    // ===== ЛЕТЯЩИЙ ТОВАР =====
+    const flying = document.createElement("img");
+    flying.src = img;
+    flying.classList.add("flying-img");
+    document.body.appendChild(flying);
+
     const btnRect = btn.getBoundingClientRect();
-const cartRect = document.querySelector(".cart").getBoundingClientRect();
+    const cartRect = document.querySelector(".cart").getBoundingClientRect();
 
-document.body.appendChild(flying);
+    // стартовая позиция (у кнопки)
+    flying.style.position = "fixed";
+    flying.style.left = btnRect.left + "px";
+    flying.style.top = btnRect.top + "px";
+    flying.style.width = "40px";
+    flying.style.height = "40px";
+    flying.style.opacity = "1";
+    flying.style.transition = "all 1.4s cubic-bezier(.22,1,.36,1)";
 
-// старт у кнопки
-flying.style.left = btnRect.left + "px";
-flying.style.top = btnRect.top + "px";
+    // фиксируем старт
+    flying.getBoundingClientRect();
 
-flying.style.width = "40px";
-flying.style.height = "40px";
-flying.style.opacity = "1";
-flying.style.position = "fixed";
-flying.style.transition = "all 1.4s cubic-bezier(.22,1,.36,1)";
+    // движение в корзину
+    setTimeout(() => {
+        flying.style.left = (cartRect.left + cartRect.width / 2) + "px";
+        flying.style.top = (cartRect.top + cartRect.height / 2) + "px";
 
-// даём браузеру зафиксировать старт
-setTimeout(() => {
+        flying.style.width = "10px";
+        flying.style.height = "10px";
+        flying.style.opacity = "0";
+        flying.style.transform = "scale(0.2) rotate(180deg)";
+    }, 50);
 
-    // летим в центр корзины
-    flying.style.left = (cartRect.left + cartRect.width / 2) + "px";
-    flying.style.top = (cartRect.top + cartRect.height / 2) + "px";
-
-    flying.style.width = "10px";
-    flying.style.height = "10px";
-    flying.style.opacity = "0";
-    flying.style.transform = "scale(0.2) rotate(180deg)";
-}, 80);
-document.body.appendChild(flying);
-
-// чуть подождать чтобы браузер “увидел” стартовую точку
-setTimeout(() => {
-    flying.style.left = cartIcon.left + "px";
-    flying.style.top = cartIcon.top + "px";
-    flying.style.width = "10px";
-    flying.style.height = "10px";
-    flying.style.opacity = "0";
-    flying.style.transform = "rotate(360deg) scale(0.2)";
-}, 50);
-
+    // удаление элемента
     setTimeout(() => {
         flying.remove();
-    }, 800);
+    }, 1500);
 }
+
 function renderCart(){
     const items = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-sum");
