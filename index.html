@@ -378,6 +378,8 @@ function addToCart(name, price){
     cart.push({name, price});
     total += price;
     renderCart();
+
+    document.getElementById("cart").classList.add("open");
 }
 
 function renderCart(){
