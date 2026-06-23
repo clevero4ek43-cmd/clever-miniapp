@@ -350,7 +350,7 @@ color:#666;
 <img src="assets/2026-04-09_08-14-12.png" alt="">
 <h3>Розовое облако</h3>
 <p class="price">4 990 ₽</p>
-    <button class="card-button" onclick="addToCart('Розовое облако', 4990)">
+    <button class="card-button" onclick="addToCart('Розовое облако', 4990, 'assets/2026-04-09_08-14-12.png', this)">
 В корзину
 </button>
 </div>
@@ -359,7 +359,7 @@ color:#666;
 <img src="assets/2026-04-09_08-14-12.png" alt="">
 <h3>Белая классика</h3>
 <p class="price">6 200 ₽</p>
-    <button class="card-button" onclick="addToCart('Белая классика', 6200)">
+    <button class="card-button" onclick="addToCart('Белая классика', 6200, 'assets/2026-04-09_08-14-12.png', this)">
 В корзину
 </button>
 </div>
@@ -368,7 +368,7 @@ color:#666;
 <img src="assets/2026-04-09_08-14-12.png" alt="">
 <h3>Летнее настроение</h3>
 <p class="price">5 890 ₽</p>
-    <button class="card-button" onclick="addToCart('Летнее настроение', 5890)">
+    <button class="card-button" onclick="addToCart('Летнее настроение', 5890, 'assets/2026-04-09_08-14-12.png', this)">
 В корзину
 </button>
 </div>
@@ -409,7 +409,7 @@ function addToCart(name, price, img, btn){
 
     setTimeout(() => {
         btn.classList.remove("added");
-    }, 800);
+    }, 1400);
 
     // открыть корзину
     document.getElementById("cart").classList.add("open");
@@ -420,7 +420,7 @@ function addToCart(name, price, img, btn){
     flying.classList.add("flying-img");
     document.body.appendChild(flying);
 
-    const rect = btn.getBoundingClientRect();
+    const rect = (btn || event.target).getBoundingClientRect();
     const cartIcon = document.querySelector(".cart").getBoundingClientRect();
 
     flying.style.left = rect.left + "px";
