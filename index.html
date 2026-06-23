@@ -220,7 +220,9 @@ color:#666;
     display:block;
     transition:.25s;
 }
-
+.card-button:focus{
+    outline: none;
+}
 .card-button:hover{
     background:#c996a6;
     transform:translateY(-2px);
@@ -324,4 +326,9 @@ color:#666;
 
 </footer>
 
+<script>
+function addToCart(name, price){
+    alert(name + " добавлен в корзину: " + price + " ₽");
+}
+</script>
 </body>
