@@ -244,6 +244,22 @@ color:#666;
 .card-button:active{
     outline: none;
 }
+.cart-panel{
+    position: fixed;
+    right: -400px;
+    top: 90px;
+    width: 320px;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.cart-panel.open{
+    right: 20px;
+}
 </style>
 
 </head>
