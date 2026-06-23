@@ -227,6 +227,15 @@ color:#666;
     background:#c996a6;
     transform:translateY(-2px);
 }
+    .card-button:active{
+    transform: scale(0.96);
+    background: #b87d8a;
+}
+
+.card-button.added{
+    background: #35543d;
+    transform: scale(1.02);
+}
     .cart-panel{
     position: fixed;
     right: 20px;
@@ -374,14 +383,17 @@ let total = 0;
     document.getElementById("cart").classList.toggle("open");
 }
 
+
 function addToCart(name, price){
     cart.push({name, price});
     total += price;
     renderCart();
 
+    const btn = event.target;
+    btn.classList.add("added");
+
     document.getElementById("cart").classList.add("open");
 }
-
 function renderCart(){
     const items = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-sum");
