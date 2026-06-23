@@ -274,6 +274,16 @@ color:#666;
     transform:scale(1.03);
     transition:.2s;
 }
+.flying-img{
+    position:fixed;
+    width:80px;
+    height:80px;
+    border-radius:12px;
+    object-fit:cover;
+    z-index:9999;
+    transition:all .7s ease;
+    pointer-events:none;
+}
 </style>
 
 </head>
@@ -331,7 +341,7 @@ color:#666;
 <img src="assets/2026-04-09_08-14-12.png" alt="">
 <h3>Нежность</h3>
 <p class="price">5 490 ₽</p>
-    <button class="card-button" onclick="addToCart('Нежность', 5490)">
+    <button class="card-button" onclick="addToCart('Нежность', 5490, 'assets/2026-04-09_08-14-12.png', this)">
 В корзину
 </button>
 </div>
@@ -389,19 +399,44 @@ let total = 0;
 }
 
 
-function addToCart(name, price){
+function addToCart(name, price, img, btn){
     cart.push({name, price});
     total += price;
     renderCart();
 
-    const btn = event.target;
+    // эффект кнопки
     btn.classList.add("added");
 
-setTimeout(() => {
-    btn.classList.remove("added");
-}, 800);
+    setTimeout(() => {
+        btn.classList.remove("added");
+    }, 800);
 
+    // открыть корзину
     document.getElementById("cart").classList.add("open");
+
+    // летящий товар
+    const flying = document.createElement("img");
+    flying.src = img;
+    flying.classList.add("flying-img");
+    document.body.appendChild(flying);
+
+    const rect = btn.getBoundingClientRect();
+    const cartIcon = document.querySelector(".cart").getBoundingClientRect();
+
+    flying.style.left = rect.left + "px";
+    flying.style.top = rect.top + "px";
+
+    setTimeout(() => {
+        flying.style.left = cartIcon.left + "px";
+        flying.style.top = cartIcon.top + "px";
+        flying.style.width = "20px";
+        flying.style.height = "20px";
+        flying.style.opacity = "0";
+    }, 50);
+
+    setTimeout(() => {
+        flying.remove();
+    }, 800);
 }
 function renderCart(){
     const items = document.getElementById("cart-items");
