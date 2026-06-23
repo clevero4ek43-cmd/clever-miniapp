@@ -269,6 +269,11 @@ color:#666;
 .cart-panel.open{
     right: 20px;
 }
+.card-button.added{
+    background:#35543d;
+    transform:scale(1.03);
+    transition:.2s;
+}
 </style>
 
 </head>
@@ -391,6 +396,10 @@ function addToCart(name, price){
 
     const btn = event.target;
     btn.classList.add("added");
+
+setTimeout(() => {
+    btn.classList.remove("added");
+}, 800);
 
     document.getElementById("cart").classList.add("open");
 }
