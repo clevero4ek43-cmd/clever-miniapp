@@ -420,22 +420,34 @@ function addToCart(name, price, img, btn){
     // открыть корзину
     document.getElementById("cart").classList.add("open");
 
-    // летящий товар
-    const flying = document.createElement("img");
-    flying.src = img;
-    flying.classList.add("flying-img");
-    document.body.appendChild(flying);
+    // летящий товар 
+    const btnRect = btn.getBoundingClientRect();
+const cartRect = document.querySelector(".cart").getBoundingClientRect();
 
-    const rect = btn.getBoundingClientRect();
-const cartIcon = document.querySelector(".cart").getBoundingClientRect();
+document.body.appendChild(flying);
 
-flying.style.left = rect.left + "px";
-flying.style.top = rect.top + "px";
+// старт у кнопки
+flying.style.left = btnRect.left + "px";
+flying.style.top = btnRect.top + "px";
+
 flying.style.width = "40px";
 flying.style.height = "40px";
 flying.style.opacity = "1";
-flying.style.transition = "all 1.2s cubic-bezier(.6,-0.28,.74,.05)";
+flying.style.position = "fixed";
+flying.style.transition = "all 1.4s cubic-bezier(.22,1,.36,1)";
 
+// даём браузеру зафиксировать старт
+setTimeout(() => {
+
+    // летим в центр корзины
+    flying.style.left = (cartRect.left + cartRect.width / 2) + "px";
+    flying.style.top = (cartRect.top + cartRect.height / 2) + "px";
+
+    flying.style.width = "10px";
+    flying.style.height = "10px";
+    flying.style.opacity = "0";
+    flying.style.transform = "scale(0.2) rotate(180deg)";
+}, 80);
 document.body.appendChild(flying);
 
 // чуть подождать чтобы браузер “увидел” стартовую точку
