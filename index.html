@@ -321,14 +321,44 @@ color:#666;
 </section>
 
 <footer>
-
 КЛЕВЕР © 2026
-
 </footer>
 
+<!-- КОРЗИНА -->
+<div id="cart" class="cart-panel">
+    <h3>Корзина</h3>
+    <div id="cart-items"></div>
+
+    <div class="cart-total">
+        Итого: <span id="cart-total">0 ₽</span>
+    </div>
+</div>
+
 <script>
+let cart = [];
+let total = 0;
+
 function addToCart(name, price){
-    alert(name + " добавлен в корзину: " + price + " ₽");
+    cart.push({name, price});
+    total += price;
+    renderCart();
+}
+
+function renderCart(){
+    const items = document.getElementById("cart-items");
+    const totalEl = document.getElementById("cart-total");
+
+    items.innerHTML = "";
+
+    cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = item.name + " <b>" + item.price + " ₽</b>";
+        items.appendChild(div);
+    });
+
+    totalEl.innerText = total + " ₽";
 }
 </script>
+
 </body>
