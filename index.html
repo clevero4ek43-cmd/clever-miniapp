@@ -512,7 +512,14 @@ function renderCart(){
     });
 
     totalEl.innerText = total + " ₽";
-    document.getElementById("cart-count").innerText = cart.length;
+    const count = document.getElementById("cart-count");
+
+count.innerText = cart.length;
+
+if (cart.length === 0) {
+    count.style.display = "none";
+} else {
+    count.style.display = "flex";
 }
 </script>
 
