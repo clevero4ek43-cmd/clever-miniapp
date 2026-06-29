@@ -451,20 +451,7 @@ function addToCart(name, price, img, btn){
     flying.style.opacity = "0";
     flying.style.transform = "scale(0.2) rotate(180deg)";
 }, 50);
-    // затем в корзину
-    setTimeout(() => {
-
-        flying.style.left = (cartRect.left + cartRect.width / 2) + "px";
-        flying.style.top = (cartRect.top + cartRect.height / 2) + "px";
-
-        flying.style.width = "10px";
-        flying.style.height = "10px";
-        flying.style.opacity = "0";
-        flying.style.transform = "scale(0.2) rotate(180deg)";
-
-    }, 1200);
-
-}, 50);
+  
 
     // удаление элемента
     setTimeout(() => {
