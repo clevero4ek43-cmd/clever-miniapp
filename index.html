@@ -306,7 +306,9 @@ color:#666;
 <a href="#">Контакты</a>
 </div>
 
-<div class="cart" onclick="toggleCart()">🛒</div>
+<div class="cart" onclick="toggleCart()">
+    🛒 <span id="cart-count">0</span>
+</div>
 
 </nav>
 <header>
@@ -487,6 +489,7 @@ function renderCart(){
     });
 
     totalEl.innerText = total + " ₽";
+    document.getElementById("cart-count").innerText = cart.length;
 }
 </script>
 
