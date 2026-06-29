@@ -436,19 +436,21 @@ function addToCart(name, price, img, btn){
     flying.style.width = "40px";
     flying.style.height = "40px";
     flying.style.opacity = "1";
-    flying.style.transition = "all 2.5s cubic-bezier(.22,.61,.36,1)";
+    flying.style.transition = "all 1.8s ease-in-out";
 
     // фиксируем старт
     flying.getBoundingClientRect();
 
     // движение в корзину
     setTimeout(() => {
+    flying.style.left = (cartRect.left + cartRect.width / 2) + "px";
+    flying.style.top = (cartRect.top + cartRect.height / 2) + "px";
 
-    // первая точка — вверх
-    flying.style.left = (btnRect.left + 120) + "px";
-    flying.style.top = (btnRect.top - 120) + "px";
-    flying.style.transform = "scale(0.8) rotate(20deg)";
-
+    flying.style.width = "10px";
+    flying.style.height = "10px";
+    flying.style.opacity = "0";
+    flying.style.transform = "scale(0.2) rotate(180deg)";
+}, 50);
     // затем в корзину
     setTimeout(() => {
 
