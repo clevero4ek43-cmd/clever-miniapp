@@ -531,22 +531,46 @@ function renderCart(){
 
     items.innerHTML = "";
 
-    cart.forEach((item, index) => {
+    // Группируем одинаковые товары
+    const grouped = {};
+
+    cart.forEach(item => {
+        if(!grouped[item.name]){
+            grouped[item.name] = {
+                name: item.name,
+                price: item.price,
+                qty: 1
+            };
+        }else{
+            grouped[item.name].qty++;
+        }
+    });
+
+    Object.values(grouped).forEach(group => {
 
         const div = document.createElement("div");
         div.className = "cart-item";
 
         div.innerHTML = `
-            ${item.name}
-            <b>${item.price} ₽</b>
-            <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
+            <div>
+                <div><b>${group.name}</b></div>
+                <div>${group.qty} × ${group.price.toLocaleString()} ₽</div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px;">
+                <b>${(group.qty * group.price).toLocaleString()} ₽</b>
+                <button class="remove-btn"
+                    onclick="removeAllFromCart('${group.name}')">
+                    ✕
+                </button>
+            </div>
         `;
 
         items.appendChild(div);
 
     });
 
-    totalEl.innerText = total + " ₽";
+    totalEl.innerText = total.toLocaleString() + " ₽";
 
     count.innerText = cart.length;
 
@@ -555,9 +579,7 @@ function renderCart(){
     }else{
         count.style.display = "flex";
     }
-
 }
-
 
 function removeFromCart(index){
 
@@ -568,6 +590,15 @@ function removeFromCart(index){
     renderCart();
 
 }
+ function removeAllFromCart(name){
+
+    cart = cart.filter(item => item.name !== name);
+
+    total = cart.reduce((sum,item)=>sum + item.price,0);
+
+    renderCart();
+
+}   
 </script>
 
 </body>
