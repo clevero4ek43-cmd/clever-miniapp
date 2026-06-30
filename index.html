@@ -590,15 +590,32 @@ function removeFromCart(index){
     renderCart();
 
 }
- function removeAllFromCart(name){
+ function changeQuantity(name, delta){
 
-    cart = cart.filter(item => item.name !== name);
+    const index = cart.findIndex(item => item.name === name);
 
-    total = cart.reduce((sum,item)=>sum + item.price,0);
+    if(index === -1) return;
+
+    if(delta > 0){
+
+        cart.push({
+            name: cart[index].name,
+            price: cart[index].price
+        });
+
+        total += cart[index].price;
+
+    }else{
+
+        total -= cart[index].price;
+
+        cart.splice(index,1);
+
+    }
 
     renderCart();
 
-}   
+}
 </script>
 
 </body>
