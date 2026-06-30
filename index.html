@@ -535,6 +535,7 @@ function renderCart(){
     const grouped = {};
 
     cart.forEach(item => {
+
         if(!grouped[item.name]){
             grouped[item.name] = {
                 name: item.name,
@@ -544,6 +545,7 @@ function renderCart(){
         }else{
             grouped[item.name].qty++;
         }
+
     });
 
     Object.values(grouped).forEach(group => {
@@ -552,17 +554,31 @@ function renderCart(){
         div.className = "cart-item";
 
         div.innerHTML = `
-            <div>
+            <div style="flex:1;">
                 <div><b>${group.name}</b></div>
-                <div>${group.qty} × ${group.price.toLocaleString()} ₽</div>
+                <div style="font-size:14px;color:#888;">
+                    ${group.price.toLocaleString()} ₽ за шт.
+                </div>
             </div>
 
-            <div style="display:flex;align-items:center;gap:14px;">
-                <b>${(group.qty * group.price).toLocaleString()} ₽</b>
+            <div style="display:flex;align-items:center;gap:10px;">
+
                 <button class="remove-btn"
-                    onclick="removeAllFromCart('${group.name}')">
-                    ✕
+                    onclick="changeQuantity('${group.name}', -1)">
+                    −
                 </button>
+
+                <b>${group.qty}</b>
+
+                <button class="remove-btn"
+                    onclick="changeQuantity('${group.name}', 1)">
+                    +
+                </button>
+
+                <b style="min-width:90px;text-align:right;">
+                    ${(group.qty * group.price).toLocaleString()} ₽
+                </b>
+
             </div>
         `;
 
@@ -579,6 +595,7 @@ function renderCart(){
     }else{
         count.style.display = "flex";
     }
+
 }
 
 function removeFromCart(index){
