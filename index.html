@@ -495,7 +495,11 @@ function renderCart(){
     cart.forEach((item, index) => {
         const div = document.createElement("div");
         div.className = "cart-item";
-        div.innerHTML = item.name + " <b>" + item.price + " ₽</b>";
+        div.innerHTML = `
+    ${item.name}
+    <b>${item.price} ₽</b>
+    <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
+`;
         items.appendChild(div);
     });
 
