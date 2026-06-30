@@ -486,6 +486,7 @@ function addToCart(name, price, img, btn){
 }
 
 function renderCart(){
+
     const items = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-sum");
     const count = document.getElementById("cart-count");
@@ -493,14 +494,18 @@ function renderCart(){
     items.innerHTML = "";
 
     cart.forEach((item, index) => {
+
         const div = document.createElement("div");
         div.className = "cart-item";
+
         div.innerHTML = `
-    ${item.name}
-    <b>${item.price} ₽</b>
-    <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
-`;
+            ${item.name}
+            <b>${item.price} ₽</b>
+            <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
+        `;
+
         items.appendChild(div);
+
     });
 
     totalEl.innerText = total + " ₽";
@@ -512,14 +517,18 @@ function renderCart(){
     }else{
         count.style.display = "flex";
     }
-    function removeFromCart(index){
+
+}
+
+
+function removeFromCart(index){
 
     total -= cart[index].price;
 
     cart.splice(index,1);
 
     renderCart();
-}
+
 }
 </script>
 
