@@ -512,6 +512,14 @@ function renderCart(){
     }else{
         count.style.display = "flex";
     }
+    function removeFromCart(index){
+
+    total -= cart[index].price;
+
+    cart.splice(index,1);
+
+    renderCart();
+}
 }
 </script>
 
