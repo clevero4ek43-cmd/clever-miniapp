@@ -3,43 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <title>Админка КЛЕВЕР</title>
+
 <style>
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f6f3ee;
-    max-width:900px;
-    margin:40px auto;
-    padding:20px;
+font-family:Arial,sans-serif;
+background:#f6f3ee;
+max-width:900px;
+margin:40px auto;
+padding:20px;
 }
+
 h1{
-    color:#35543d;
+color:#35543d;
 }
+
 input,textarea{
-    width:100%;
-    padding:10px;
-    margin:8px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
-    box-sizing:border-box;
+width:100%;
+padding:12px;
+margin:8px 0 18px;
+border:1px solid #ccc;
+border-radius:8px;
+box-sizing:border-box;
+font-size:16px;
 }
+
 button{
-    background:#35543d;
-    color:white;
-    border:none;
-    padding:12px 22px;
-    border-radius:8px;
-    cursor:pointer;
+background:#35543d;
+color:white;
+border:none;
+padding:12px 22px;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
 }
+
 button:hover{
-    background:#27442f;
+background:#27442f;
 }
-pre{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    white-space:pre-wrap;
+
+.card{
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
+
+.delete{
+background:#c0392b;
+margin-top:10px;
+}
+
+img{
+max-width:160px;
+border-radius:10px;
+margin-top:10px;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -58,31 +81,98 @@ pre{
 <p>Описание</p>
 <textarea id="description"></textarea>
 
-<button onclick="add()">Добавить товар</button>
+<button onclick="saveProduct()">
+Добавить товар
+</button>
 
-<h2>JSON для products.json</h2>
+<h2>Товары</h2>
 
-<pre id="result">[]</pre>
+<div id="list"></div>
 
 <script>
 
-let products=[];
+async function loadProducts(){
 
-function add(){
+const res=await fetch("/api/products");
 
-products.push({
+const products=await res.json();
 
-name:document.getElementById("name").value,
-price:document.getElementById("price").value,
-image:document.getElementById("image").value,
-description:document.getElementById("description").value
+const list=document.getElementById("list");
+
+list.innerHTML="";
+
+products.forEach(p=>{
+
+list.innerHTML+=`
+<div class="card">
+
+<h3>${p.name}</h3>
+
+<p><b>${p.price} ₽</b></p>
+
+<img src="${p.image}">
+
+<p>${p.description}</p>
+
+<button
+class="delete"
+onclick="deleteProduct(${p.id})">
+
+Удалить
+
+</button>
+
+</div>
+`;
 
 });
 
-document.getElementById("result").textContent=
-JSON.stringify(products,null,2);
+}
+
+async function saveProduct(){
+
+await fetch("/api/products",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+name:name.value,
+
+price:price.value,
+
+image:image.value,
+
+description:description.value
+
+})
+
+});
+
+name.value="";
+price.value="";
+image.value="";
+description.value="";
+
+loadProducts();
 
 }
+
+async function deleteProduct(id){
+
+await fetch("/api/products/"+id,{
+method:"DELETE"
+});
+
+loadProducts();
+
+}
+
+loadProducts();
 
 </script>
 
