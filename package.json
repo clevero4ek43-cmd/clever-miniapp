@@ -1,9 +1,12 @@
 
 {
+  "name": "clever-miniapp",
+  "version": "1.0.0",
+  "main": "server.js",
   "scripts": {
-    "start": "npx serve -s . -l $PORT"
+    "start": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.1"
+    "express": "^4.19.2"
   }
 }
