@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,6 @@
 <title>Админка КЛЕВЕР</title>
 
 <style>
-
 body{
 font-family:Arial,sans-serif;
 background:#f6f3ee;
@@ -60,9 +60,7 @@ max-width:160px;
 border-radius:10px;
 margin-top:10px;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -90,36 +88,31 @@ margin-top:10px;
 <div id="list"></div>
 
 <script>
-
 async function loadProducts(){
 
-const res=await fetch("/api/products");
+const res = await fetch("/api/products");
+const products = await res.json();
+const list = document.getElementById("list");
 
-const products=await res.json();
+list.innerHTML = "";
 
-const list=document.getElementById("list");
+products.forEach(p => {
 
-list.innerHTML="";
-
-products.forEach(p=>{
-
-list.innerHTML+=`
+list.innerHTML += `
 <div class="card">
 
-<h3>${p.name}</h3>
+<h3>${p.name || "Без названия"}</h3>
 
-<p><b>${p.price} ₽</b></p>
+<p><b>${p.price || 0} ₽</b></p>
 
-<img src="${p.image}">
+${p.image ? `<img src="${p.image}">` : ""}
 
-<p>${p.description}</p>
+<p>${p.description || ""}</p>
 
 <button
 class="delete"
 onclick="deleteProduct(${p.id})">
-
 Удалить
-
 </button>
 
 </div>
@@ -131,32 +124,25 @@ onclick="deleteProduct(${p.id})">
 
 async function saveProduct(){
 
+const product = {
+name: document.getElementById("name").value,
+price: document.getElementById("price").value,
+image: document.getElementById("image").value,
+description: document.getElementById("description").value
+};
+
 await fetch("/api/products",{
-
 method:"POST",
-
 headers:{
 "Content-Type":"application/json"
 },
-
-body:JSON.stringify({
-
-name:name.value,
-
-price:price.value,
-
-image:image.value,
-
-description:description.value
-
-})
-
+body:JSON.stringify(product)
 });
 
-name.value="";
-price.value="";
-image.value="";
-description.value="";
+document.getElementById("name").value = "";
+document.getElementById("price").value = "";
+document.getElementById("image").value = "";
+document.getElementById("description").value = "";
 
 loadProducts();
 
@@ -164,7 +150,7 @@ loadProducts();
 
 async function deleteProduct(id){
 
-await fetch("/api/products/"+id,{
+await fetch("/api/products/" + id,{
 method:"DELETE"
 });
 
@@ -173,7 +159,6 @@ loadProducts();
 }
 
 loadProducts();
-
 </script>
 
 </body>
