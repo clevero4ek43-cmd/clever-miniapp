@@ -749,6 +749,46 @@ function removeFromCart(index){
     renderCart();
 
 }
+function sendOrder(){
+
+    if(cart.length === 0){
+        alert("Корзина пуста.");
+        return;
+    }
+
+    const name = document.getElementById("customer-name").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+    const comment = document.getElementById("customer-comment").value.trim();
+
+    if(name === ""){
+        alert("Введите имя.");
+        return;
+    }
+
+    if(phone === ""){
+        alert("Введите телефон.");
+        return;
+    }
+
+    let text = "НОВЫЙ ЗАКАЗ\n\n";
+
+    cart.forEach(item=>{
+        text += `${item.name} — ${item.price.toLocaleString()} ₽\n`;
+    });
+
+    text += "\n";
+    text += `Итого: ${total.toLocaleString()} ₽\n\n`;
+    text += `Имя: ${name}\n`;
+    text += `Телефон: ${phone}\n`;
+
+    if(comment){
+        text += `Комментарий: ${comment}`;
+    }
+
+    console.log(text);
+
+    alert("Заказ сформирован.\nСледующий шаг — отправка в Telegram.");
+}
 </script>
 
 </body>
