@@ -577,25 +577,36 @@ function renderCart(){
                 </div>
             </div>
 
-            <div style="display:flex;align-items:center;gap:10px;">
+            <div style="display:flex;align-items:center;width:100%;">
 
-                <button class="remove-btn"
-                    onclick="changeQuantity('${group.name}', -1)">
-                    −
-                </button>
+    <div style="display:flex;align-items:center;gap:10px;">
 
-                <b>${group.qty}</b>
+        <button class="remove-btn"
+            onclick="changeQuantity('${group.name}', -1)">
+            −
+        </button>
 
-                <button class="remove-btn"
-                    onclick="changeQuantity('${group.name}', 1)">
-                    +
-                </button>
+        <b style="min-width:20px;text-align:center;">
+            ${group.qty}
+        </b>
 
-                <b style="min-width:90px;text-align:right;">
-                    ${(group.qty * group.price).toLocaleString()} ₽
-                </b>
+        <button class="remove-btn"
+            onclick="changeQuantity('${group.name}', 1)">
+            +
+        </button>
 
-            </div>
+    </div>
+
+    <b style="
+        margin-left:auto;
+        min-width:110px;
+        text-align:right;
+        color:#35543d;
+    ">
+        ${(group.qty * group.price).toLocaleString()} ₽
+    </b>
+
+</div>
         `;
 
         items.appendChild(div);
