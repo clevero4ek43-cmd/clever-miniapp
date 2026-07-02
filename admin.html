@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Админка КЛЕВЕР</title>
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f6f3ee;
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+h1{
+    color:#35543d;
+}
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+button{
+    background:#35543d;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:8px;
+    cursor:pointer;
+}
+button:hover{
+    background:#27442f;
+}
+pre{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Админка КЛЕВЕР</h1>
+
+<p>Название</p>
+<input id="name">
+
+<p>Цена</p>
+<input id="price">
+
+<p>Фото (ссылка)</p>
+<input id="image">
+
+<p>Описание</p>
+<textarea id="description"></textarea>
+
+<button onclick="add()">Добавить товар</button>
+
+<h2>JSON для products.json</h2>
+
+<pre id="result">[]</pre>
+
+<script>
+
+let products=[];
+
+function add(){
+
+products.push({
+
+name:document.getElementById("name").value,
+price:document.getElementById("price").value,
+image:document.getElementById("image").value,
+description:document.getElementById("description").value
+
+});
+
+document.getElementById("result").textContent=
+JSON.stringify(products,null,2);
+
+}
+
+</script>
+
+</body>
+</html>
