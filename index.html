@@ -367,6 +367,72 @@ color:#666;
 .remove-btn:active{
     transform:scale(.95);
 }
+  .checkout-form{
+    margin-top:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.checkout-form input,
+.checkout-form textarea{
+    width:100%;
+    box-sizing:border-box;
+
+    padding:14px 16px;
+
+    border:1px solid #e6e1dc;
+    border-radius:14px;
+
+    background:#faf8f6;
+
+    font-size:16px;
+    font-family:inherit;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus{
+    border-color:#35543d;
+    background:#fff;
+}
+
+.checkout-form textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+.checkout-btn{
+    margin-top:6px;
+
+    width:100%;
+    height:56px;
+
+    border:none;
+    border-radius:999px;
+
+    background:#d8a8b5;
+    color:white;
+
+    font-size:18px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.checkout-btn:hover{
+    background:#c993a3;
+    transform:translateY(-1px);
+}
+
+.checkout-btn:active{
+    transform:scale(.98);
+}  
 </style>
 
 </head>
@@ -474,6 +540,29 @@ color:#666;
     <div class="cart-total">
        Итого: <span id="cart-sum">0 ₽</span>
     </div>
+    <div class="checkout-form">
+
+    <input
+        type="text"
+        id="customer-name"
+        placeholder="Ваше имя">
+
+    <input
+        type="tel"
+        id="customer-phone"
+        placeholder="Телефон">
+
+    <textarea
+        id="customer-comment"
+        placeholder="Комментарий к заказу"></textarea>
+
+    <button
+        class="checkout-btn"
+        onclick="sendOrder()">
+        Оформить заказ
+    </button>
+
+</div>
 </div>
 
 <script>
