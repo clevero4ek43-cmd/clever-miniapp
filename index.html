@@ -486,46 +486,7 @@ color:#666;
 <p class="catalog-subtitle">
 Самые любимые композиции наших покупателей
 </p>
-<div class="catalog-grid">
-
-<div class="product-card">
-<img src="assets/2026-04-09_08-14-12.png" alt="">
-<h3>Нежность</h3>
-<p class="price">5 490 ₽</p>
-    <button class="card-button" onclick="addToCart('Нежность', 5490, 'assets/2026-04-09_08-14-12.png', this)">
-В корзину
-</button>
-</div>
-
-<div class="product-card">
-<img src="assets/2026-04-09_08-14-12.png" alt="">
-<h3>Розовое облако</h3>
-<p class="price">4 990 ₽</p>
-    <button class="card-button" onclick="addToCart('Розовое облако', 4990, 'assets/2026-04-09_08-14-12.png', this)">
-В корзину
-</button>
-</div>
-
-<div class="product-card">
-<img src="assets/2026-04-09_08-14-12.png" alt="">
-<h3>Белая классика</h3>
-<p class="price">6 200 ₽</p>
-    <button class="card-button" onclick="addToCart('Белая классика', 6200, 'assets/2026-04-09_08-14-12.png', this)">
-В корзину
-</button>
-</div>
-
-<div class="product-card">
-<img src="assets/2026-04-09_08-14-12.png" alt="">
-<h3>Летнее настроение</h3>
-<p class="price">5 890 ₽</p>
-    <button class="card-button" onclick="addToCart('Летнее настроение', 5890, 'assets/2026-04-09_08-14-12.png', this)">
-В корзину
-</button>
-</div>
-
-</div>
-
+<div class="catalog-grid" id="catalog-grid"></div>
 </section>
 
 <footer>
@@ -568,7 +529,104 @@ color:#666;
 <script>
 let cart = [];
 let total = 0;
+async function loadProducts(){
 
+    const catalog = document.getElementById("catalog-grid");
+
+    try{
+
+        const response = await fetch("/api/products");
+
+        if(!response.ok){
+            throw new Error("Не удалось загрузить товары");
+        }
+
+        const products = await response.json();
+
+        catalog.innerHTML = "";
+
+        const validProducts = products.filter(product =>
+            product.name &&
+            Number(product.price) > 0
+        );
+
+        if(validProducts.length === 0){
+
+            catalog.innerHTML = `
+                <p style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    font-size:20px;
+                    color:#6c7a70;
+                ">
+                    Скоро здесь появятся новые букеты.
+                </p>
+            `;
+
+            return;
+        }
+
+        validProducts.forEach(product => {
+
+            const name = product.name;
+            const price = Number(product.price);
+
+            const image =
+                product.image ||
+                "assets/2026-04-09_08-14-12.png";
+
+            const card = document.createElement("div");
+            card.className = "product-card";
+
+            card.innerHTML = `
+                <img src="${image}" alt="${name}">
+
+                <h3>${name}</h3>
+
+                <p class="price">
+                    ${price.toLocaleString("ru-RU")} ₽
+                </p>
+
+                <button class="card-button">
+                    В корзину
+                </button>
+            `;
+
+            const button = card.querySelector(".card-button");
+
+            button.addEventListener("click", function(){
+
+                addToCart(
+                    name,
+                    price,
+                    image,
+                    this
+                );
+
+            });
+
+            catalog.appendChild(card);
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        catalog.innerHTML = `
+            <p style="
+                grid-column:1/-1;
+                text-align:center;
+                font-size:18px;
+                color:#b04a4a;
+            ">
+                Не удалось загрузить каталог.
+            </p>
+        `;
+
+    }
+
+}
 function toggleCart(){
     document.getElementById("cart").classList.toggle("open");
 }
@@ -789,6 +847,7 @@ function sendOrder(){
 
     alert("Заказ сформирован.\nСледующий шаг — отправка в Telegram.");
 }
+loadProducts();
 </script>
 
 </body>
