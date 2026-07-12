@@ -1,36 +1,95 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>КЛЕВЕР | Салон цветов</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f6f3ee,#fdf6f8);color:#35543d}
-.topbar{position:sticky;top:0;z-index:100;height:78px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-shadow:0 1px 15px #0000000d}
+.topbar{position:sticky;top:0;z-index:100;height:78px;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-shadow:0 1px 15px rgba(0,0,0,.05)}
 .logo-small{font-weight:700;letter-spacing:3px}.menu{display:flex;gap:32px}.menu a{color:#35543d;text-decoration:none}.cart{position:relative;font-size:28px;cursor:pointer}
 #cart-count{display:none;position:absolute;top:-8px;right:-10px;min-width:20px;height:20px;padding:0 5px;border-radius:50%;background:#d94d5c;color:#fff;align-items:center;justify-content:center;font-size:12px;font-weight:700}
 header{padding:40px 20px 60px;background:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .hero-logo{width:210px;max-width:80%;margin-bottom:18px}h1{font-size:52px;letter-spacing:8px;margin:0}.brand-sub{font-size:24px;letter-spacing:8px;color:#d8a8b5}
 .hero-title{font:500 34px/1.15 Georgia,serif;margin:10px 0}.subtitle{font-size:20px;line-height:1.5}
 .button,.card-button,.checkout-btn{border:0;border-radius:999px;background:#d8a8b5;color:#fff;cursor:pointer}.button{display:inline-block;margin-top:14px;padding:20px 56px;text-decoration:none;font-size:19px;font-weight:600}
-.catalog{max-width:1280px;margin:auto;padding:60px 30px 90px}.catalog-title{text-align:center;color:#d8a8b5;letter-spacing:8px;text-transform:uppercase;font-weight:400}.catalog-subtitle{text-align:center;color:#6c7a70;margin-bottom:45px}
-.catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,420px));justify-content:center;gap:36px}.product-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px #0000000f;display:flex;flex-direction:column}
-.product-card img{width:100%;aspect-ratio:5/6;object-fit:cover}.product-card h3{font-size:24px;padding:22px 24px 8px;margin:0}.price{font:34px Georgia,serif;padding:0 24px;margin:0 0 18px}.card-button{margin:0 24px 22px;padding:14px;font-size:16px;font-weight:600}
-.cart-panel{position:fixed;right:-460px;top:90px;width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 110px);overflow:auto;background:#fff;padding:20px;border-radius:20px;box-shadow:0 10px 30px #00000026;transition:.3s;z-index:999}.cart-panel.open{right:12px}
-.cart-item{padding:14px 0;border-bottom:1px solid #eee}.cart-row{display:flex;justify-content:space-between;gap:12px}.qty{display:flex;align-items:center;gap:10px;margin-top:10px}.qty button{width:32px;height:32px;border:0;border-radius:50%;cursor:pointer}.cart-total{font-size:20px;font-weight:700;margin:18px 0}
-.checkout-form{display:grid;gap:10px}.checkout-form input,.checkout-form textarea{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;font:inherit}.checkout-btn{padding:16px;font-size:17px;font-weight:700}.message{text-align:center;padding:35px;color:#6c7a70}footer{text-align:center;padding:40px;background:#fff;color:#666}
+.catalog{max-width:1280px;margin:auto;padding:60px 30px 90px}.catalog-title{text-align:center;color:#d8a8b5;letter-spacing:8px;text-transform:uppercase;font-weight:400}
+.catalog-subtitle{text-align:center;color:#6c7a70;margin-bottom:45px}.catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,420px));justify-content:center;gap:36px}
+.product-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.product-card img{width:100%;aspect-ratio:5/6;object-fit:cover}.product-card h3{font-size:24px;padding:22px 24px 8px;margin:0}.price{font:34px Georgia,serif;padding:0 24px;margin:0 0 18px}
+.card-button{margin:0 24px 22px;padding:14px;font-size:16px;font-weight:600}.cart-panel{position:fixed;right:-460px;top:90px;width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 110px);overflow:auto;background:#fff;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.15);transition:.3s;z-index:999}
+.cart-panel.open{right:12px}.cart-item{padding:14px 0;border-bottom:1px solid #eee}.cart-row{display:flex;justify-content:space-between;gap:12px}.qty{display:flex;align-items:center;gap:10px;margin-top:10px}.qty button{width:32px;height:32px;border:0;border-radius:50%;cursor:pointer}
+.cart-total{font-size:20px;font-weight:700;margin:18px 0}.checkout-form{display:grid;gap:10px}.checkout-form input,.checkout-form textarea{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;font:inherit}.checkout-btn{padding:16px;font-size:17px;font-weight:700}
+.message{text-align:center;padding:35px;color:#6c7a70}footer{text-align:center;padding:40px;background:#fff;color:#666}
 @media(max-width:760px){.topbar{padding:0 16px}.menu{display:none}.catalog-grid{grid-template-columns:1fr}.catalog{padding:40px 14px}.hero-title{font-size:29px}h1{font-size:40px}.product-card{border-radius:22px}}
-</style></head><body>
-<nav class="topbar"><div class="logo-small">КЛЕВЕР</div><div class="menu"><a href="#catalog">Каталог</a><a href="#">Доставка</a><a href="#">О нас</a><a href="#">Контакты</a></div><div class="cart" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div></nav>
-<header><img class="hero-logo" src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png" alt="КЛЕВЕР"><h1>КЛЕВЕР</h1><div class="brand-sub">салон цветов</div><div class="hero-title">Соберём букет,<br>который точно понравится!</div><div class="subtitle">Авторская флористика, свежие цветы<br>и бережная доставка каждый день.</div><a class="button" href="#catalog">Перейти в каталог</a></header>
-<section class="catalog" id="catalog"><h2 class="catalog-title">Популярные букеты</h2><p class="catalog-subtitle">Самые любимые композиции наших покупателей</p><div class="catalog-grid" id="catalog-grid"><div class="message">Загружаем букеты…</div></div></section>
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="logo-small">КЛЕВЕР</div>
+  <div class="menu"><a href="#catalog">Каталог</a><a href="#">Доставка</a><a href="#">О нас</a><a href="#">Контакты</a></div>
+  <div class="cart" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
+</nav>
+
+<header>
+  <img class="hero-logo" src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png" alt="КЛЕВЕР">
+  <h1>КЛЕВЕР</h1>
+  <div class="brand-sub">салон цветов</div>
+  <div class="hero-title">Соберём букет,<br>который точно понравится!</div>
+  <div class="subtitle">Авторская флористика, свежие цветы<br>и бережная доставка каждый день.</div>
+  <a class="button" href="#catalog">Перейти в каталог</a>
+</header>
+
+<section class="catalog" id="catalog">
+  <h2 class="catalog-title">Популярные букеты</h2>
+  <p class="catalog-subtitle">Самые любимые композиции наших покупателей</p>
+  <div class="catalog-grid" id="catalog-grid"><div class="message">Загружаем букеты…</div></div>
+</section>
+
 <footer>КЛЕВЕР © 2026</footer>
-<div id="cart-panel" class="cart-panel"><h2>Корзина</h2><div id="cart-items"></div><div class="cart-total">Итого: <span id="cart-sum">0 ₽</span></div><div class="checkout-form"><input id="customer-name" placeholder="Ваше имя"><input id="customer-phone" type="tel" placeholder="Телефон"><textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea><button class="checkout-btn" onclick="sendOrder()">Оформить заказ</button></div></div>
+
+<div id="cart-panel" class="cart-panel">
+  <h2>Корзина</h2>
+  <div id="cart-items"></div>
+  <div class="cart-total">Итого: <span id="cart-sum">0 ₽</span></div>
+  <div class="checkout-form">
+    <input id="customer-name" placeholder="Ваше имя">
+    <input id="customer-phone" type="tel" placeholder="Телефон">
+    <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
+    <button class="checkout-btn" onclick="sendOrder()">Оформить заказ</button>
+  </div>
+</div>
+
 <script>
-let products=[],cart=[];
-const money=v=>Number(v).toLocaleString("ru-RU")+" ₽";
-async function loadProducts(){const grid=document.getElementById("catalog-grid");try{const r=await fetch("/api/products");if(!r.ok)throw Error();products=await r.json();grid.innerHTML=products.length?products.map(p=>`<article class="product-card"><img src="${p.image||'assets/2026-04-09_08-14-12.png'}" alt="${p.name}"><h3>${p.name}</h3><p class="price">${money(p.price)}</p><button class="card-button" onclick="addToCart(${p.id})">В корзину</button></article>`).join(""):'<div class="message">Скоро здесь появятся новые букеты.</div>'}catch(e){grid.innerHTML='<div class="message">Не удалось загрузить каталог.</div>'}}
-function addToCart(id){const p=products.find(x=>x.id===id);if(!p)return;const x=cart.find(i=>i.id===id);x?x.qty++:cart.push({id:p.id,name:p.name,price:Number(p.price),qty:1});renderCart();document.getElementById("cart-panel").classList.add("open")}
-function changeQty(id,d){const x=cart.find(i=>i.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(i=>i.id!==id);renderCart()}
-function renderCart(){const c=cart.reduce((s,i)=>s+i.qty,0),t=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById("cart-items").innerHTML=cart.length?cart.map(i=>`<div class="cart-item"><div class="cart-row"><strong>${i.name}</strong><strong>${money(i.price*i.qty)}</strong></div><div class="qty"><button onclick="changeQty(${i.id},-1)">−</button><span>${i.qty}</span><button onclick="changeQty(${i.id},1)">+</button><small>${money(i.price)} за шт.</small></div></div>`).join(""):'<div class="message">Корзина пока пуста.</div>';document.getElementById("cart-sum").textContent=money(t);const b=document.getElementById("cart-count");b.textContent=c;b.style.display=c?"flex":"none"}
+let products=[];let cart=[];
+function money(v){return Number(v).toLocaleString("ru-RU")+" ₽"}
+async function loadProducts(){
+  const grid=document.getElementById("catalog-grid");
+  try{
+    const r=await fetch("/api/products");
+    if(!r.ok)throw Error("Ошибка загрузки");
+    products=await r.json();
+    if(!products.length){grid.innerHTML='<div class="message">Скоро здесь появятся новые букеты.</div>';return}
+    grid.innerHTML=products.map(p=>`<article class="product-card"><img src="${p.image||'assets/2026-04-09_08-14-12.png'}" alt="${p.name}"><h3>${p.name}</h3><p class="price">${money(p.price)}</p><button class="card-button" onclick="addToCart(${p.id})">В корзину</button></article>`).join("");
+  }catch(e){grid.innerHTML='<div class="message">Не удалось загрузить каталог.</div>'}
+}
+function addToCart(id){const p=products.find(x=>x.id===id);if(!p)return;const e=cart.find(x=>x.id===id);e?e.qty++:cart.push({id:p.id,name:p.name,price:Number(p.price),qty:1});renderCart();document.getElementById("cart-panel").classList.add("open")}
+function changeQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);renderCart()}
+function renderCart(){
+  const items=document.getElementById("cart-items"),count=cart.reduce((s,i)=>s+i.qty,0),total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  items.innerHTML=cart.length?cart.map(i=>`<div class="cart-item"><div class="cart-row"><strong>${i.name}</strong><strong>${money(i.price*i.qty)}</strong></div><div class="qty"><button onclick="changeQty(${i.id},-1)">−</button><span>${i.qty}</span><button onclick="changeQty(${i.id},1)">+</button><small>${money(i.price)} за шт.</small></div></div>`).join(""):'<div class="message">Корзина пока пуста.</div>';
+  document.getElementById("cart-sum").textContent=money(total);const b=document.getElementById("cart-count");b.textContent=count;b.style.display=count?"flex":"none";
+}
 function toggleCart(){document.getElementById("cart-panel").classList.toggle("open")}
-async function sendOrder(){if(!cart.length)return alert("Корзина пуста.");const customer_name=document.getElementById("customer-name").value.trim(),phone=document.getElementById("customer-phone").value.trim(),comment=document.getElementById("customer-comment").value.trim();if(!customer_name||!phone)return alert("Введите имя и телефон.");const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,comment,items:cart})});const j=await r.json();if(!r.ok)return alert(j.error||"Не удалось оформить заказ.");alert("Заказ №"+j.orderId+" принят!");cart=[];renderCart()}
+async function sendOrder(){
+  if(!cart.length)return alert("Корзина пуста.");
+  const customer_name=document.getElementById("customer-name").value.trim(),phone=document.getElementById("customer-phone").value.trim(),comment=document.getElementById("customer-comment").value.trim();
+  if(!customer_name||!phone)return alert("Введите имя и телефон.");
+  const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({customer_name,phone,comment,items:cart})});
+  const x=await r.json();if(!r.ok)return alert(x.error||"Не удалось оформить заказ.");
+  alert("Заказ №"+x.orderId+" принят!");cart=[];renderCart();
+}
 loadProducts();renderCart();
-</script></body></html>
+</script>
+</body>
+</html>

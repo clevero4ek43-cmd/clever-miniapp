@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
-
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const db = new Database(path.join(DATA_DIR, "clever.sqlite"));
@@ -43,9 +42,8 @@ CREATE TABLE IF NOT EXISTS orders (
 
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(session({
-  secret: process.env.SESSION_SECRET || "change-this-secret",
+  secret: process.env.SESSION_SECRET || "clever-local-secret-change-me",
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -56,6 +54,7 @@ app.use(session({
 }));
 
 app.use("/uploads", express.static(UPLOAD_DIR));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use(express.static(__dirname));
 
 const ADMIN_USER = process.env.ADMIN_USER || "admin";
@@ -63,7 +62,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "clever123";
 
 function requireAdmin(req, res, next) {
   if (req.session?.isAdmin) return next();
-  return res.status(401).json({ error: "Требуется вход" });
+  res.status(401).json({ error: "Требуется вход" });
 }
 
 const storage = multer.diskStorage({
@@ -109,7 +108,6 @@ app.get("/api/products", (req, res) => {
     WHERE visible = 1
     ORDER BY sort_order ASC, id DESC
   `).all();
-
   res.json(products);
 });
 
@@ -119,7 +117,6 @@ app.get("/api/admin/products", requireAdmin, (req, res) => {
     FROM products
     ORDER BY sort_order ASC, id DESC
   `).all();
-
   res.json(products);
 });
 
@@ -137,15 +134,14 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
     category = "Букеты",
     visible = true,
     sort_order = 0
-  } = req.body;
+  } = req.body || {};
 
   if (!name || Number(price) <= 0) {
     return res.status(400).json({ error: "Укажите название и цену" });
   }
 
   const info = db.prepare(`
-    INSERT INTO products
-      (name, price, description, image, category, visible, sort_order)
+    INSERT INTO products (name, price, description, image, category, visible, sort_order)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(
     String(name).trim(),
@@ -169,7 +165,7 @@ app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
     category = "Букеты",
     visible = true,
     sort_order = 0
-  } = req.body;
+  } = req.body || {};
 
   if (!name || Number(price) <= 0) {
     return res.status(400).json({ error: "Укажите название и цену" });
@@ -205,29 +201,23 @@ app.post("/api/orders", (req, res) => {
     return res.status(400).json({ error: "Заполните имя, телефон и корзину" });
   }
 
-  const normalizedItems = items
-    .map(item => ({
-      name: String(item.name || ""),
-      price: Math.round(Number(item.price) || 0),
-      qty: Math.max(1, Math.round(Number(item.qty) || 1))
-    }))
-    .filter(item => item.name && item.price > 0);
+  const normalized = items.map(item => ({
+    name: String(item.name || ""),
+    price: Math.round(Number(item.price) || 0),
+    qty: Math.max(1, Math.round(Number(item.qty) || 1))
+  })).filter(item => item.name && item.price > 0);
 
-  const total = normalizedItems.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
-  );
+  const total = normalized.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const info = db.prepare(`
-    INSERT INTO orders
-      (customer_name, phone, comment, total, items_json)
+    INSERT INTO orders (customer_name, phone, comment, total, items_json)
     VALUES (?, ?, ?, ?, ?)
   `).run(
     String(customer_name).trim(),
     String(phone).trim(),
     String(comment || ""),
     total,
-    JSON.stringify(normalizedItems)
+    JSON.stringify(normalized)
   );
 
   res.json({ success: true, orderId: info.lastInsertRowid });
@@ -235,19 +225,13 @@ app.post("/api/orders", (req, res) => {
 
 app.get("/api/admin/orders", requireAdmin, (req, res) => {
   const rows = db.prepare("SELECT * FROM orders ORDER BY id DESC").all();
-
-  res.json(rows.map(row => ({
-    ...row,
-    items: JSON.parse(row.items_json)
-  })));
+  res.json(rows.map(row => ({ ...row, items: JSON.parse(row.items_json) })));
 });
 
 app.put("/api/admin/orders/:id/status", requireAdmin, (req, res) => {
   const status = String(req.body.status || "Новый");
-
   db.prepare("UPDATE orders SET status=? WHERE id=?")
     .run(status, Number(req.params.id));
-
   res.json({ success: true });
 });
 
