@@ -1,61 +1,387 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Админка КЛЕВЕР</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f3ee;color:#35543d}.wrap{max-width:1100px;margin:auto;padding:24px}.panel{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px rgba(0,0,0,.06);margin-bottom:20px}h1,h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}label{display:grid;gap:6px;font-weight:600}input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font:inherit}textarea{min-height:100px;resize:vertical}button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#fff;cursor:pointer;font-weight:700}.secondary{background:#d8a8b5}.danger{background:#b84d57}.muted{color:#6c7a70}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.product{display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #eee}.product img{width:100px;height:100px;object-fit:cover;border-radius:14px;background:#eee}.login{max-width:420px;margin:80px auto}.hidden{display:none!important}.status{margin-top:12px;font-weight:700}.order{padding:14px 0;border-bottom:1px solid #eee}@media(max-width:700px){.grid{grid-template-columns:1fr}.product{grid-template-columns:72px 1fr}.product img{width:72px;height:72px}.product .actions{grid-column:1/-1}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f6f3ee;color:#35543d}
+.wrap{max-width:1100px;margin:auto;padding:24px}
+.panel{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px rgba(0,0,0,.06);margin-bottom:20px}
+h1,h2{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+label{display:grid;gap:6px;font-weight:600}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font:inherit}
+textarea{min-height:100px;resize:vertical}
+button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#fff;cursor:pointer;font-weight:700}
+.secondary{background:#d8a8b5}
+.danger{background:#b84d57}
+.muted{color:#6c7a70}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.product{display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #eee}
+.product img{width:100px;height:100px;object-fit:cover;border-radius:14px;background:#eee}
+.login{max-width:420px;margin:80px auto}
+.hidden{display:none!important}
+.status{margin-top:12px;font-weight:700}
+.order{padding:14px 0;border-bottom:1px solid #eee}
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr}
+  .product{grid-template-columns:72px 1fr}
+  .product img{width:72px;height:72px}
+  .product .actions{grid-column:1/-1}
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
-<section id="login-panel" class="panel login">
-<h1>Вход в админку</h1>
-<label>Логин<input id="login-user" value="admin"></label>
-<label>Пароль<input id="login-password" type="password"></label>
-<button onclick="doLogin()">Войти</button>
-<div id="login-status" class="status"></div>
-</section>
 
-<main id="admin-panel" class="hidden">
-<div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><h1>Админка КЛЕВЕР</h1><button class="secondary" onclick="logout()">Выйти</button></div><p class="muted">Изменения сразу появляются на сайте.</p></div>
+  <section id="login-panel" class="panel login">
+    <h1>Вход в админку</h1>
 
-<section class="panel">
-<h2 id="form-title">Добавить товар</h2>
-<input id="product-id" type="hidden">
-<div class="grid">
-<label>Название<input id="name"></label>
-<label>Цена, ₽<input id="price" type="number" min="1"></label>
-<label>Категория<input id="category" value="Букеты"></label>
-<label>Порядок<input id="sort-order" type="number" value="0"></label>
-<label>Фото с компьютера<input id="image-file" type="file" accept="image/*"></label>
-<label>Или ссылка на фото<input id="image"></label>
-</div>
-<label>Описание<textarea id="description"></textarea></label>
-<label style="display:flex;grid-template-columns:auto 1fr;align-items:center;margin-top:12px"><input id="visible" type="checkbox" checked style="width:auto"> Показывать товар на сайте</label>
-<div class="actions"><button onclick="saveProduct()">Сохранить товар</button><button class="secondary" onclick="resetForm()">Очистить форму</button></div>
-<div id="form-status" class="status"></div>
-</section>
+    <label>
+      Логин
+      <input id="login-user" value="admin">
+    </label>
 
-<section class="panel"><h2>Товары</h2><div id="products"></div></section>
-<section class="panel"><h2>Заказы</h2><div id="orders"></div></section>
-</main>
+    <label>
+      Пароль
+      <input id="login-password" type="password">
+    </label>
+
+    <button onclick="doLogin()">Войти</button>
+
+    <div id="login-status" class="status"></div>
+  </section>
+
+  <main id="admin-panel" class="hidden">
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:14px">
+        <h1>Админка КЛЕВЕР</h1>
+        <button class="secondary" onclick="logout()">Выйти</button>
+      </div>
+
+      <p class="muted">
+        Добавляйте товары и загружайте фотографии.
+        Изменения сразу появляются в каталоге.
+      </p>
+    </div>
+
+    <section class="panel">
+      <h2 id="form-title">Добавить товар</h2>
+
+      <input id="product-id" type="hidden">
+
+      <div class="grid">
+        <label>
+          Название
+          <input id="name">
+        </label>
+
+        <label>
+          Цена, ₽
+          <input id="price" type="number" min="1">
+        </label>
+
+        <label>
+          Категория
+          <input id="category" value="Букеты">
+        </label>
+
+        <label>
+          Порядок показа
+          <input id="sort-order" type="number" value="0">
+        </label>
+
+        <label>
+          Фото с компьютера
+          <input id="image-file" type="file" accept="image/*">
+        </label>
+
+        <label>
+          Или ссылка на фото
+          <input id="image">
+        </label>
+      </div>
+
+      <label>
+        Описание
+        <textarea id="description"></textarea>
+      </label>
+
+      <label style="display:flex;grid-template-columns:auto 1fr;align-items:center;margin-top:12px">
+        <input id="visible" type="checkbox" checked style="width:auto">
+        Показывать товар на сайте
+      </label>
+
+      <div class="actions">
+        <button onclick="saveProduct()">Сохранить товар</button>
+        <button class="secondary" onclick="resetForm()">Очистить форму</button>
+      </div>
+
+      <div id="form-status" class="status"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Товары</h2>
+      <div id="products"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Заказы</h2>
+      <div id="orders"></div>
+    </section>
+
+  </main>
 </div>
 
 <script>
-let products=[];
-async function request(url,options={}){const r=await fetch(url,options),d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||"Ошибка");return d}
-async function checkAuth(){const m=await request("/api/me");document.getElementById("login-panel").classList.toggle("hidden",m.isAdmin);document.getElementById("admin-panel").classList.toggle("hidden",!m.isAdmin);if(m.isAdmin){loadProducts();loadOrders()}}
-async function doLogin(){try{await request("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:document.getElementById("login-user").value,password:document.getElementById("login-password").value})});document.getElementById("login-status").textContent="";checkAuth()}catch(e){document.getElementById("login-status").textContent=e.message}}
-async function logout(){await request("/api/logout",{method:"POST"});location.reload()}
-async function loadProducts(){products=await request("/api/admin/products");document.getElementById("products").innerHTML=products.length?products.map(p=>`<div class="product"><img src="${p.image||''}" alt=""><div><strong>${p.name}</strong><div>${Number(p.price).toLocaleString("ru-RU")} ₽ · ${p.category||"Букеты"}</div><small>${p.visible?"Показывается":"Скрыт"}</small></div><div class="actions"><button onclick="editProduct(${p.id})">Изменить</button><button class="danger" onclick="deleteProduct(${p.id})">Удалить</button></div></div>`).join(""):"<p>Товаров пока нет.</p>"}
-function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;document.getElementById("product-id").value=p.id;document.getElementById("name").value=p.name;document.getElementById("price").value=p.price;document.getElementById("category").value=p.category||"Букеты";document.getElementById("sort-order").value=p.sort_order||0;document.getElementById("image").value=p.image||"";document.getElementById("description").value=p.description||"";document.getElementById("visible").checked=Boolean(p.visible);document.getElementById("form-title").textContent="Редактировать товар";scrollTo({top:0,behavior:"smooth"})}
-function resetForm(){["product-id","name","price","image","description"].forEach(id=>document.getElementById(id).value="");document.getElementById("category").value="Букеты";document.getElementById("sort-order").value=0;document.getElementById("image-file").value="";document.getElementById("visible").checked=true;document.getElementById("form-title").textContent="Добавить товар"}
-async function uploadImage(){const f=document.getElementById("image-file").files[0];if(!f)return document.getElementById("image").value.trim();const fd=new FormData();fd.append("image",f);return (await request("/api/admin/upload",{method:"POST",body:fd})).url}
-async function saveProduct(){const s=document.getElementById("form-status");try{s.textContent="Сохраняем…";const id=document.getElementById("product-id").value,img=await uploadImage(),payload={name:document.getElementById("name").value.trim(),price:Number(document.getElementById("price").value),category:document.getElementById("category").value.trim(),sort_order:Number(document.getElementById("sort-order").value),image:img,description:document.getElementById("description").value.trim(),visible:document.getElementById("visible").checked};await request(id?`/api/admin/products/${id}`:"/api/admin/products",{method:id?"PUT":"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});s.textContent="Сохранено";resetForm();loadProducts()}catch(e){s.textContent=e.message}}
-async function deleteProduct(id){if(!confirm("Удалить товар?"))return;await request(`/api/admin/products/${id}`,{method:"DELETE"});loadProducts()}
-async function loadOrders(){const a=await request("/api/admin/orders");document.getElementById("orders").innerHTML=a.length?a.map(o=>`<div class="order"><strong>Заказ №${o.id} · ${o.customer_name}</strong><div>${o.phone} · ${Number(o.total).toLocaleString("ru-RU")} ₽</div><div>${o.items.map(i=>`${i.name} × ${i.qty}`).join(", ")}</div><select onchange="changeStatus(${o.id},this.value)">${["Новый","Принят","Готов","Доставлен","Отменён"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select></div>`).join(""):"<p>Заказов пока нет.</p>"}
-async function changeStatus(id,status){await request(`/api/admin/orders/${id}/status`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({status})})}
+let products = [];
+
+async function request(url, options = {}) {
+  const response = await fetch(url, options);
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.error || "Ошибка");
+  }
+
+  return data;
+}
+
+async function checkAuth() {
+  const me = await request("/api/me");
+
+  document.getElementById("login-panel")
+    .classList.toggle("hidden", me.isAdmin);
+
+  document.getElementById("admin-panel")
+    .classList.toggle("hidden", !me.isAdmin);
+
+  if (me.isAdmin) {
+    await loadProducts();
+    await loadOrders();
+  }
+}
+
+async function doLogin() {
+  const status = document.getElementById("login-status");
+
+  try {
+    await request("/api/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        username: document.getElementById("login-user").value,
+        password: document.getElementById("login-password").value
+      })
+    });
+
+    status.textContent = "";
+    await checkAuth();
+
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
+
+async function logout() {
+  await request("/api/logout", {method: "POST"});
+  location.reload();
+}
+
+async function loadProducts() {
+  products = await request("/api/admin/products");
+
+  const box = document.getElementById("products");
+
+  box.innerHTML = products.length
+    ? products.map(product => `
+      <div class="product">
+        <img src="${product.image || ""}" alt="">
+
+        <div>
+          <strong>${product.name}</strong>
+
+          <div>
+            ${Number(product.price).toLocaleString("ru-RU")} ₽
+            · ${product.category || "Букеты"}
+          </div>
+
+          <small>
+            ${product.visible ? "Показывается на сайте" : "Скрыт"}
+          </small>
+        </div>
+
+        <div class="actions">
+          <button onclick="editProduct(${product.id})">
+            Изменить
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteProduct(${product.id})"
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
+    `).join("")
+    : "<p>Товаров пока нет.</p>";
+}
+
+function editProduct(id) {
+  const product = products.find(item => item.id === id);
+  if (!product) return;
+
+  document.getElementById("product-id").value = product.id;
+  document.getElementById("name").value = product.name;
+  document.getElementById("price").value = product.price;
+  document.getElementById("category").value = product.category || "Букеты";
+  document.getElementById("sort-order").value = product.sort_order || 0;
+  document.getElementById("image").value = product.image || "";
+  document.getElementById("description").value = product.description || "";
+  document.getElementById("visible").checked = Boolean(product.visible);
+
+  document.getElementById("form-title").textContent =
+    "Редактировать товар";
+
+  scrollTo({top: 0, behavior: "smooth"});
+}
+
+function resetForm() {
+  document.getElementById("product-id").value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("category").value = "Букеты";
+  document.getElementById("sort-order").value = "0";
+  document.getElementById("image").value = "";
+  document.getElementById("image-file").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("visible").checked = true;
+
+  document.getElementById("form-title").textContent =
+    "Добавить товар";
+}
+
+async function uploadImage() {
+  const file = document.getElementById("image-file").files[0];
+
+  if (!file) {
+    return document.getElementById("image").value.trim();
+  }
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const result = await request("/api/admin/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  return result.url;
+}
+
+async function saveProduct() {
+  const status = document.getElementById("form-status");
+
+  try {
+    status.textContent = "Сохраняем…";
+
+    const id = document.getElementById("product-id").value;
+    const image = await uploadImage();
+
+    const payload = {
+      name: document.getElementById("name").value.trim(),
+      price: Number(document.getElementById("price").value),
+      category: document.getElementById("category").value.trim(),
+      sort_order: Number(document.getElementById("sort-order").value),
+      image,
+      description: document.getElementById("description").value.trim(),
+      visible: document.getElementById("visible").checked
+    };
+
+    await request(
+      id ? `/api/admin/products/${id}` : "/api/admin/products",
+      {
+        method: id ? "PUT" : "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+      }
+    );
+
+    status.textContent = "Сохранено";
+
+    resetForm();
+    await loadProducts();
+
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
+
+async function deleteProduct(id) {
+  if (!confirm("Удалить товар?")) return;
+
+  await request(`/api/admin/products/${id}`, {
+    method: "DELETE"
+  });
+
+  await loadProducts();
+}
+
+async function loadOrders() {
+  const orders = await request("/api/admin/orders");
+  const box = document.getElementById("orders");
+
+  box.innerHTML = orders.length
+    ? orders.map(order => `
+      <div class="order">
+        <strong>
+          Заказ №${order.id} · ${order.customer_name}
+        </strong>
+
+        <div>
+          ${order.phone}
+          · ${Number(order.total).toLocaleString("ru-RU")} ₽
+        </div>
+
+        <div>
+          ${order.items
+            .map(item => `${item.name} × ${item.qty}`)
+            .join(", ")}
+        </div>
+
+        <div class="actions">
+          <select
+            onchange="changeStatus(${order.id}, this.value)"
+          >
+            ${["Новый", "Принят", "Готов", "Доставлен", "Отменён"]
+              .map(status => `
+                <option
+                  ${status === order.status ? "selected" : ""}
+                >
+                  ${status}
+                </option>
+              `).join("")}
+          </select>
+        </div>
+      </div>
+    `).join("")
+    : "<p>Заказов пока нет.</p>";
+}
+
+async function changeStatus(id, status) {
+  await request(`/api/admin/orders/${id}/status`, {
+    method: "PUT",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({status})
+  });
+}
+
 checkAuth();
 </script>
 </body>
