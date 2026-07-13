@@ -86,7 +86,13 @@ const mailTransporter =
         auth: {
           user: SMTP_USER,
           pass: SMTP_PASSWORD
-        }
+        },
+        tls: {
+          family: 4
+        },
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 15000
       })
     : null;
 
