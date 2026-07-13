@@ -22,12 +22,16 @@ h1{font-size:52px;letter-spacing:8px;margin:0}
 .subtitle{font-size:20px;line-height:1.5}
 .button,.card-button,.checkout-btn{border:0;border-radius:999px;background:#d8a8b5;color:#fff;cursor:pointer}
 .button{display:inline-block;margin-top:14px;padding:20px 56px;text-decoration:none;font-size:19px;font-weight:600}
-.catalog{max-width:1280px;margin:auto;padding:60px 30px 90px}
+.catalog{max-width:1280px;margin:auto;padding:25px 30px 90px}
 .catalog-title{text-align:center;color:#d8a8b5;letter-spacing:8px;text-transform:uppercase;font-weight:400}
 .catalog-subtitle{text-align:center;color:#6c7a70;margin-bottom:45px}
-.catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,420px));justify-content:center;gap:36px}
+..catalog-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:32px;
+}
 .product-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06);display:flex;flex-direction:column}
-.product-card img{width:100%;aspect-ratio:5/6;object-fit:cover;background:#f1efec}
+.product-card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#f1efec}
 .product-card h3{font-size:24px;padding:22px 24px 8px;margin:0}
 .price{font:34px Georgia,serif;padding:0 24px;margin:0 0 18px}
 .card-button{margin:0 24px 22px;padding:14px;font-size:16px;font-weight:600}
