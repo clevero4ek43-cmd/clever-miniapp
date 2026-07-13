@@ -378,11 +378,12 @@ app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
 
   db.prepare(`
     UPDATE products
-    SET name = ?, price = ?, description = ?, image = ?, category = ?, visible = ?, sort_order = ?
+    SET name = ?, price = ?, short_description = ?, description = ?, image = ?, category = ?, visible = ?, sort_order = ?
     WHERE id = ?
   `).run(
     String(name).trim(),
     Math.round(Number(price)),
+    String(short_description || ""),
     String(description || ""),
     String(image || ""),
     String(category || "Букеты"),
