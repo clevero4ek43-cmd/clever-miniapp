@@ -25,10 +25,23 @@ h1{font-size:52px;letter-spacing:8px;margin:0}
 .catalog{max-width:1280px;margin:auto;padding:25px 30px 90px}
 .catalog-title{text-align:center;color:#d8a8b5;letter-spacing:8px;text-transform:uppercase;font-weight:400}
 .catalog-subtitle{text-align:center;color:#6c7a70;margin-bottom:45px}
-..catalog-grid{
+.catalog-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    grid-template-columns:repeat(3, minmax(0, 380px));
+    justify-content:center;
     gap:32px;
+}
+
+@media (max-width:1200px){
+    .catalog-grid{
+        grid-template-columns:repeat(2, minmax(0, 380px));
+    }
+}
+
+@media (max-width:800px){
+    .catalog-grid{
+        grid-template-columns:1fr;
+    }
 }
 .product-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06);display:flex;flex-direction:column}
 .product-card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#f1efec}
