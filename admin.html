@@ -246,6 +246,7 @@ function editProduct(id) {
   document.getElementById("name").value = product.name;
   document.getElementById("price").value = product.price;
   document.getElementById("category").value = product.category || "Букеты";
+  document.getElementById("short-description").value = product.short_description || "";
   document.getElementById("sort-order").value = product.sort_order || 0;
   document.getElementById("image").value = product.image || "";
   document.getElementById("description").value = product.description || "";
@@ -303,6 +304,7 @@ async function saveProduct() {
       name: document.getElementById("name").value.trim(),
       price: Number(document.getElementById("price").value),
       category: document.getElementById("category").value.trim(),
+      short_description: document.getElementById("short-description").value.trim(),
       sort_order: Number(document.getElementById("sort-order").value),
       image,
       description: document.getElementById("description").value.trim(),
