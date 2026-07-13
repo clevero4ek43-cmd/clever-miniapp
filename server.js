@@ -6,6 +6,8 @@ const TelegramBot = require("node-telegram-bot-api");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -88,7 +90,7 @@ const mailTransporter =
           pass: SMTP_PASSWORD
         },
         tls: {
-          family: 4
+          servername: "smtp.yandex.ru"
         },
         connectionTimeout: 15000,
         greetingTimeout: 15000,
