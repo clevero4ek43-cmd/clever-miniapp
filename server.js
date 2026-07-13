@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   price INTEGER NOT NULL,
+  short_description TEXT DEFAULT '',
   description TEXT DEFAULT '',
   image TEXT DEFAULT '',
   category TEXT DEFAULT 'Букеты',
@@ -44,7 +45,9 @@ CREATE TABLE IF NOT EXISTS orders (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 `);
-
+try {
+  db.exec("ALTER TABLE products ADD COLUMN short_description TEXT DEFAULT ''");
+} catch (e) {}
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
