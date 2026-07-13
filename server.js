@@ -331,6 +331,7 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
   const {
     name,
     price,
+    short_description = "",
     description = "",
     image = "",
     category = "Букеты",
@@ -344,11 +345,12 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
 
   const result = db.prepare(`
     INSERT INTO products
-      (name, price, description, image, category, visible, sort_order)
+      (name, price, short_description, description, image, category, visible, sort_order)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(
     String(name).trim(),
     Math.round(Number(price)),
+    String(short_description || ""),
     String(description || ""),
     String(image || ""),
     String(category || "Букеты"),
