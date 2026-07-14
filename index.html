@@ -245,21 +245,20 @@ ${product.short_description || ""}
 
 <p class="price">${money(product.price)}</p>
 
-        <div class="card-actions">
-  <button
-    class="card-button"
-    onclick="addToCart(${product.id})"
-  >
-    В корзину
-  </button>
+        <button
+  class="card-button"
+  onclick="addToCart(${product.id})"
+>
+  В корзину
+</button>
 
-  <button
-    class="details-button"
-    onclick="alert('Страница букета появится следующим этапом')"
-  >
-    Подробнее
-  </button>
-</div>
+<a
+  class="details-link"
+  href="#"
+  onclick="event.preventDefault(); alert('Страница букета скоро появится');"
+>
+  Подробнее →
+</a>
       </article>
     `).join("");
 
