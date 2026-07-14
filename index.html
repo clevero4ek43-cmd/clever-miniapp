@@ -84,28 +84,49 @@ gap:12px;
 padding:0 24px 22px;
 }
 
+.card-actions{
+    display:flex;
+    gap:12px;
+    padding:0 24px 24px;
+    margin-top:auto;
+}
+
 .card-button,
 .details-button{
-flex:1;
-padding:14px;
-border:none;
-border-radius:999px;
-cursor:pointer;
-font-size:16px;
-font-weight:600;
-transition:.25s;
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:50px;
+    border:none;
+    border-radius:999px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    transition:all .25s ease;
 }
 
 .card-button{
-background:#d8a8b5;
-color:#fff;
-margin:0;
-transition:.25s;
+    background:#d8a8b5;
+    color:#fff;
 }
-    .card-button:hover{
-background:#c98f9f;
-transform:translateY(-2px);
-box-shadow:0 8px 18px rgba(216,168,181,.35);
+
+.card-button:hover{
+    background:#c98f9f;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(216,168,181,.35);
+}
+
+.details-button{
+    background:#f4f1ee;
+    color:#35543d;
+}
+
+.details-button:hover{
+    background:#e9e5e1;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
 .details-button{
@@ -245,20 +266,24 @@ ${product.short_description || ""}
 
 <p class="price">${money(product.price)}</p>
 
-        <button
-  class="card-button"
-  onclick="addToCart(${product.id})"
->
-  В корзину
-</button>
+       <div class="card-actions">
 
-<a
-  class="details-link"
-  href="#"
-  onclick="event.preventDefault(); alert('Страница букета скоро появится');"
->
-  Подробнее →
-</a>
+    <a
+        class="details-button"
+        href="#"
+        onclick="event.preventDefault(); alert('Страница букета скоро появится');"
+    >
+        Подробнее
+    </a>
+
+    <button
+        class="card-button"
+        onclick="addToCart(${product.id})"
+    >
+        В корзину
+    </button>
+
+</div>
       </article>
     `).join("");
 
