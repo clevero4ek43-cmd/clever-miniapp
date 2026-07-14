@@ -295,7 +295,7 @@ app.get("/api/me", (req, res) => {
 
 app.get("/api/products", (_, res) => {
   const products = db.prepare(`
-    SELECT id, name, price, description, image, category, visible, sort_order
+   SELECT id, name, price, short_description, description, image, category, visible, sort_order
     FROM products
     WHERE visible = 1
     ORDER BY sort_order ASC, id DESC
@@ -478,7 +478,8 @@ app.post("/api/orders", (req, res) => {
 
 app.get("/api/admin/orders", requireAdmin, (_, res) => {
   const rows = db.prepare(`
-    SELECT id, customer_name, phone, comment, total, items_json, status, created_at
+    SELECT id, name, price, short_description, description, image, category, visible, sort_order, created_at
+FROM products
     FROM orders
     ORDER BY id DESC
   `).all();
