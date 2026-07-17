@@ -183,19 +183,15 @@
     }
 
     .gallery-card{
-    display:grid;
-    grid-template-columns:96px 1fr;
-    gap:18px;
-    padding:20px;
-    border-radius:34px;
+    padding:18px;
+    border-radius:32px;
 }
-
-    .main-image-wrap{
+   .main-image-wrap{
     position:relative;
     overflow:hidden;
-    border-radius:26px;
-    aspect-ratio:4/5;
-    background:#f4f1ee;
+    aspect-ratio:1/1;
+    border-radius:24px;
+    background:#eee9e3;
 }
 
     .main-image {
@@ -219,10 +215,10 @@
     }
 
     .thumbnails{
-    display:flex;
-    flex-direction:column;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
     gap:12px;
-    margin:0;
+    margin-top:14px;
 }
 
     .thumbnail{
