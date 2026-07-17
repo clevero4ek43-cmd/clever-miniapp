@@ -1,309 +1,1185 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Букет | КЛЕВЕР</title>
+  <title>Карточка товара — КЛЕВЕР</title>
 
-<style>
+  <style>
+    :root {
+      --green: #35543d;
+      --green-dark: #294431;
+      --pink: #d8a8b5;
+      --pink-light: #f3dfe5;
+      --milk: #f6f3ee;
+      --white: #ffffff;
+      --text: #2d332e;
+      --muted: #747a75;
+      --border: #e5dfda;
+      --shadow: 0 16px 45px rgba(48, 62, 52, 0.10);
+    }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-    font-family:Arial,sans-serif;
-    background:linear-gradient(180deg,#f6f3ee,#fdf6f8);
-    color:#35543d;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.container{
-    width:min(1280px,92%);
-    margin:40px auto;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(
+          180deg,
+          #f6f3ee 0%,
+          #fdf8f9 48%,
+          #f6f3ee 100%
+        );
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-.back{
-    display:inline-block;
-    margin-bottom:30px;
-    color:#35543d;
-    text-decoration:none;
-    font-size:16px;
-}
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
 
-.product{
-    display:grid;
-    grid-template-columns:58% 42%;
-    gap:60px;
-    align-items:start;
-}
+    button {
+      cursor: pointer;
+    }
 
-.gallery{}
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-.main-photo{
-    width:100%;
-    aspect-ratio:1/1;
-    border-radius:28px;
-    overflow:hidden;
-    background:#ffffff;
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-.main-photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      background: rgba(246, 243, 238, 0.94);
+      border-bottom: 1px solid rgba(53, 84, 61, 0.10);
+      backdrop-filter: blur(16px);
+    }
 
-.thumbs{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:14px;
-    margin-top:18px;
-}
+    .topbar-inner {
+      width: min(1380px, calc(100% - 40px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
 
-.thumbs img{
-    width:100%;
-    aspect-ratio:1;
-    border-radius:14px;
-    object-fit:cover;
-    cursor:pointer;
-    border:2px solid transparent;
-    transition:.25s;
-}
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--green);
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
 
-.thumbs img:hover{
-    transform:translateY(-3px);
-}
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(53, 84, 61, 0.25);
+      border-radius: 50%;
+      font-size: 18px;
+    }
 
-.thumbs img.active{
-    border-color:#d8a8b5;
-}
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-.info h1{
-    font-size:42px;
-    line-height:1.15;
-    margin-bottom:18px;
-}
+    .back-link,
+    .cart-link {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border-radius: 999px;
+      transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+    }
 
-.price{
-    font-family:Georgia,serif;
-    font-size:46px;
-    margin-bottom:28px;
-}
+    .back-link {
+      color: var(--green);
+      border: 1px solid rgba(53, 84, 61, 0.18);
+      background: rgba(255, 255, 255, 0.55);
+    }
 
-.card{
-    background:#fff;
-    border-radius:22px;
-    padding:22px;
-    margin-bottom:18px;
-    box-shadow:0 8px 22px rgba(0,0,0,.05);
-}
+    .cart-link {
+      color: var(--white);
+      background: var(--green);
+    }
 
-.card h2{
-    font-size:22px;
-    margin-bottom:12px;
-}
+    .back-link:hover,
+    .cart-link:hover {
+      transform: translateY(-1px);
+    }
 
-.card p{
-    line-height:1.7;
-}
+    .cart-count {
+      min-width: 24px;
+      height: 24px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 6px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+    }
 
-.buy{
-    width:100%;
-    height:62px;
-    border:none;
-    border-radius:999px;
-    background:#d8a8b5;
-    color:#fff;
-    font-size:18px;
-    cursor:pointer;
-    transition:.25s;
-}
+    .page {
+      width: min(1320px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 50px 0 80px;
+    }
 
-.buy:hover{
-    transform:translateY(-2px);
-}
+    .breadcrumbs {
+      margin-bottom: 25px;
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-@media(max-width:900px){
+    .breadcrumbs a:hover {
+      color: var(--green);
+    }
 
-.product{
-    grid-template-columns:1fr;
-}
+    .product-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+      gap: 52px;
+      align-items: start;
+    }
 
-.info h1{
-    font-size:34px;
-}
+    .gallery-card,
+    .product-card {
+      border: 1px solid rgba(53, 84, 61, 0.08);
+      background: rgba(255, 255, 255, 0.80);
+      box-shadow: var(--shadow);
+    }
 
-.price{
-    font-size:38px;
-}
+    .gallery-card {
+      padding: 18px;
+      border-radius: 32px;
+    }
 
-}
+    .main-image-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      background: #eee9e3;
+    }
 
-</style>
+    .main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s ease;
+    }
 
+    .image-label {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 7px 20px rgba(45, 51, 46, 0.10);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .thumbnails {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .thumbnail {
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      background: #eee9e3;
+      transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .thumbnail:hover {
+      transform: translateY(-2px);
+    }
+
+    .thumbnail.active {
+      border-color: var(--pink);
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-card {
+      padding: 38px;
+      border-radius: 32px;
+    }
+
+    .product-category {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      margin-bottom: 18px;
+      padding: 0 14px;
+      border-radius: 999px;
+      color: var(--green);
+      background: var(--pink-light);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .product-title {
+      margin: 0;
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 4vw, 58px);
+      font-weight: 400;
+      line-height: 1.03;
+    }
+
+    .product-short-description {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 30px 0;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-price {
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 46px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .availability {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .availability-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #67a675;
+      box-shadow: 0 0 0 5px rgba(103, 166, 117, 0.13);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .info-item {
+      min-height: 112px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(246, 243, 238, 0.55);
+    }
+
+    .info-icon {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 23px;
+    }
+
+    .info-title {
+      margin: 0 0 7px;
+      color: var(--green);
+      font-size: 15px;
+    }
+
+    .info-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .details {
+      border-top: 1px solid var(--border);
+    }
+
+    .details-section {
+      padding: 23px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .details-title {
+      margin: 0 0 11px;
+      color: var(--green);
+      font-size: 17px;
+    }
+
+    .details-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    .buy-block {
+      margin-top: 30px;
+    }
+
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .quantity-label {
+      color: var(--green);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .quantity-control {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--white);
+    }
+
+    .quantity-button {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      color: var(--green);
+      background: var(--milk);
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .quantity-value {
+      width: 48px;
+      text-align: center;
+      color: var(--green);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .add-to-cart {
+      width: 100%;
+      min-height: 62px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--white);
+      background: var(--pink);
+      box-shadow: 0 14px 30px rgba(216, 168, 181, 0.30);
+      font-size: 18px;
+      font-weight: 700;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    .add-to-cart:hover {
+      transform: translateY(-2px);
+      background: #ce98a8;
+      box-shadow: 0 18px 34px rgba(216, 168, 181, 0.38);
+    }
+
+    .add-to-cart:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+      transform: none;
+    }
+
+    .cart-message {
+      min-height: 22px;
+      margin: 12px 0 0;
+      text-align: center;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .loading,
+    .error-box {
+      padding: 70px 25px;
+      border-radius: 30px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+    }
+
+    .loading {
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .error-box h1 {
+      margin: 0 0 14px;
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 40px;
+      font-weight: 400;
+    }
+
+    .error-box p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .error-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 23px;
+      border-radius: 999px;
+      color: var(--white);
+      background: var(--green);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1050px) {
+      .product-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .gallery-card,
+      .product-card {
+        width: min(760px, 100%);
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        height: 68px;
+      }
+
+      .topbar-inner,
+      .page {
+        width: min(100% - 24px, 1320px);
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .brand-mark,
+      .back-link {
+        display: none;
+      }
+
+      .cart-link {
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
+
+      .page {
+        padding: 25px 0 50px;
+      }
+
+      .breadcrumbs {
+        margin-bottom: 16px;
+      }
+
+      .gallery-card {
+        padding: 10px;
+        border-radius: 24px;
+      }
+
+      .main-image-wrap {
+        border-radius: 19px;
+      }
+
+      .thumbnails {
+        gap: 7px;
+        margin-top: 9px;
+      }
+
+      .thumbnail {
+        border-radius: 11px;
+      }
+
+      .product-card {
+        padding: 25px 20px;
+        border-radius: 25px;
+      }
+
+      .product-title {
+        font-size: 38px;
+      }
+
+      .product-short-description {
+        font-size: 15px;
+      }
+
+      .price-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .product-price {
+        font-size: 40px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-item {
+        min-height: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<a href="index.html" class="back">
-← Назад в каталог
-</a>
-
-<div class="product">
-
-<div class="gallery">
-
-<div class="main-photo">
-<img id="mainImage" src="assets/photo1.jpg">
-</div>
-
-<div class="thumbs">
-
-<img class="active"
-src="assets/photo1.jpg">
-
-<img
-src="assets/photo2.jpg">
-
-<img
-src="assets/photo3.jpg">
-
-<img
-src="assets/photo4.jpg">
-
-<img
-src="assets/photo5.jpg">
-
-</div>
-
-</div>
-
-<div class="info">
-
-<h1>Название букета</h1>
-
-<div class="price">
-4 790 ₽
-</div>
-<div class="card">
-
-<h2>🚗 Доставка</h2>
-
-<p>
-Сегодня
-</p>
-
-<p>
-<strong>Ближайший интервал:</strong>
-18:00–20:00
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>🏠 Самовывоз</h2>
-
-<p>
-Сегодня
-</p>
-
-<p>
-<strong>Готов через 60 минут</strong>
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>📏 Размер</h2>
-
-<p>Высота: 55 см</p>
-
-<p>Диаметр: 40 см</p>
-
-</div>
-
-<div class="card">
-
-<h2>🌸 Состав</h2>
-
-<p>
-
-Роза Эквадор<br>
-Эустома<br>
-Эвкалипт<br>
-Упаковка
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>📝 Описание</h2>
-
-<p>
-
-Полное описание букета будет автоматически
-подставляться из админки.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>💧 Уход</h2>
-
-<p>
-
-Инструкция по уходу будет автоматически
-подставляться из админки.
-
-</p>
-
-</div>
-
-<button class="buy">
-
-Добавить в корзину
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-const thumbs=document.querySelectorAll(".thumbs img");
-
-const main=document.getElementById("mainImage");
-
-thumbs.forEach(img=>{
-
-img.onclick=()=>{
-
-main.src=img.src;
-
-thumbs.forEach(i=>i.classList.remove("active"));
-
-img.classList.add("active");
-
-}
-
-})
-
-</script>
-
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark">♧</span>
+        <span>КЛЕВЕР</span>
+      </a>
+
+      <div class="topbar-actions">
+        <a class="back-link" href="/">← Вернуться в каталог</a>
+
+        <a class="cart-link" href="/#cart">
+          Корзина
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="breadcrumbs">
+      <a href="/">Главная</a>
+      <span> / </span>
+      <a href="/#catalog">Каталог</a>
+      <span> / </span>
+      <span id="breadcrumbName">Товар</span>
+    </div>
+
+    <div class="loading" id="loading">
+      Загружаем карточку товара…
+    </div>
+
+    <section class="product-layout hidden" id="productLayout">
+      <div class="gallery-card">
+        <div class="main-image-wrap">
+          <img
+            class="main-image"
+            id="mainImage"
+            src=""
+            alt="Букет КЛЕВЕР"
+          >
+
+          <span class="image-label">Соберём с заботой</span>
+        </div>
+
+        <div class="thumbnails" id="thumbnails"></div>
+      </div>
+
+      <article class="product-card">
+        <span class="product-category" id="productCategory">Букеты</span>
+
+        <h1 class="product-title" id="productName">
+          Букет
+        </h1>
+
+        <p
+          class="product-short-description"
+          id="productShortDescription"
+        ></p>
+
+        <div class="price-row">
+          <div class="product-price" id="productPrice">0 ₽</div>
+
+          <div class="availability">
+            <span class="availability-dot"></span>
+            Можно заказать
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-icon">🚚</span>
+            <h2 class="info-title">Доставка</h2>
+            <p class="info-text">
+              Доставим по Иванову и ближайшим районам.
+              Время согласуем после оформления заказа.
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">🏡</span>
+            <h2 class="info-title">Самовывоз</h2>
+            <p class="info-text">
+              Можно забрать заказ самостоятельно
+              из салона цветов КЛЕВЕР.
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">📏</span>
+            <h2 class="info-title">Размер</h2>
+            <p class="info-text" id="productSize">
+              Размер уточняется
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon">🌿</span>
+            <h2 class="info-title">Свежие цветы</h2>
+            <p class="info-text">
+              Перед сборкой проверяем каждый цветок
+              и бережно упаковываем букет.
+            </p>
+          </div>
+        </div>
+
+        <div class="details">
+          <section class="details-section">
+            <h2 class="details-title">Состав</h2>
+            <p class="details-text" id="productComposition">
+              Состав уточняется
+            </p>
+          </section>
+
+          <section class="details-section">
+            <h2 class="details-title">Описание</h2>
+            <p class="details-text" id="productDescription">
+              Описание товара
+            </p>
+          </section>
+
+          <section class="details-section">
+            <h2 class="details-title">Уход</h2>
+            <p class="details-text" id="productCare">
+              Подрежьте стебли перед тем, как поставить букет в воду.
+              Меняйте воду каждый день и держите цветы вдали
+              от батарей, солнца и фруктов.
+            </p>
+          </section>
+        </div>
+
+        <div class="buy-block">
+          <div class="quantity-row">
+            <span class="quantity-label">Количество:</span>
+
+            <div class="quantity-control">
+              <button
+                class="quantity-button"
+                id="decreaseQuantity"
+                type="button"
+                aria-label="Уменьшить количество"
+              >
+                −
+              </button>
+
+              <span class="quantity-value" id="quantityValue">1</span>
+
+              <button
+                class="quantity-button"
+                id="increaseQuantity"
+                type="button"
+                aria-label="Увеличить количество"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <button class="add-to-cart" id="addToCartButton" type="button">
+            Добавить в корзину
+          </button>
+
+          <p class="cart-message" id="cartMessage"></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="error-box hidden" id="errorBox">
+      <h1>Товар не найден</h1>
+      <p>
+        Возможно, товар был скрыт или ссылка указана неверно.
+        Вернитесь в каталог и выберите другой букет.
+      </p>
+      <a class="error-link" href="/">Вернуться в каталог</a>
+    </section>
+  </main>
+
+  <script>
+    const loadingElement = document.getElementById("loading");
+    const productLayout = document.getElementById("productLayout");
+    const errorBox = document.getElementById("errorBox");
+
+    const mainImage = document.getElementById("mainImage");
+    const thumbnailsContainer = document.getElementById("thumbnails");
+
+    const productNameElement = document.getElementById("productName");
+    const breadcrumbNameElement =
+      document.getElementById("breadcrumbName");
+
+    const productCategoryElement =
+      document.getElementById("productCategory");
+
+    const productShortDescriptionElement =
+      document.getElementById("productShortDescription");
+
+    const productPriceElement =
+      document.getElementById("productPrice");
+
+    const productSizeElement =
+      document.getElementById("productSize");
+
+    const productCompositionElement =
+      document.getElementById("productComposition");
+
+    const productDescriptionElement =
+      document.getElementById("productDescription");
+
+    const productCareElement =
+      document.getElementById("productCare");
+
+    const quantityValueElement =
+      document.getElementById("quantityValue");
+
+    const cartCountElement =
+      document.getElementById("cartCount");
+
+    const cartMessageElement =
+      document.getElementById("cartMessage");
+
+    const addToCartButton =
+      document.getElementById("addToCartButton");
+
+    const decreaseQuantityButton =
+      document.getElementById("decreaseQuantity");
+
+    const increaseQuantityButton =
+      document.getElementById("increaseQuantity");
+
+    const FALLBACK_IMAGE =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="900"
+          height="900"
+          viewBox="0 0 900 900"
+        >
+          <rect width="900" height="900" fill="#f2ece7"/>
+          <circle cx="450" cy="390" r="150" fill="#d8a8b5"/>
+          <circle cx="350" cy="350" r="90" fill="#f4dfe5"/>
+          <circle cx="550" cy="350" r="90" fill="#f4dfe5"/>
+          <circle cx="450" cy="275" r="90" fill="#ead0d8"/>
+          <path
+            d="M450 520 C390 620 370 700 360 790"
+            stroke="#35543d"
+            stroke-width="24"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M450 520 C510 620 530 700 540 790"
+            stroke="#35543d"
+            stroke-width="24"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <text
+            x="450"
+            y="840"
+            text-anchor="middle"
+            font-family="Arial"
+            font-size="40"
+            fill="#35543d"
+          >
+            КЛЕВЕР
+          </text>
+        </svg>
+      `);
+
+    let currentProduct = null;
+    let quantity = 1;
+
+    function formatPrice(value) {
+      const price = Number(value) || 0;
+
+      return new Intl.NumberFormat("ru-RU").format(price) + " ₽";
+    }
+
+    function getProductId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    function normalizeImagePath(imagePath) {
+      if (!imagePath) {
+        return FALLBACK_IMAGE;
+      }
+
+      if (
+        imagePath.startsWith("http://") ||
+        imagePath.startsWith("https://") ||
+        imagePath.startsWith("data:")
+      ) {
+        return imagePath;
+      }
+
+      if (imagePath.startsWith("/")) {
+        return imagePath;
+      }
+
+      return "/" + imagePath;
+    }
+
+    function getProductImages(product) {
+      const possibleImages = [
+        product.image,
+        product.image2,
+        product.image3,
+        product.image4,
+        product.image5
+      ];
+
+      const uniqueImages = [];
+
+      possibleImages.forEach((imagePath) => {
+        if (!imagePath) {
+          return;
+        }
+
+        const normalizedPath = normalizeImagePath(imagePath);
+
+        if (!uniqueImages.includes(normalizedPath)) {
+          uniqueImages.push(normalizedPath);
+        }
+      });
+
+      if (uniqueImages.length === 0) {
+        uniqueImages.push(FALLBACK_IMAGE);
+      }
+
+      while (uniqueImages.length < 5) {
+        uniqueImages.push(uniqueImages[0]);
+      }
+
+      return uniqueImages.slice(0, 5);
+    }
+
+    function renderGallery(product) {
+      const images = getProductImages(product);
+
+      mainImage.src = images[0];
+      mainImage.alt = product.name || "Букет КЛЕВЕР";
+
+      thumbnailsContainer.innerHTML = "";
+
+      images.forEach((imagePath, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className =
+          index === 0 ? "thumbnail active" : "thumbnail";
+
+        button.setAttribute(
+          "aria-label",
+          "Показать фотографию " + (index + 1)
+        );
+
+        const image = document.createElement("img");
+        image.src = imagePath;
+        image.alt =
+          (product.name || "Букет") +
+          " — фотография " +
+          (index + 1);
+
+        image.onerror = () => {
+          image.src = FALLBACK_IMAGE;
+        };
+
+        button.appendChild(image);
+
+        button.addEventListener("click", () => {
+          mainImage.style.opacity = "0.35";
+
+          window.setTimeout(() => {
+            mainImage.src = imagePath;
+            mainImage.style.opacity = "1";
+          }, 120);
+
+          document
+            .querySelectorAll(".thumbnail")
+            .forEach((thumbnail) => {
+              thumbnail.classList.remove("active");
+            });
+
+          button.classList.add("active");
+        });
+
+        thumbnailsContainer.appendChild(button);
+      });
+
+      mainImage.onerror = () => {
+        mainImage.src = FALLBACK_IMAGE;
+      };
+    }
+
+    function renderProduct(product) {
+      currentProduct = product;
+
+      const productName = product.name || "Букет КЛЕВЕР";
+      const category = product.category || "Букеты";
+
+      document.title = productName + " — КЛЕВЕР";
+
+      productNameElement.textContent = productName;
+      breadcrumbNameElement.textContent = productName;
+      productCategoryElement.textContent = category;
+
+      productShortDescriptionElement.textContent =
+        product.short_description ||
+        product.shortDescription ||
+        "Букет, собранный флористами КЛЕВЕР с вниманием к каждой детали.";
+
+      productPriceElement.textContent =
+        formatPrice(product.price);
+
+      productSizeElement.textContent =
+        product.size ||
+        "Размер зависит от состава и сезонности цветов.";
+
+      productCompositionElement.textContent =
+        product.composition ||
+        "Точный состав уточнит флорист после оформления заказа.";
+
+      productDescriptionElement.textContent =
+        product.description ||
+        product.short_description ||
+        "Живой букет, который мы соберём специально для вашего заказа.";
+
+      productCareElement.textContent =
+        product.care ||
+        "Подрежьте стебли на 1–2 см и поставьте букет в чистую прохладную воду. Меняйте воду каждый день. Не ставьте цветы рядом с батареей, под прямые солнечные лучи или возле фруктов.";
+
+      renderGallery(product);
+
+      loadingElement.classList.add("hidden");
+      errorBox.classList.add("hidden");
+      productLayout.classList.remove("hidden");
+    }
+
+    function showError() {
+      loadingElement.classList.add("hidden");
+      productLayout.classList.add("hidden");
+      errorBox.classList.remove("hidden");
+    }
+
+    function getCart() {
+      try {
+        const savedCart =
+          localStorage.getItem("cleverCart") ||
+          localStorage.getItem("cart");
+
+        const parsedCart = JSON.parse(savedCart || "[]");
+
+        return Array.isArray(parsedCart) ? parsedCart : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("cleverCart", JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      const cart = getCart();
+
+      const totalQuantity = cart.reduce((sum, item) => {
+        return sum + (Number(item.quantity) || 1);
+      }, 0);
+
+      cartCountElement.textContent = totalQuantity;
+    }
+
+    function addCurrentProductToCart() {
+      if (!currentProduct) {
+        return;
+      }
+
+      const cart = getCart();
+
+      const productId =
+        currentProduct.id !== undefined
+          ? String(currentProduct.id)
+          : currentProduct.name;
+
+      const existingItem = cart.find((item) => {
+        return String(item.id) === productId;
+      });
+
+      if (existingItem) {
+        existingItem.quantity =
+          (Number(existingItem.quantity) || 1) + quantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: Number(currentProduct.price) || 0,
+          image: currentProduct.image || "",
+          quantity: quantity
+        });
+      }
+
+      saveCart(cart);
+
+      cartMessageElement.textContent =
+        quantity === 1
+          ? "Товар добавлен в корзину"
+          : "Товары добавлены в корзину";
+
+      addToCartButton.textContent = "Добавлено ✓";
+
+      window.setTimeout(() => {
+        cartMessageElement.textContent = "";
+        addToCartButton.textContent = "Добавить в корзину";
+      }, 2200);
+    }
+
+    async function loadProduct() {
+      const productId = getProductId();
+
+      if (!productId) {
+        showError();
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/products", {
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Не удалось получить товары");
+        }
+
+        const data = await response.json();
+
+        const products = Array.isArray(data)
+          ? data
+          : Array.isArray(data.products)
+            ? data.products
+            : [];
+
+        const product = products.find((item) => {
+          return String(item.id) === String(productId);
+        });
+
+        if (!product) {
+          showError();
+          return;
+        }
+
+        renderProduct(product);
+      } catch (error) {
+        console.error("Ошибка загрузки товара:", error);
+        showError();
+      }
+    }
+
+    decreaseQuantityButton.addEventListener("click", () => {
+      if (quantity > 1) {
+        quantity -= 1;
+        quantityValueElement.textContent = quantity;
+      }
+    });
+
+    increaseQuantityButton.addEventListener("click", () => {
+      if (quantity < 20) {
+        quantity += 1;
+        quantityValueElement.textContent = quantity;
+      }
+    });
+
+    addToCartButton.addEventListener(
+      "click",
+      addCurrentProductToCart
+    );
+
+    updateCartCount();
+    loadProduct();
+  </script>
 </body>
 </html>
