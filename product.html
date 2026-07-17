@@ -1062,9 +1062,9 @@
     function updateCartCount() {
       const cart = getCart();
 
-      const totalQuantity = cart.reduce((sum, item) => {
-        return sum + (Number(item.quantity) || 1);
-      }, 0);
+    const totalQuantity = cart.reduce((sum, item) => {
+  return sum + (Number(item.qty) || Number(item.quantity) || 1);
+}, 0);
 
       cartCountElement.textContent = totalQuantity;
     }
@@ -1086,17 +1086,19 @@
       });
 
       if (existingItem) {
-        existingItem.quantity =
-          (Number(existingItem.quantity) || 1) + quantity;
-      } else {
-        cart.push({
-          id: currentProduct.id,
-          name: currentProduct.name,
-          price: Number(currentProduct.price) || 0,
-          image: currentProduct.image || "",
-          quantity: quantity
-        });
-      }
+  existingItem.qty =
+    (Number(existingItem.qty) || Number(existingItem.quantity) || 1) + quantity;
+
+  delete existingItem.quantity;
+} else {
+  cart.push({
+    id: currentProduct.id,
+    name: currentProduct.name,
+    price: Number(currentProduct.price) || 0,
+    image: currentProduct.image || "",
+    qty: quantity
+  });
+}
 
       saveCart(cart);
 
