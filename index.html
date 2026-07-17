@@ -236,8 +236,12 @@ footer{text-align:center;padding:40px;background:#fff;color:#666}
 
 <script>
 let products = [];
-let cart = [];
 
+let cart = JSON.parse(
+    localStorage.getItem("cleverCart") ||
+    localStorage.getItem("cart") ||
+    "[]"
+);
 function money(value) {
   return Number(value).toLocaleString("ru-RU") + " ₽";
 }
