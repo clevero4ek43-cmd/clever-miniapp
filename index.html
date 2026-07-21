@@ -1,453 +1,989 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>КЛЕВЕР | Салон цветов</title>
-<style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f6f3ee,#fdf6f8);color:#35543d}
-.topbar{position:sticky;top:0;z-index:100;height:78px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-shadow:0 1px 15px rgba(0,0,0,.05)}
-.logo-small{font-weight:700;letter-spacing:3px}
-.menu{display:flex;gap:32px}
-.menu a{color:#35543d;text-decoration:none}
-.cart{position:relative;font-size:28px;cursor:pointer}
-#cart-count{display:none;position:absolute;top:-8px;right:-10px;min-width:20px;height:20px;padding:0 5px;border-radius:50%;background:#d94d5c;color:#fff;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-header{padding:46px 20px 62px;background:#fff;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
-.hero-logo{width:210px;max-width:80%;margin-bottom:18px}
-h1{font-size:52px;letter-spacing:8px;margin:0}
-.brand-sub{font-size:24px;letter-spacing:8px;color:#d8a8b5}
-.hero-title{font:500 34px/1.15 Georgia,serif;margin:10px 0}
-.subtitle{font-size:20px;line-height:1.5}
-.button,.card-button,.checkout-btn{border:0;border-radius:999px;background:#d8a8b5;color:#fff;cursor:pointer}
-.button{display:inline-block;margin-top:14px;padding:20px 56px;text-decoration:none;font-size:19px;font-weight:600}
-.catalog{max-width:1280px;margin:auto;padding:25px 30px 90px}
-.catalog-title{text-align:center;color:#d8a8b5;letter-spacing:8px;text-transform:uppercase;font-weight:400}
-.catalog-subtitle{text-align:center;color:#6c7a70;margin-bottom:45px}
-.catalog-grid{
-    display:grid;
-    grid-template-columns:repeat(3, minmax(0, 380px));
-    justify-content:center;
-    gap:32px;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="КЛЕВЕР — салон цветов в Иванове. Авторские букеты, свежие цветы и бережная доставка.">
+  <title>КЛЕВЕР | Салон цветов</title>
 
-@media (max-width:1200px){
-    .catalog-grid{
-        grid-template-columns:repeat(2, minmax(0, 380px));
+  <style>
+    :root {
+      --green: #35543d;
+      --green-dark: #294532;
+      --pink: #d8a8b5;
+      --pink-dark: #c98f9f;
+      --milk: #f6f3ee;
+      --soft-pink: #fdf6f8;
+      --text-muted: #6e746f;
+      --white: #ffffff;
+      --border: #ebe7e3;
+      --shadow: 0 14px 40px rgba(53, 84, 61, 0.08);
+      --shadow-hover: 0 24px 60px rgba(53, 84, 61, 0.14);
     }
-}
 
-@media (max-width:800px){
-    .catalog-grid{
-        grid-template-columns:1fr;
+    * {
+      box-sizing: border-box;
     }
-}
-.product-card{
-    background:#fff;
-    border-radius:30px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    box-shadow:0 14px 40px rgba(0,0,0,.07);
-    transition:.35s ease;
-    height:100%;
-}
 
-.product-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 24px 60px rgba(0,0,0,.12);
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-.product-card img{
-    width:100%;
-    aspect-ratio:1/1;
-    object-fit:cover;
-    transition:transform .45s ease;
-    background:#f6f3ee;
-}
+    body {
+      margin: 0;
+      min-width: 320px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, var(--milk), var(--soft-pink));
+      color: var(--green);
+    }
 
-.product-card:hover img{
-    transform:scale(1.05);
-}
+    body.cart-open {
+      overflow: hidden;
+    }
 
-.product-card h3{
-    margin:22px 24px 10px;
-    font-size:26px;
-    line-height:1.25;
-    font-weight:700;
-    color:#35543d;
-}
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
 
-.short{
-    margin:0 24px;
-    color:#6e746f;
-    line-height:1.65;
-    font-size:15px;
-    flex:1;
-}
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.price{
-    margin:22px 24px 18px;
-    font-family:Georgia,serif;
-    font-size:38px;
-    color:#35543d;
-}
-.card-button{margin:0 24px 22px;padding:14px;font-size:16px;font-weight:600}
-    .card-actions{
-display:flex;
-gap:12px;
-padding:0 24px 22px;
-}
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-.card-actions{
-    display:flex;
-    gap:12px;
-    padding:0 24px 24px;
-    margin-top:18px;
-}
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 78px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
+    }
 
-.card-button,
-.details-button{
-    flex:1;
-    min-width:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:50px;
-    border:none;
-    border-radius:999px;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    transition:all .25s ease;
-}
+    .logo-small {
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
 
-.card-button{
-    background:#d8a8b5;
-    color:#fff;
-}
+    .menu {
+      display: flex;
+      gap: 32px;
+    }
 
-.card-button:hover{
-    background:#c98f9f;
-    transform:translateY(-2px);
-    box-shadow:0 8px 18px rgba(216,168,181,.35);
-}
+    .menu a {
+      position: relative;
+      color: var(--green);
+      text-decoration: none;
+    }
 
-.details-button{
-    background:#f4f1ee;
-    color:#35543d;
-}
+    .menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -7px;
+      height: 2px;
+      background: var(--pink);
+      transition: right 0.25s ease;
+    }
 
-.details-button:hover{
-    background:#e9e5e1;
-    transform:translateY(-2px);
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-.cart-panel{position:fixed;right:-460px;top:90px;width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 110px);overflow:auto;background:#fff;padding:20px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.15);transition:.3s;z-index:999}
-.cart-panel.open{right:12px}
-.cart-item{padding:14px 0;border-bottom:1px solid #eee}
-.cart-row{display:flex;justify-content:space-between;gap:12px}
-.qty{display:flex;align-items:center;gap:10px;margin-top:10px}
-.qty button{width:32px;height:32px;border:0;border-radius:50%;cursor:pointer}
-.cart-total{font-size:20px;font-weight:700;margin:18px 0}
-.checkout-form{display:grid;gap:10px}
-.checkout-form input,.checkout-form textarea{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;font:inherit}
-.checkout-btn{padding:16px;font-size:17px;font-weight:700}
-.message{text-align:center;padding:35px;color:#6c7a70}
-footer{text-align:center;padding:40px;background:#fff;color:#666}
-@media(max-width:760px){
-  .topbar{padding:0 16px}
-  .menu{display:none}
-  .catalog-grid{grid-template-columns:1fr}
-  .catalog{padding:40px 14px}
-  .hero-title{font-size:29px}
-  h1{font-size:40px}
-  .product-card{border-radius:22px}
-}
-</style>
+    .menu a:hover::after {
+      right: 0;
+    }
+
+    .cart {
+      position: relative;
+      border: 0;
+      padding: 8px;
+      background: transparent;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    #cart-count {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: -2px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 50%;
+        align-items: center;
+      justify-content: center;
+      background: #d94d5c;
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    header {
+      padding: 46px 20px 62px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .hero-logo {
+      width: 210px;
+      max-width: 80%;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 52px;
+      letter-spacing: 8px;
+    }
+
+    .brand-sub {
+      color: var(--pink);
+      font-size: 24px;
+      letter-spacing: 8px;
+    }
+
+    .hero-title {
+      margin: 10px 0;
+      font: 500 34px/1.15 Georgia, serif;
+    }
+
+    .subtitle {
+      color: #597061;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .button,
+    .card-button,
+    .checkout-btn {
+      border: 0;
+      border-radius: 999px;
+      background: var(--pink);
+      color: var(--white);
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 20px 56px;
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .button:hover,
+    .checkout-btn:hover {
+      background: var(--pink-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(216, 168, 181, 0.35);
+    }
+
+    .catalog {
+      max-width: 1280px;
+      margin: auto;
+      padding: 55px 30px 90px;
+    }
+
+    .catalog-title {
+      margin: 0 0 12px;
+      text-align: center;
+      color: var(--pink);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .catalog-subtitle {
+      margin: 0 0 45px;
+      text-align: center;
+      color: #6c7a70;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 380px));
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .product-card {
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid rgba(53, 84, 61, 0.05);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .product-image-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--milk);
+
+      aspect-ratio: 1 / 1;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease, opacity 0.3s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.045);
+    }
+
+    .product-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px 24px;
+    }
+
+    .product-card h3 {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: 26px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .short {
+      min-height: 48px;
+      margin: 0;
+      flex: 1;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .short:empty {
+      min-height: 0;
+    }
+
+    .price {
+      margin: 22px 0 18px;
+      color: var(--green);
+      font: 38px/1 Georgia, serif;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .card-button,
+    .details-button {
+      flex: 1;
+      min-width: 0;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .card-button {
+      background: var(--pink);
+      color: var(--white);
+    }
+
+    .card-button:hover {
+      background: var(--pink-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(216, 168, 181, 0.35);
+    }
+
+    .details-button {
+      background: #f4f1ee;
+      color: var(--green);
+    }
+
+    .details-button:hover {
+      background: #e9e5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .message {
+      grid-column: 1 / -1;
+      padding: 35px;
+      text-align: center;
+      color: #6c7a70;
+    }
+
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      visibility: hidden;
+      opacity: 0;
+      background: rgba(22, 35, 26, 0.3);
+      backdrop-filter: blur(2px);
+      transition: 0.3s ease;
+    }
+
+    .cart-overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .cart-panel {
+      position: fixed;
+      top: 90px;
+      right: -480px;
+      z-index: 999;
+      width: min(430px, calc(100vw - 24px));
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+
+      padding: 22px;
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.2);
+      transition: right 0.3s ease;
+    }
+
+    .cart-panel.open {
+      right: 12px;
+    }
+
+    .cart-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .cart-heading h2 {
+      margin: 0;
+    }
+
+    .cart-close {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      background: #f4f1ee;
+      color: var(--green);
+      font-size: 25px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cart-row strong:last-child {
+      white-space: nowrap;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .qty button {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: #f4f1ee;
+      color: var(--green);
+      font-size: 19px;
+      cursor: pointer;
+    }
+
+    .qty small {
+      color: var(--text-muted);
+    }
+
+    .cart-total {
+      margin: 20px 0;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .checkout-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: var(--white);
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .checkout-form input:focus,
+    .checkout-form textarea:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(216, 168, 181, 0.18);
+    }
+
+    .checkout-form textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .checkout-btn {
+      padding: 16px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .checkout-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none;
+      box-shadow: none;
+    }
+
+    footer {
+      padding: 40px;
+      text-align: center;
+
+      background: var(--white);
+      color: #666;
+    }
+
+    @media (max-width: 1200px) {
+      .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 380px));
+      }
+    }
+
+    @media (max-width: 800px) {
+      .catalog-grid {
+        grid-template-columns: minmax(0, 520px);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        height: 68px;
+        padding: 0 12px 0 16px;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      header {
+        padding: 34px 16px 48px;
+      }
+
+      .hero-logo {
+        width: 170px;
+      }
+
+      h1 {
+        font-size: 40px;
+        letter-spacing: 6px;
+      }
+
+      .brand-sub {
+        font-size: 18px;
+        letter-spacing: 5px;
+      }
+
+      .hero-title {
+        font-size: 29px;
+      }
+
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .button {
+        width: min(100%, 320px);
+        padding: 17px 28px;
+      }
+
+      .catalog {
+        padding: 42px 14px 70px;
+      }
+
+      .catalog-title {
+        font-size: 22px;
+        letter-spacing: 4px;
+      }
+
+      .catalog-subtitle {
+        margin-bottom: 30px;
+      }
+
+      .product-card {
+        border-radius: 22px;
+      }
+
+      .product-content {
+        padding: 19px 18px 20px;
+      }
+
+      .product-card h3 {
+        font-size: 23px;
+      }
+
+      .price {
+        font-size: 33px;
+      }
+
+      .card-actions {
+        gap: 9px;
+      }
+
+      .card-button,
+      .details-button {
+        height: 48px;
+        font-size: 15px;
+      }
+
+      .cart-panel {
+        top: 78px;
+        max-height: calc(100vh - 90px);
+        border-radius: 20px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .card-actions {
+        flex-direction: column;
+      }
+
+      .card-button,
+      .details-button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <nav class="topbar">
+    <div class="logo-small">КЛЕВЕР</div>
 
-<nav class="topbar">
-  <div class="logo-small">КЛЕВЕР</div>
+    <div class="menu">
+      <a href="#catalog">Каталог</a>
+      <a href="#delivery">Доставка</a>
 
-  <div class="menu">
-    <a href="#catalog">Каталог</a>
-    <a href="#">Доставка</a>
-    <a href="#">О нас</a>
-    <a href="#">Контакты</a>
-  </div>
+        <a href="#about">О нас</a>
+      <a href="#contacts">Контакты</a>
+    </div>
 
-  <div class="cart" onclick="toggleCart()">
-    🛒 <span id="cart-count">0</span>
-  </div>
-</nav>
-
-<header>
-  <img class="hero-logo"
-       src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png"
-       alt="КЛЕВЕР">
-
-  <h1>КЛЕВЕР</h1>
-  <div class="brand-sub">салон цветов</div>
-
-  <div class="hero-title">
-    Соберём букет,<br>
-    который точно понравится!
-  </div>
-
-  <div class="subtitle">
-    Авторская флористика, свежие цветы<br>
-    и бережная доставка каждый день.
-  </div>
-
-  <a class="button" href="#catalog">Перейти в каталог</a>
-</header>
-
-<section class="catalog" id="catalog">
-  <h2 class="catalog-title">Популярные букеты</h2>
-  <p class="catalog-subtitle">Самые любимые композиции наших покупателей</p>
-
-  <div class="catalog-grid" id="catalog-grid">
-    <div class="message">Загружаем букеты…</div>
-  </div>
-</section>
-
-<footer>КЛЕВЕР © 2026</footer>
-
-<div id="cart-panel" class="cart-panel">
-  <h2>Корзина</h2>
-
-  <div id="cart-items"></div>
-
-  <div class="cart-total">
-    Итого: <span id="cart-sum">0 ₽</span>
-  </div>
-
-  <div class="checkout-form">
-    <input id="customer-name" placeholder="Ваше имя">
-    <input id="customer-phone" type="tel" placeholder="Телефон">
-    <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
-    <button class="checkout-btn" onclick="sendOrder()">Оформить заказ</button>
-  </div>
-</div>
-
-<script>
-
-let products = [];
-
-let cart = [];
-
-try {
-  const savedCart =
-    localStorage.getItem("cleverCart") ||
-    localStorage.getItem("cart") ||
-    "[]";
-
-  const parsedCart = JSON.parse(savedCart);
-
-  cart = Array.isArray(parsedCart)
-    ? parsedCart.map(item => ({
-        id: item.id,
-        name: item.name || "Товар",
-        price: Number(item.price) || 0,
-        image: item.image || "",
-        qty: Number(item.qty) || Number(item.quantity) || 1
-      }))
-    : [];
-} catch (error) {
-  cart = [];
-}
-
-localStorage.setItem("cleverCart", JSON.stringify(cart));
-localStorage.removeItem("cart");
-function money(value) {
-  return Number(value).toLocaleString("ru-RU") + " ₽";
-}
-
-async function loadProducts() {
-  const grid = document.getElementById("catalog-grid");
-
-  try {
-    const response = await fetch("/api/products");
-
-    if (!response.ok) {
-      throw new Error("Не удалось загрузить каталог");
-    }
-
-    products = await response.json();
-
-    if (!products.length) {
-      grid.innerHTML = '<div class="message">Скоро здесь появятся новые букеты.</div>';
-      return;
-    }
-
-    grid.innerHTML = products.map(product => `
-      <article class="product-card">
-        <img
-          src="${product.image || 'assets/2026-04-09_08-14-12.png'}"
-          alt="${product.name}"
-        >
-
-        <h3>${product.name}</h3>
-
-<p class="short">
-${product.short_description || ""}
-</p>
-
-<p class="price">${money(product.price)}</p>
-
-       <div class="card-actions">
-       
-    <a
-    class="details-button"
-    href="product.html?id=${product.id}"
->
-    Подробнее
-</a>
-
-    <button
-        class="card-button"
-        onclick="addToCart(${product.id})"
-    >
-        В корзину
+    <button class="cart" type="button" onclick="toggleCart()" aria-label="Открыть корзину">
+      🛒
+      <span id="cart-count">0</span>
     </button>
+  </nav>
 
-</div>
-      </article>
-    `).join("");
+  <header>
+    <img
+      class="hero-logo"
+      src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png"
+      alt="Логотип салона цветов КЛЕВЕР"
+    >
 
-  } catch (error) {
-    console.error(error);
-    grid.innerHTML = '<div class="message">Не удалось загрузить каталог.</div>';
-  }
-}
+    <h1>КЛЕВЕР</h1>
+    <div class="brand-sub">салон цветов</div>
 
-function addToCart(id) {
-  const product = products.find(item => item.id === id);
-  if (!product) return;
+    <div class="hero-title">
+      Соберём букет,<br>
+      который точно понравится!
+    </div>
 
-  const existing = cart.find(item => item.id === id);
+    <div class="subtitle">
+      Авторская флористика, свежие цветы<br>
+      и бережная доставка каждый день.
+    </div>
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: Number(product.price),
-      qty: 1
-    });
-  }
+    <a class="button" href="#catalog">Перейти в каталог</a>
+  </header>
 
-  renderCart();
-  document.getElementById("cart-panel").classList.add("open");
-}
+  <main>
+    <section class="catalog" id="catalog">
+      <h2 class="catalog-title">Популярные букеты</h2>
+      <p class="catalog-subtitle">Самые любимые композиции наших покупателей</p>
 
-function changeQty(id, delta) {
-  const item = cart.find(product => product.id === id);
-  if (!item) return;
-
-  item.qty += delta;
-
-  if (item.qty <= 0) {
-    cart = cart.filter(product => product.id !== id);
-  }
-
-  renderCart();
-}
-
-function renderCart() {
-  const items = document.getElementById("cart-items");
-
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-  items.innerHTML = cart.length
-    ? cart.map(item => `
-      <div class="cart-item">
-        <div class="cart-row">
-          <strong>${item.name}</strong>
-          <strong>${money(item.price * item.qty)}</strong>
-        </div>
-
-        <div class="qty">
-          <button onclick="changeQty(${item.id}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="changeQty(${item.id}, 1)">+</button>
-          <small>${money(item.price)} за шт.</small>
-        </div>
+      <div class="catalog-grid" id="catalog-grid">
+        <div class="message">Загружаем букеты…</div>
       </div>
-    `).join("")
-    : '<div class="message">Корзина пока пуста.</div>';
+    </section>
+  </main>
 
-  document.getElementById("cart-sum").textContent = money(total);
+  <footer id="contacts">КЛЕВЕР © 2026</footer>
 
-  const badge = document.getElementById("cart-count");
-  badge.textContent = count;
-  badge.style.display = count ? "flex" : "none";
-}
+  <div id="cart-overlay" class="cart-overlay" onclick="closeCart()"></div>
 
-function toggleCart() {
-  document.getElementById("cart-panel").classList.toggle("open");
-}
+  <aside id="cart-panel" class="cart-panel" aria-label="Корзина">
+    <div class="cart-heading">
+      <h2>Корзина</h2>
+      <button class="cart-close" type="button" onclick="closeCart()" aria-label="Закрыть корзину">×</button>
+    </div>
 
-async function sendOrder() {
-  if (!cart.length) {
-    alert("Корзина пуста.");
-    return;
-  }
+    <div id="cart-items"></div>
 
-  const customer_name = document.getElementById("customer-name").value.trim();
-  const phone = document.getElementById("customer-phone").value.trim();
-  const comment = document.getElementById("customer-comment").value.trim();
+    <div class="cart-total">
+      Итого: <span id="cart-sum">0 ₽</span>
+    </div>
 
-  if (!customer_name || !phone) {
-    alert("Введите имя и телефон.");
-    return;
-  }
+    <div class="checkout-form">
+      <input id="customer-name" autocomplete="name" placeholder="Ваше имя">
+      <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
+      <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
+      <button id="checkout-btn" class="checkout-btn" type="button" onclick="sendOrder()">
+        Оформить заказ
+      </button>
+    </div>
+  </aside>
 
-  const response = await fetch("/api/orders", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      customer_name,
-      phone,
-      comment,
-      items: cart
-    })
-  });
+  <script>
+    const FALLBACK_IMAGE = "assets/2026-04-09_08-14-12.png";
 
-  const result = await response.json();
+    let products = [];
+    let cart = loadCart();
 
-  if (!response.ok) {
-    alert(result.error || "Не удалось оформить заказ.");
-    return;
-  }
+    function loadCart() {
+      try {
+        const savedCart =
+          localStorage.getItem("cleverCart") ||
+          localStorage.getItem("cart") ||
+          "[]";
 
-  alert("Заказ №" + result.orderId + " принят!");
+        const parsedCart = JSON.parse(savedCart);
 
-  cart = [];
-  renderCart();
+        if (!Array.isArray(parsedCart)) {
+          return [];
+        }
 
-  document.getElementById("customer-name").value = "";
-  document.getElementById("customer-phone").value = "";
-  document.getElementById("customer-comment").value = "";
-}
+        return parsedCart
+          .map(item => ({
+            id: Number(item.id),
+            name: item.name || "Товар",
+            price: Number(item.price) || 0,
+            image: item.image || "",
+            qty: Math.max(1, Number(item.qty) || Number(item.quantity) || 1)
+          }))
+          .filter(item => Number.isFinite(item.id));
+      } catch (error) {
+        console.error("Не удалось прочитать корзину:", error);
+        return [];
+      }
+    }
 
-loadProducts();
-renderCart();
+    function saveCart() {
+      localStorage.setItem("cleverCart", JSON.stringify(cart));
+      localStorage.removeItem("cart");
+    }
 
-function openCartFromAddress() {
-  if (window.location.hash === "#cart") {
-    document.getElementById("cart-panel").classList.add("open");
-  }
-}
+    function escapeHtml(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-openCartFromAddress();
-window.addEventListener("hashchange", openCartFromAddress);
-</script>
+    function money(value) {
+      return Number(value || 0).toLocaleString("ru-RU") + " ₽";
+    }
+
+    async function loadProducts() {
+
+      const grid = document.getElementById("catalog-grid");
+
+      try {
+        const response = await fetch("/api/products", {
+          headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) {
+          throw new Error("Не удалось загрузить каталог");
+        }
+
+        const data = await response.json();
+        products = Array.isArray(data) ? data : [];
+
+        if (!products.length) {
+          grid.innerHTML = '<div class="message">Скоро здесь появятся новые букеты.</div>';
+          return;
+        }
+
+        grid.innerHTML = products.map(product => {
+          const id = Number(product.id);
+          const name = escapeHtml(product.name || "Букет");
+          const description = escapeHtml(product.short_description || "");
+          const image = escapeHtml(product.image || FALLBACK_IMAGE);
+          const price = money(product.price);
+
+          return `
+            <article class="product-card">
+              <div class="product-image-wrap">
+                <img
+                  src="${image}"
+                  alt="${name}"
+                  loading="lazy"
+                  onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
+                >
+              </div>
+
+              <div class="product-content">
+                <h3>${name}</h3>
+                <p class="short">${description}</p>
+                <p class="price">${price}</p>
+
+                <div class="card-actions">
+                  <a class="details-button" href="product.html?id=${id}">
+                    Подробнее
+                  </a>
+
+                  <button class="card-button" type="button" onclick="addToCart(${id})">
+                    В корзину
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      } catch (error) {
+        console.error(error);
+        grid.innerHTML = '<div class="message">Не удалось загрузить каталог. Обновите страницу чуть позже.</div>';
+      }
+    }
+
+    function addToCart(id) {
+      const product = products.find(item => Number(item.id) === Number(id));
+
+      if (!product) {
+        return;
+      }
+
+      const existing = cart.find(item => Number(item.id) === Number(id));
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: Number(product.id),
+          name: product.name || "Товар",
+          price: Number(product.price) || 0,
+          image: product.image || "",
+          qty: 1
+        });
+      }
+
+      renderCart();
+      openCart();
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(product => Number(product.id) === Number(id));
+
+      if (!item) {
+        return;
+      }
+
+      item.qty += delta;
+
+      if (item.qty <= 0) {
+        cart = cart.filter(product => Number(product.id) !== Number(id));
+      }
+
+      renderCart();
+    }
+
+    function renderCart() {
+      const items = document.getElementById("cart-items");
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      items.innerHTML = cart.length
+        ? cart.map(item => `
+            <div class="cart-item">
+              <div class="cart-row">
+                <strong>${escapeHtml(item.name)}</strong>
+                <strong>${money(item.price * item.qty)}</strong>
+              </div>
+
+              <div class="qty">
+                <button type="button" onclick="changeQty(${item.id}, -1)" aria-label="Уменьшить количество">−</button>
+                <span>${item.qty}</span>
+                <button type="button" onclick="changeQty(${item.id}, 1)" aria-label="Увеличить количество">+</button>
+                <small>${money(item.price)} за шт.</small>
+              </div>
+            </div>
+          `).join("")
+
+          : '<div class="message">Корзина пока пуста.</div>';
+
+      document.getElementById("cart-sum").textContent = money(total);
+
+      const badge = document.getElementById("cart-count");
+      badge.textContent = count;
+      badge.style.display = count ? "flex" : "none";
+
+      saveCart();
+    }
+
+    function openCart() {
+      document.getElementById("cart-panel").classList.add("open");
+      document.getElementById("cart-overlay").classList.add("open");
+      document.body.classList.add("cart-open");
+    }
+
+    function closeCart() {
+      document.getElementById("cart-panel").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("open");
+      document.body.classList.remove("cart-open");
+
+      if (window.location.hash === "#cart") {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    }
+
+    function toggleCart() {
+      const panel = document.getElementById("cart-panel");
+
+      if (panel.classList.contains("open")) {
+        closeCart();
+      } else {
+        openCart();
+      }
+    }
+
+    async function sendOrder() {
+      if (!cart.length) {
+        alert("Корзина пуста.");
+        return;
+      }
+
+      const customerName = document.getElementById("customer-name").value.trim();
+      const phone = document.getElementById("customer-phone").value.trim();
+      const comment = document.getElementById("customer-comment").value.trim();
+      const checkoutButton = document.getElementById("checkout-btn");
+
+      if (!customerName || !phone) {
+        alert("Введите имя и телефон.");
+        return;
+      }
+
+      checkoutButton.disabled = true;
+      checkoutButton.textContent = "Отправляем…";
+
+      try {
+        const response = await fetch("/api/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            customer_name: customerName,
+            phone,
+            comment,
+            items: cart
+          })
+        });
+
+        let result = {};
+
+        try {
+          result = await response.json();
+        } catch (error) {
+          result = {};
+        }
+
+        if (!response.ok) {
+          throw new Error(result.error || "Не удалось оформить заказ.");
+        }
+
+        alert("Заказ №" + result.orderId + " принят!");
+
+        cart = [];
+        renderCart();
+
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-phone").value = "";
+        document.getElementById("customer-comment").value = "";
+
+        closeCart();
+      } catch (error) {
+        console.error(error);
+        alert(error.message || "Не удалось оформить заказ.");
+      } finally {
+        checkoutButton.disabled = false;
+        checkoutButton.textContent = "Оформить заказ";
+      }
+    }
+
+    function openCartFromAddress() {
+      if (window.location.hash === "#cart") {
+        openCart();
+      }
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeCart();
+      }
+    });
+
+    loadProducts();
+    renderCart();
+    openCartFromAddress();
+
+    window.addEventListener("hashchange", openCartFromAddress);
+  </script>
 </body>
 </html>
