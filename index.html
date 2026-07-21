@@ -262,7 +262,7 @@ try {
 }
 
 localStorage.setItem("cleverCart", JSON.stringify(cart));
-localStorage.setItem("cart", JSON.stringify(cart));
+localStorage.removeItem("cart");
 function money(value) {
   return Number(value).toLocaleString("ru-RU") + " ₽";
 }
@@ -439,6 +439,15 @@ async function sendOrder() {
 
 loadProducts();
 renderCart();
+
+function openCartFromAddress() {
+  if (window.location.hash === "#cart") {
+    document.getElementById("cart-panel").classList.add("open");
+  }
+}
+
+openCartFromAddress();
+window.addEventListener("hashchange", openCartFromAddress);
 </script>
 </body>
 </html>
