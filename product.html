@@ -182,17 +182,18 @@
       box-shadow: var(--shadow);
     }
 
-    .gallery-card{
-    padding:18px;
-    border-radius:32px;
-}
-   .main-image-wrap{
-    position:relative;
-    overflow:hidden;
-    aspect-ratio:1/1;
-    border-radius:24px;
-    background:#eee9e3;
-}
+    .gallery-card {
+      padding: 18px;
+      border-radius: 32px;
+    }
+
+    .main-image-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      background: #eee9e3;
+    }
 
     .main-image {
       width: 100%;
@@ -214,23 +215,23 @@
       font-weight: 700;
     }
 
-    .thumbnails{
-    display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    gap:12px;
-    margin-top:14px;
-}
+    .thumbnails {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
 
-    .thumbnail{
-    width:96px;
-    height:96px;
-    border:2px solid transparent;
-    border-radius:18px;
-    overflow:hidden;
-    cursor:pointer;
-    background:#f4f1ee;
-    transition:.25s;
-}
+    .thumbnail {
+      width: 96px;
+      height: 96px;
+      border: 2px solid transparent;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #f4f1ee;
+      transition: 0.25s;
+    }
 
     .thumbnail:hover {
       transform: translateY(-2px);
@@ -240,11 +241,11 @@
       border-color: var(--pink);
     }
 
-    .thumbnail img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     .product-card {
       padding: 38px;
@@ -397,8 +398,7 @@
       border-radius: 999px;
       background: var(--white);
     }
-
-    .quantity-button {
+        .quantity-button {
       width: 38px;
       height: 38px;
       border: 0;
@@ -558,6 +558,9 @@
       }
 
       .thumbnail {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
         border-radius: 11px;
       }
 
@@ -604,7 +607,9 @@
       </a>
 
       <div class="topbar-actions">
-       <a class="back-link" href="/#catalog">← Вернуться в каталог</a>
+        <a class="back-link" href="/#catalog">
+          ← Вернуться в каталог
+        </a>
 
         <a class="cart-link" href="/index.html#cart">
           Корзина
@@ -644,7 +649,9 @@
       </div>
 
       <article class="product-card">
-        <span class="product-category" id="productCategory">Букеты</span>
+        <span class="product-category" id="productCategory">
+          Букеты
+        </span>
 
         <h1 class="product-title" id="productName">
           Букет
@@ -656,7 +663,9 @@
         ></p>
 
         <div class="price-row">
-          <div class="product-price" id="productPrice">0 ₽</div>
+          <div class="product-price" id="productPrice">
+            0 ₽
+          </div>
 
           <div class="availability">
             <span class="availability-dot"></span>
@@ -740,7 +749,9 @@
                 −
               </button>
 
-              <span class="quantity-value" id="quantityValue">1</span>
+              <span class="quantity-value" id="quantityValue">
+                1
+              </span>
 
               <button
                 class="quantity-button"
@@ -753,7 +764,11 @@
             </div>
           </div>
 
-          <button class="add-to-cart" id="addToCartButton" type="button">
+          <button
+            class="add-to-cart"
+            id="addToCartButton"
+            type="button"
+          >
             Добавить в корзину
           </button>
 
@@ -768,19 +783,31 @@
         Возможно, товар был скрыт или ссылка указана неверно.
         Вернитесь в каталог и выберите другой букет.
       </p>
-      <a class="error-link" href="/">Вернуться в каталог</a>
+      <a class="error-link" href="/">
+        Вернуться в каталог
+      </a>
     </section>
   </main>
 
   <script>
-    const loadingElement = document.getElementById("loading");
-    const productLayout = document.getElementById("productLayout");
-    const errorBox = document.getElementById("errorBox");
+    const loadingElement =
+      document.getElementById("loading");
 
-    const mainImage = document.getElementById("mainImage");
-    const thumbnailsContainer = document.getElementById("thumbnails");
+    const productLayout =
+      document.getElementById("productLayout");
 
-    const productNameElement = document.getElementById("productName");
+    const errorBox =
+      document.getElementById("errorBox");
+
+    const mainImage =
+      document.getElementById("mainImage");
+
+    const thumbnailsContainer =
+      document.getElementById("thumbnails");
+
+    const productNameElement =
+      document.getElementById("productName");
+
     const breadcrumbNameElement =
       document.getElementById("breadcrumbName");
 
@@ -798,8 +825,7 @@
 
     const productCompositionElement =
       document.getElementById("productComposition");
-
-    const productDescriptionElement =
+        const productDescriptionElement =
       document.getElementById("productDescription");
 
     const productCareElement =
@@ -874,7 +900,9 @@
     }
 
     function getProductId() {
-      const params = new URLSearchParams(window.location.search);
+      const params =
+        new URLSearchParams(window.location.search);
+
       return params.get("id");
     }
 
@@ -914,7 +942,8 @@
           return;
         }
 
-        const normalizedPath = normalizeImagePath(imagePath);
+        const normalizedPath =
+          normalizeImagePath(imagePath);
 
         if (!uniqueImages.includes(normalizedPath)) {
           uniqueImages.push(normalizedPath);
@@ -936,23 +965,32 @@
       const images = getProductImages(product);
 
       mainImage.src = images[0];
-      mainImage.alt = product.name || "Букет КЛЕВЕР";
+      mainImage.alt =
+        product.name || "Букет КЛЕВЕР";
 
       thumbnailsContainer.innerHTML = "";
 
       images.forEach((imagePath, index) => {
-        const button = document.createElement("button");
+        const button =
+          document.createElement("button");
+
         button.type = "button";
+
         button.className =
-          index === 0 ? "thumbnail active" : "thumbnail";
+          index === 0
+            ? "thumbnail active"
+            : "thumbnail";
 
         button.setAttribute(
           "aria-label",
           "Показать фотографию " + (index + 1)
         );
 
-        const image = document.createElement("img");
+        const image =
+          document.createElement("img");
+
         image.src = imagePath;
+
         image.alt =
           (product.name || "Букет") +
           " — фотография " +
@@ -992,14 +1030,23 @@
     function renderProduct(product) {
       currentProduct = product;
 
-      const productName = product.name || "Букет КЛЕВЕР";
-      const category = product.category || "Букеты";
+      const productName =
+        product.name || "Букет КЛЕВЕР";
 
-      document.title = productName + " — КЛЕВЕР";
+      const category =
+        product.category || "Букеты";
 
-      productNameElement.textContent = productName;
-      breadcrumbNameElement.textContent = productName;
-      productCategoryElement.textContent = category;
+      document.title =
+        productName + " — КЛЕВЕР";
+
+      productNameElement.textContent =
+        productName;
+
+      breadcrumbNameElement.textContent =
+        productName;
+
+      productCategoryElement.textContent =
+        category;
 
       productShortDescriptionElement.textContent =
         product.short_description ||
@@ -1040,48 +1087,65 @@
     }
 
     function getCart() {
-  try {
-    const savedCart =
-      localStorage.getItem("cleverCart") ||
-      localStorage.getItem("cart") ||
-      "[]";
+      try {
+        const savedCart =
+          localStorage.getItem("cleverCart") ||
+          localStorage.getItem("cart") ||
+          "[]";
 
-    const parsedCart = JSON.parse(savedCart);
+        const parsedCart =
+          JSON.parse(savedCart);
 
-    const cart = Array.isArray(parsedCart)
-      ? parsedCart.map(item => ({
-          id: item.id,
-          name: item.name || "Товар",
-          price: Number(item.price) || 0,
-          image: item.image || "",
-          qty: Number(item.qty) || Number(item.quantity) || 1
-        }))
-      : [];
+        const cart =
+          Array.isArray(parsedCart)
+            ? parsedCart.map((item) => ({
+                id: item.id,
+                name: item.name || "Товар",
+                price: Number(item.price) || 0,
+                image: item.image || "",
+                qty:
+                  Number(item.qty) ||
+                  Number(item.quantity) ||
+                  1
+              }))
+            : [];
 
-    localStorage.setItem("cleverCart", JSON.stringify(cart));
-    localStorage.removeItem("cart");
+        localStorage.setItem(
+          "cleverCart",
+          JSON.stringify(cart)
+        );
 
-    return cart;
+        localStorage.removeItem("cart");
 
-  } catch (error) {
-    return [];
-  }
+        return cart;
+      } catch (error) {
+        localStorage.removeItem("cart");
+        localStorage.removeItem("cleverCart");
+        return [];
+      }
+    }
 
-    
     function saveCart(cart) {
-  localStorage.setItem("cleverCart", JSON.stringify(cart));
-  localStorage.removeItem("cart");
-  updateCartCount();
-}
+      localStorage.setItem(
+        "cleverCart",
+        JSON.stringify(cart)
+      );
+
+      localStorage.removeItem("cart");
+
+      updateCartCount();
+    }
 
     function updateCartCount() {
       const cart = getCart();
 
-    const totalQuantity = cart.reduce((sum, item) => {
-  return sum + (Number(item.qty) || Number(item.quantity) || 1);
-}, 0);
+      const totalQuantity =
+        cart.reduce((sum, item) => {
+          return sum + (Number(item.qty) || 1);
+        }, 0);
 
-      cartCountElement.textContent = totalQuantity;
+      cartCountElement.textContent =
+        totalQuantity;
     }
 
     function addCurrentProductToCart() {
@@ -1092,28 +1156,33 @@
       const cart = getCart();
 
       const productId =
-        currentProduct.id !== undefined
+        currentProduct.id !== undefined &&
+        currentProduct.id !== null
           ? String(currentProduct.id)
-          : currentProduct.name;
+          : String(currentProduct.name);
 
-      const existingItem = cart.find((item) => {
-        return String(item.id) === productId;
-      });
+      const existingItem =
+        cart.find((item) => {
+          return String(item.id) === productId;
+        });
 
       if (existingItem) {
-  existingItem.qty =
-    (Number(existingItem.qty) || Number(existingItem.quantity) || 1) + quantity;
-
-  delete existingItem.quantity;
-} else {
-  cart.push({
-    id: currentProduct.id,
-    name: currentProduct.name,
-    price: Number(currentProduct.price) || 0,
-    image: currentProduct.image || "",
-    qty: quantity
-  });
-}
+        existingItem.qty =
+          (Number(existingItem.qty) || 1) +
+          quantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          name:
+            currentProduct.name ||
+            "Букет КЛЕВЕР",
+          price:
+            Number(currentProduct.price) || 0,
+          image:
+            currentProduct.image || "",
+          qty: quantity
+        });
+      }
 
       saveCart(cart);
 
@@ -1122,11 +1191,13 @@
           ? "Товар добавлен в корзину"
           : "Товары добавлены в корзину";
 
-      addToCartButton.textContent = "Добавлено ✓";
+      addToCartButton.textContent =
+        "Добавлено ✓";
 
       window.setTimeout(() => {
         cartMessageElement.textContent = "";
-        addToCartButton.textContent = "Добавить в корзину";
+        addToCartButton.textContent =
+          "Добавить в корзину";
       }, 2200);
     }
 
@@ -1139,27 +1210,34 @@
       }
 
       try {
-        const response = await fetch("/api/products", {
-          headers: {
-            Accept: "application/json"
-          }
-        });
+        const response =
+          await fetch("/api/products", {
+            headers: {
+              Accept: "application/json"
+            }
+          });
 
         if (!response.ok) {
-          throw new Error("Не удалось получить товары");
+          throw new Error(
+            "Не удалось получить товары"
+          );
         }
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
-        const products = Array.isArray(data)
-          ? data
-          : Array.isArray(data.products)
-            ? data.products
-            : [];
+        const products =
+          Array.isArray(data)
+            ? data
+            : Array.isArray(data.products)
+              ? data.products
+              : [];
 
-        const product = products.find((item) => {
-          return String(item.id) === String(productId);
-        });
+        const product =
+          products.find((item) => {
+            return String(item.id) ===
+              String(productId);
+          });
 
         if (!product) {
           showError();
@@ -1168,24 +1246,38 @@
 
         renderProduct(product);
       } catch (error) {
-        console.error("Ошибка загрузки товара:", error);
+        console.error(
+          "Ошибка загрузки товара:",
+          error
+        );
+
         showError();
       }
     }
 
-    decreaseQuantityButton.addEventListener("click", () => {
-      if (quantity > 1) {
-        quantity -= 1;
-        quantityValueElement.textContent = quantity;
-      }
-    });
+    decreaseQuantityButton.addEventListener(
+      "click",
+      () => {
+        if (quantity > 1) {
+          quantity -= 1;
 
-    increaseQuantityButton.addEventListener("click", () => {
-      if (quantity < 20) {
-        quantity += 1;
-        quantityValueElement.textContent = quantity;
+          quantityValueElement.textContent =
+            quantity;
+        }
       }
-    });
+    );
+
+    increaseQuantityButton.addEventListener(
+      "click",
+      () => {
+        if (quantity < 20) {
+          quantity += 1;
+
+          quantityValueElement.textContent =
+            quantity;
+        }
+      }
+    );
 
     addToCartButton.addEventListener(
       "click",
