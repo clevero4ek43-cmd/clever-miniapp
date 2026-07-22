@@ -422,7 +422,7 @@ SET
   visible=?,
   sort_order=?
 WHERE id=?
-).run(
+`).run(
   name,
   price,
   shortDescription,
