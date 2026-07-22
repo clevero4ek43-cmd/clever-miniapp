@@ -120,7 +120,15 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
   Состав
   <textarea id="composition"></textarea>
 </label>
+      <label>
+  Размер
+  <textarea id="size"></textarea>
+</label>
 
+<label>
+  Уход
+  <textarea id="care"></textarea>
+</label>
       <label style="display:flex;grid-template-columns:auto 1fr;align-items:center;margin-top:12px">
         <input id="visible" type="checkbox" checked style="width:auto">
         Показывать товар на сайте
@@ -254,6 +262,9 @@ function editProduct(id) {
   document.getElementById("sort-order").value = product.sort_order || 0;
   document.getElementById("image").value = product.image || "";
   document.getElementById("description").value = product.description || "";
+  document.getElementById("composition").value = product.composition || "";
+document.getElementById("size").value = product.size || "";
+document.getElementById("care").value = product.care || "";
   document.getElementById("visible").checked = Boolean(product.visible);
 
   document.getElementById("form-title").textContent =
@@ -312,6 +323,9 @@ async function saveProduct() {
       sort_order: Number(document.getElementById("sort-order").value),
       image,
       description: document.getElementById("description").value.trim(),
+      composition: document.getElementById("composition").value.trim(),
+size: document.getElementById("size").value.trim(),
+care: document.getElementById("care").value.trim(),
       visible: document.getElementById("visible").checked
     };
 
