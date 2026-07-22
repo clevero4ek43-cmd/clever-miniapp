@@ -371,7 +371,7 @@ const care = cleanText(req.body?.care, 5000);
   sort_order
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
-).run(
+`).run(
   name,
   price,
   shortDescription,
