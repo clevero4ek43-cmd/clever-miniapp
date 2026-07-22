@@ -11,6 +11,7 @@ const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
@@ -102,12 +103,13 @@ app.use(
       process.env.SESSION_SECRET || "replace-me-in-railway",
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 12
-    }
+  httpOnly: true,
+  sameSite: "lax",
+  secure: "auto",
+  maxAge: 1000 * 60 * 60 * 12
+}
   })
 );
 
