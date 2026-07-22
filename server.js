@@ -61,6 +61,9 @@ function addColumnIfMissing(tableName, columnName, definition) {
 }
 
 addColumnIfMissing("products", "short_description", "TEXT DEFAULT ''");
+addColumnIfMissing("products", "composition", "TEXT DEFAULT ''");
+addColumnIfMissing("products", "size", "TEXT DEFAULT ''");
+addColumnIfMissing("products", "care", "TEXT DEFAULT ''");
 addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
 addColumnIfMissing("orders", "status", "TEXT NOT NULL DEFAULT 'Новый'");
 addColumnIfMissing("orders", "created_at", "TEXT DEFAULT ''");
@@ -290,7 +293,19 @@ app.get("/api/me", (req, res) => {
 
 app.get("/api/products", (_, res) => {
   const products = db.prepare(`
-    SELECT id, name, price, short_description, description, image, category, visible, sort_order
+   SELECT
+  id,
+  name,
+  price,
+  short_description,
+  description,
+  composition,
+  size,
+  care,
+  image,
+  category,
+  visible,
+  sort_order
     FROM products
     WHERE visible = 1
     ORDER BY sort_order ASC, id DESC
@@ -300,8 +315,20 @@ app.get("/api/products", (_, res) => {
 
 app.get("/api/admin/products", requireAdmin, (_, res) => {
   const products = db.prepare(`
-    SELECT id, name, price, short_description, description, image, category, visible, sort_order, created_at
-    FROM products
+   SELECT
+  id,
+  name,
+  price,
+  short_description,
+  description,
+  composition,
+  size,
+  care,
+  image,
+  category,
+  visible,
+  sort_order,
+  created_at    FROM products
     ORDER BY sort_order ASC, id DESC
   `).all();
   res.json(products);
@@ -317,6 +344,9 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
   const price = Math.round(Number(req.body?.price));
   const shortDescription = cleanText(req.body?.short_description, 500);
   const description = cleanText(req.body?.description, 5000);
+  const composition = cleanText(req.body?.composition, 5000);
+const size = cleanText(req.body?.size, 1000);
+const care = cleanText(req.body?.care, 5000);
   const image = cleanText(req.body?.image, 1000);
   const category = cleanText(req.body?.category || "Букеты", 100);
   const visible = req.body?.visible ? 1 : 0;
@@ -327,9 +357,33 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
   }
 
   const result = db.prepare(`
-    INSERT INTO products (name, price, short_description, description, image, category, visible, sort_order)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(name, price, shortDescription, description, image, category, visible, sortOrder);
+    INSERT INTO products (
+  name,
+  price,
+  short_description,
+  description,
+  composition,
+  size,
+  care,
+  image,
+  category,
+  visible,
+  sort_order
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+).run(
+  name,
+  price,
+  shortDescription,
+  description,
+  composition,
+  size,
+  care,
+  image,
+  category,
+  visible,
+  sortOrder
+);
 
   res.status(201).json({ success: true, id: Number(result.lastInsertRowid) });
 });
@@ -340,6 +394,9 @@ app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
   const price = Math.round(Number(req.body?.price));
   const shortDescription = cleanText(req.body?.short_description, 500);
   const description = cleanText(req.body?.description, 5000);
+  const composition = cleanText(req.body?.composition, 5000);
+const size = cleanText(req.body?.size, 1000);
+const care = cleanText(req.body?.care, 5000);
   const image = cleanText(req.body?.image, 1000);
   const category = cleanText(req.body?.category || "Букеты", 100);
   const visible = req.body?.visible ? 1 : 0;
@@ -351,10 +408,34 @@ app.put("/api/admin/products/:id", requireAdmin, (req, res) => {
   }
 
   const result = db.prepare(`
-    UPDATE products
-    SET name=?, price=?, short_description=?, description=?, image=?, category=?, visible=?, sort_order=?
-    WHERE id=?
-  `).run(name, price, shortDescription, description, image, category, visible, sortOrder, id);
+   UPDATE products
+SET
+  name=?,
+  price=?,
+  short_description=?,
+  description=?,
+  composition=?,
+  size=?,
+  care=?,
+  image=?,
+  category=?,
+  visible=?,
+  sort_order=?
+WHERE id=?
+).run(
+  name,
+  price,
+  shortDescription,
+  description,
+  composition,
+  size,
+  care,
+  image,
+  category,
+  visible,
+  sortOrder,
+  id
+);
 
   if (!result.changes) return res.status(404).json({ error: "Товар не найден" });
   res.json({ success: true });
