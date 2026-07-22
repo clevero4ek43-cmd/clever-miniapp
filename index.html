@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="КЛЕВЕР — салон цветов в Иванове. Авторские букеты, свежие цветы и бережная доставка.">
+  <meta
+    name="description"
+    content="КЛЕВЕР — салон цветов в Иванове. Авторские букеты, свежие цветы и бережная доставка."
+  >
   <title>КЛЕВЕР | Салон цветов</title>
 
   <style>
@@ -33,8 +36,8 @@
       margin: 0;
       min-width: 320px;
       font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, var(--milk), var(--soft-pink));
       color: var(--green);
+      background: linear-gradient(180deg, var(--milk), var(--soft-pink));
     }
 
     body.cart-open {
@@ -104,8 +107,8 @@
 
     .cart {
       position: relative;
-      border: 0;
       padding: 8px;
+      border: 0;
       background: transparent;
       font-size: 28px;
       line-height: 1;
@@ -120,16 +123,16 @@
       min-width: 20px;
       height: 20px;
       padding: 0 5px;
-      border-radius: 50%;
-        align-items: center;
+      align-items: center;
       justify-content: center;
+      border-radius: 50%;
       background: #d94d5c;
       color: var(--white);
       font-size: 12px;
       font-weight: 700;
     }
 
-    header {
+    .hero {
       padding: 46px 20px 62px;
       display: flex;
       flex-direction: column;
@@ -145,7 +148,7 @@
       margin-bottom: 18px;
     }
 
-    h1 {
+    .hero h1 {
       margin: 0;
       font-size: 52px;
       letter-spacing: 8px;
@@ -159,7 +162,7 @@
 
     .hero-title {
       margin: 10px 0;
-      font: 500 34px/1.15 Georgia, serif;
+      font: 500 34px / 1.15 Georgia, serif;
     }
 
     .subtitle {
@@ -176,7 +179,7 @@
       background: var(--pink);
       color: var(--white);
       cursor: pointer;
-      transition: 0.25s ease;
+       transition: 0.25s ease;
     }
 
     .button {
@@ -241,18 +244,16 @@
     }
 
     .product-image-wrap {
-      position: relative;
       overflow: hidden;
-      background: var(--milk);
-
       aspect-ratio: 1 / 1;
+      background: var(--milk);
     }
 
     .product-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.45s ease, opacity 0.3s ease;
+      transition: transform 0.45s ease;
     }
 
     .product-card:hover img {
@@ -268,10 +269,8 @@
 
     .product-card h3 {
       margin: 0 0 10px;
-      color: var(--green);
       font-size: 26px;
       line-height: 1.25;
-      font-weight: 700;
     }
 
     .short {
@@ -289,8 +288,7 @@
 
     .price {
       margin: 22px 0 18px;
-      color: var(--green);
-      font: 38px/1 Georgia, serif;
+      font: 38px / 1 Georgia, serif;
     }
 
     .card-actions {
@@ -323,7 +321,6 @@
     .card-button:hover {
       background: var(--pink-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(216, 168, 181, 0.35);
     }
 
     .details-button {
@@ -334,7 +331,6 @@
     .details-button:hover {
       background: #e9e5e1;
       transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     }
 
     .message {
@@ -342,6 +338,13 @@
       padding: 35px;
       text-align: center;
       color: #6c7a70;
+    }
+
+    footer {
+      padding: 40px;
+      text-align: center;
+      background: var(--white);
+      color: #666666;
     }
 
     .cart-overlay {
@@ -357,7 +360,7 @@
 
     .cart-overlay.open {
       visibility: visible;
-      opacity: 1;
+       opacity: 1;
     }
 
     .cart-panel {
@@ -368,7 +371,6 @@
       width: min(430px, calc(100vw - 24px));
       max-height: calc(100vh - 110px);
       overflow: auto;
-
       padding: 22px;
       background: var(--white);
       border-radius: 24px;
@@ -457,12 +459,11 @@
     .checkout-form textarea {
       width: 100%;
       padding: 13px 14px;
-      border: 1px solid #ddd;
+      border: 1px solid #dddddd;
       border-radius: 12px;
       background: var(--white);
-      color: #333;
+      color: #333333;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .checkout-form input:focus,
@@ -489,12 +490,19 @@
       box-shadow: none;
     }
 
-    footer {
-      padding: 40px;
-      text-align: center;
+    .checkout-status {
+      min-height: 20px;
+      color: var(--green);
+      font-size: 14px;
+      line-height: 1.4;
+    }
 
-      background: var(--white);
-      color: #666;
+    .checkout-status.error {
+      color: #b84d57;
+    }
+
+    .checkout-status.success {
+      color: #2f6e3d;
     }
 
     @media (max-width: 1200px) {
@@ -519,7 +527,7 @@
         display: none;
       }
 
-      header {
+      .hero {
         padding: 34px 16px 48px;
       }
 
@@ -527,7 +535,7 @@
         width: 170px;
       }
 
-      h1 {
+      .hero h1 {
         font-size: 40px;
         letter-spacing: 6px;
       }
@@ -616,18 +624,17 @@
     <div class="menu">
       <a href="#catalog">Каталог</a>
       <a href="#delivery">Доставка</a>
-
-        <a href="#about">О нас</a>
+      <a href="#about">О нас</a>
       <a href="#contacts">Контакты</a>
     </div>
 
-    <button class="cart" type="button" onclick="toggleCart()" aria-label="Открыть корзину">
+    <button id="cart-button" class="cart" type="button" aria-label="Открыть корзину">
       🛒
       <span id="cart-count">0</span>
     </button>
   </nav>
 
-  <header>
+  <header class="hero">
     <img
       class="hero-logo"
       src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png"
@@ -663,12 +670,14 @@
 
   <footer id="contacts">КЛЕВЕР © 2026</footer>
 
-  <div id="cart-overlay" class="cart-overlay" onclick="closeCart()"></div>
+  <div id="cart-overlay" class="cart-overlay"></div>
 
   <aside id="cart-panel" class="cart-panel" aria-label="Корзина">
     <div class="cart-heading">
       <h2>Корзина</h2>
-      <button class="cart-close" type="button" onclick="closeCart()" aria-label="Закрыть корзину">×</button>
+      <button id="cart-close" class="cart-close" type="button" aria-label="Закрыть корзину">
+        ×
+      </button>
     </div>
 
     <div id="cart-items"></div>
@@ -681,9 +690,12 @@
       <input id="customer-name" autocomplete="name" placeholder="Ваше имя">
       <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
       <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
-      <button id="checkout-btn" class="checkout-btn" type="button" onclick="sendOrder()">
+
+      <button id="checkout-btn" class="checkout-btn" type="button">
         Оформить заказ
       </button>
+
+      <div id="checkout-status" class="checkout-status" aria-live="polite"></div>
     </div>
   </aside>
 
@@ -709,12 +721,15 @@
         return parsedCart
           .map(item => ({
             id: Number(item.id),
-            name: item.name || "Товар",
+            name: String(item.name || "Товар"),
             price: Number(item.price) || 0,
-            image: item.image || "",
-            qty: Math.max(1, Number(item.qty) || Number(item.quantity) || 1)
+            image: String(item.image || ""),
+            qty: Math.max(
+              1,
+              Math.round(Number(item.qty ?? item.quantity) || 1)
+            )
           }))
-          .filter(item => Number.isFinite(item.id));
+          .filter(item => Number.isInteger(item.id) && item.id > 0);
       } catch (error) {
         console.error("Не удалось прочитать корзину:", error);
         return [];
@@ -740,65 +755,87 @@
     }
 
     async function loadProducts() {
-
       const grid = document.getElementById("catalog-grid");
 
       try {
         const response = await fetch("/api/products", {
-          headers: { "Accept": "application/json" }
+          cache: "no-store",
+          headers: {
+            Accept: "application/json"
+          }
         });
 
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить каталог");
+        const responseText = await response.text();
+        let data = [];
+
+        try {
+          data = responseText ? JSON.parse(responseText) : [];
+        } catch (error) {
+          throw new Error("Сервер вернул некорректный ответ.");
         }
 
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Не удалось загрузить каталог.");
+        }
+
         products = Array.isArray(data) ? data : [];
 
         if (!products.length) {
-          grid.innerHTML = '<div class="message">Скоро здесь появятся новые букеты.</div>';
+          grid.innerHTML = '<div class="message">Товаров пока нет.</div>';
           return;
         }
 
-        grid.innerHTML = products.map(product => {
-          const id = Number(product.id);
-          const name = escapeHtml(product.name || "Букет");
-          const description = escapeHtml(product.short_description || "");
-          const image = escapeHtml(product.image || FALLBACK_IMAGE);
-          const price = money(product.price);
+        grid.innerHTML = products
+          .map(product => {
+            const id = Number(product.id);
+            const name = escapeHtml(product.name || "Букет");
+            const description = escapeHtml(
+              product.short_description || product.description || ""
+            );
+            const image = escapeHtml(product.image || FALLBACK_IMAGE);
+            const price = money(product.price);
 
-          return `
-            <article class="product-card">
-              <div class="product-image-wrap">
-                <img
-                  src="${image}"
-                  alt="${name}"
-                  loading="lazy"
-                  onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
-                >
-              </div>
-
-              <div class="product-content">
-                <h3>${name}</h3>
-                <p class="short">${description}</p>
-                <p class="price">${price}</p>
-
-                <div class="card-actions">
-                  <a class="details-button" href="product.html?id=${id}">
-                    Подробнее
-                  </a>
-
-                  <button class="card-button" type="button" onclick="addToCart(${id})">
-                    В корзину
-                  </button>
+            return `
+              <article class="product-card">
+                <div class="product-image-wrap">
+                  <img
+                    src="${image}"
+                    alt="${name}"
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
+                  >
                 </div>
-              </div>
-            </article>
-          `;
-        }).join("");
+
+                <div class="product-content">
+                  <h3>${name}</h3>
+                  <p class="short">${description}</p>
+                  <div class="price">${price}</div>
+
+                  <div class="card-actions">
+                    <button
+                      class="card-button"
+                      type="button"
+                      onclick="addToCart(${id})"
+                    >
+                      В корзину
+                    </button>
+
+                    <a class="details-button" href="/product.html?id=${id}">
+                      Подробнее
+                    </a>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
       } catch (error) {
-        console.error(error);
-        grid.innerHTML = '<div class="message">Не удалось загрузить каталог. Обновите страницу чуть позже.</div>';
+        console.error("Ошибка загрузки каталога:", error);
+        grid.innerHTML = `
+          <div class="message">
+            ${escapeHtml(error.message || "Не удалось загрузить каталог.")}
+          </div>
+        `;
       }
     }
 
@@ -834,7 +871,7 @@
         return;
       }
 
-      item.qty += delta;
+      item.qty += Number(delta);
 
       if (item.qty <= 0) {
         cart = cart.filter(product => Number(product.id) !== Number(id));
@@ -844,28 +881,47 @@
     }
 
     function renderCart() {
-      const items = document.getElementById("cart-items");
+      const itemsBox = document.getElementById("cart-items");
       const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const total = cart.reduce(
+        (sum, item) => sum + item.price * item.qty,
+        0
+      );
 
-      items.innerHTML = cart.length
-        ? cart.map(item => `
-            <div class="cart-item">
-              <div class="cart-row">
-                <strong>${escapeHtml(item.name)}</strong>
-                <strong>${money(item.price * item.qty)}</strong>
+      itemsBox.innerHTML = cart.length
+        ? cart
+            .map(item => `
+              <div class="cart-item">
+                <div class="cart-row">
+                  <strong>${escapeHtml(item.name)}</strong>
+                  <strong>${money(item.price * item.qty)}</strong>
+                </div>
+
+                <div class="qty">
+                  <button
+                    type="button"
+                    onclick="changeQty(${item.id}, -1)"
+                    aria-label="Уменьшить количество"
+                  >
+                    −
+                  </button>
+
+                  <span>${item.qty}</span>
+
+                  <button
+                    type="button"
+                    onclick="changeQty(${item.id}, 1)"
+                    aria-label="Увеличить количество"
+                  >
+                    +
+                  </button>
+
+                  <small>${money(item.price)} за шт.</small>
+                </div>
               </div>
-
-              <div class="qty">
-                <button type="button" onclick="changeQty(${item.id}, -1)" aria-label="Уменьшить количество">−</button>
-                <span>${item.qty}</span>
-                <button type="button" onclick="changeQty(${item.id}, 1)" aria-label="Увеличить количество">+</button>
-                <small>${money(item.price)} за шт.</small>
-              </div>
-            </div>
-          `).join("")
-
-          : '<div class="message">Корзина пока пуста.</div>';
+            `)
+            .join("")
+        : '<div class="message">Корзина пока пуста.</div>';
 
       document.getElementById("cart-sum").textContent = money(total);
 
@@ -888,7 +944,11 @@
       document.body.classList.remove("cart-open");
 
       if (window.location.hash === "#cart") {
-        history.replaceState(null, "", window.location.pathname + window.location.search);
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search
+        );
       }
     }
 
@@ -903,75 +963,100 @@
     }
 
     async function sendOrder() {
-      if (!cart.length) {
-        alert("Корзина пуста.");
-        return;
-      }
-
+      const status = document.getElementById("checkout-status");
+      const checkoutButton = document.getElementById("checkout-btn");
       const customerName = document.getElementById("customer-name").value.trim();
       const phone = document.getElementById("customer-phone").value.trim();
       const comment = document.getElementById("customer-comment").value.trim();
-      const checkoutButton = document.getElementById("checkout-btn");
+
+      status.textContent = "";
+      status.className = "checkout-status";
+
+      if (!cart.length) {
+        status.textContent = "Корзина пуста.";
+        status.classList.add("error");
+        return;
+      }
 
       if (!customerName || !phone) {
-        alert("Введите имя и телефон.");
+        status.textContent = "Введите имя и телефон.";
+        status.classList.add("error");
         return;
       }
 
       checkoutButton.disabled = true;
       checkoutButton.textContent = "Отправляем…";
+      status.textContent = "Сохраняем заказ…";
 
       try {
         const response = await fetch("/api/orders", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            Accept: "application/json"
           },
           body: JSON.stringify({
             customer_name: customerName,
             phone,
             comment,
-            items: cart
+            items: cart.map(item => ({
+              id: Number(item.id),
+              qty: Number(item.qty)
+            }))
           })
         });
 
+        const responseText = await response.text();
         let result = {};
 
         try {
-          result = await response.json();
+          result = responseText ? JSON.parse(responseText) : {};
         } catch (error) {
-          result = {};
+          throw new Error("Сервер вернул некорректный ответ.");
         }
 
-        if (!response.ok) {
+        if (!response.ok || !result.success) {
           throw new Error(result.error || "Не удалось оформить заказ.");
         }
 
-        alert("Заказ №" + result.orderId + " принят!");
-
         cart = [];
+        localStorage.removeItem("cleverCart");
+        localStorage.removeItem("cart");
         renderCart();
 
         document.getElementById("customer-name").value = "";
         document.getElementById("customer-phone").value = "";
         document.getElementById("customer-comment").value = "";
 
-        closeCart();
+        status.textContent = `Заказ №${result.orderId} принят! Мы свяжемся с вами.`;
+        status.classList.add("success");
+
+        setTimeout(closeCart, 1800);
       } catch (error) {
-        console.error(error);
-        alert(error.message || "Не удалось оформить заказ.");
+        console.error("Ошибка оформления заказа:", error);
+        status.textContent = error.message || "Не удалось оформить заказ.";
+        status.classList.add("error");
       } finally {
         checkoutButton.disabled = false;
         checkoutButton.textContent = "Оформить заказ";
       }
     }
 
-    function openCartFromAddress() {
-      if (window.location.hash === "#cart") {
-        openCart();
-      }
-    }
+    document
+      .getElementById("cart-button")
+      .addEventListener("click", toggleCart);
+
+    document
+      .getElementById("cart-close")
+      .addEventListener("click", closeCart);
+
+    document
+      .getElementById("cart-overlay")
+      .addEventListener("click", closeCart);
+
+    document
+      .getElementById("checkout-btn")
+      .addEventListener("click", sendOrder);
 
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
@@ -979,11 +1064,23 @@
       }
     });
 
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash === "#cart") {
+        openCart();
+      }
+    });
+
+    window.addEventListener("pageshow", () => {
+      cart = loadCart();
+      renderCart();
+    });
+
     loadProducts();
     renderCart();
-    openCartFromAddress();
 
-    window.addEventListener("hashchange", openCartFromAddress);
+    if (window.location.hash === "#cart") {
+      openCart();
+    }
   </script>
 </body>
 </html>
