@@ -120,10 +120,17 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
   Состав
   <textarea id="composition"></textarea>
 </label>
-      <label>
-  Размер
-  <textarea id="size"></textarea>
-</label>
+      <div class="grid">
+  <label>
+    Ширина, см
+    <input id="size-width" type="number" min="1" placeholder="40">
+  </label>
+
+  <label>
+    Высота, см
+    <input id="size-height" type="number" min="1" placeholder="45">
+  </label>
+</div>
 
 <label>
   Уход
@@ -263,7 +270,10 @@ function editProduct(id) {
   document.getElementById("image").value = product.image || "";
   document.getElementById("description").value = product.description || "";
   document.getElementById("composition").value = product.composition || "";
-document.getElementById("size").value = product.size || "";
+const size = (product.size || "").match(/(\d+)\D+(\d+)/);
+
+document.getElementById("size-width").value = size ? size[1] : "";
+document.getElementById("size-height").value = size ? size[2] : "";
 document.getElementById("care").value = product.care || "";
   document.getElementById("visible").checked = Boolean(product.visible);
 
@@ -283,8 +293,9 @@ function resetForm() {
   document.getElementById("image-file").value = "";
   document.getElementById("description").value = "";
   document.getElementById("composition").value = "";
-document.getElementById("size").value = "";
-document.getElementById("care").value = "";
+document.getElementById("size-width").value = "";
+document.getElementById("size-height").value = "";
+  document.getElementById("care").value = "";
   document.getElementById("visible").checked = true;
 
   document.getElementById("form-title").textContent =
@@ -327,7 +338,14 @@ async function saveProduct() {
       image,
       description: document.getElementById("description").value.trim(),
       composition: document.getElementById("composition").value.trim(),
-size: document.getElementById("size").value.trim(),
+size: (() => {
+    const w = document.getElementById("size-width").value.trim();
+    const h = document.getElementById("size-height").value.trim();
+
+    if (!w || !h) return "";
+
+    return `${w} × ${h} см`;
+})(),
 care: document.getElementById("care").value.trim(),
       visible: document.getElementById("visible").checked
     };
