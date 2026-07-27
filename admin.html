@@ -26,6 +26,25 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
 .hidden{display:none!important}
 .status{margin-top:12px;font-weight:700}
 .order{padding:14px 0;border-bottom:1px solid #eee}
+.photo-section{margin-top:18px;padding:18px;border:1px solid #e7e1da;border-radius:16px;background:#fbfaf8}
+.photo-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.photo-upload{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:10px;background:#35543d;color:#fff;cursor:pointer;font-weight:700}
+.photo-upload input{display:none}
+.photo-count{font-weight:700;color:#6c7a70}
+.photo-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:16px}
+.photo-editor{padding:12px;border:1px solid #ddd5ce;border-radius:16px;background:#fff}
+.photo-editor.dragging{opacity:.45}
+.photo-editor.drag-over{outline:3px solid #d8a8b5}
+.photo-drag{margin-bottom:9px;color:#6c7a70;font-size:13px;cursor:grab;user-select:none}
+.crop-window{position:relative;overflow:hidden;aspect-ratio:1/1;border-radius:13px;background:#eee9e3;touch-action:none;cursor:grab}
+.crop-window:active{cursor:grabbing}
+.crop-window img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;pointer-events:none;user-select:none;transform-origin:center}
+.main-badge{position:absolute;top:9px;left:9px;z-index:2;padding:6px 9px;border-radius:999px;background:#fff;color:#35543d;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.zoom-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;margin-top:11px;font-size:13px}
+.zoom-row input{padding:0}
+.photo-actions{display:flex;gap:8px;margin-top:10px}
+.photo-actions button{flex:1;padding:9px 8px;font-size:13px}
+.empty-photos{margin:16px 0 0;color:#6c7a70}
 @media(max-width:700px){
   .grid{grid-template-columns:1fr}
   .product{grid-template-columns:72px 1fr}
@@ -95,47 +114,60 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
           Порядок показа
           <input id="sort-order" type="number" value="0">
         </label>
-
-        <label>
-          Фото с компьютера
-          <input id="image-file" type="file" accept="image/*">
-        </label>
-
-        <label>
-          Или ссылка на фото
-          <input id="image">
-        </label>
       </div>
 
+      <section class="photo-section">
+        <div class="photo-toolbar">
+          <div>
+            <strong>Фотографии товара</strong>
+            <div class="muted">
+              До 5 фото. Двигайте фото прямо в рамке для кадрирования.
+            </div>
+          </div>
+
+          <label class="photo-upload">
+            + Добавить фото
+            <input id="image-files" type="file" accept="image/*" multiple>
+          </label>
+
+          <span class="photo-count" id="photo-count">0 из 5</span>
+        </div>
+
+        <div class="photo-list" id="photo-list"></div>
+      </section>
+
       <label>
-Краткое описание
-<input id="short-description">
-</label>
-      
+        Краткое описание
+        <input id="short-description">
+      </label>
+
       <label>
         Описание
         <textarea id="description"></textarea>
       </label>
+
       <label>
-  Состав
-  <textarea id="composition"></textarea>
-</label>
+        Состав
+        <textarea id="composition"></textarea>
+      </label>
+
       <div class="grid">
-  <label>
-    Ширина, см
-    <input id="size-width" type="number" min="1" placeholder="40">
-  </label>
+        <label>
+          Ширина, см
+          <input id="size-width" type="number" min="1" placeholder="40">
+        </label>
 
-  <label>
-    Высота, см
-    <input id="size-height" type="number" min="1" placeholder="45">
-  </label>
-</div>
+        <label>
+          Высота, см
+          <input id="size-height" type="number" min="1" placeholder="45">
+        </label>
+      </div>
 
-<label>
-  Уход
-  <textarea id="care"></textarea>
-</label>
+      <label>
+        Уход
+        <textarea id="care"></textarea>
+      </label>
+
       <label style="display:flex;grid-template-columns:auto 1fr;align-items:center;margin-top:12px">
         <input id="visible" type="checkbox" checked style="width:auto">
         Показывать товар на сайте
@@ -143,105 +175,588 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
 
       <div class="actions">
         <button onclick="saveProduct()">Сохранить товар</button>
-        <button class="secondary" onclick="resetForm()">Очистить форму</button>
-      </div>
+                    <button
+              id="cancel-edit"
+              class="secondary hidden"
+              onclick="resetForm()"
+            >
+              Отменить редактирование
+            </button>
+          </div>
 
-      <div id="form-status" class="status"></div>
-    </section>
+          <div id="product-status" class="status"></div>
+        </section>
 
-    <section class="panel">
-      <h2>Товары</h2>
-      <div id="products"></div>
-    </section>
+        <section class="panel">
+          <h2>Товары</h2>
+          <div id="products-list"></div>
+        </section>
 
-    <section class="panel">
-      <h2>Заказы</h2>
-      <div id="orders"></div>
-    </section>
+        <section class="panel">
+          <h2>Заказы</h2>
+          <div id="orders-list"></div>
+        </section>
 
-  </main>
-</div>
+      </main>
+    </div>
 
-<script>
-let products = [];
+    <script>
+    let products = [];
+    let productPhotos = [];
+    let draggedPhotoIndex = null;
 
-async function request(url, options = {}) {
-  const response = await fetch(url, options);
+    const $ = id => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatPrice(value) {
+      return `${Number(value || 0).toLocaleString("ru-RU")} ₽`;
+    }
+
+    function showStatus(elementId, message, isError = false) {
+      const element = $(elementId);
+
+      element.textContent = message;
+      element.style.color = isError ? "#b84d57" : "#35543d";
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "same-origin",
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || "Произошла ошибка");
+      }
+
+      return data;
+    }
+
+    async function checkLogin() {
+      try {
+        const data = await api("/api/me");
+
+        if (data.isAdmin) {
+          $("login-panel").classList.add("hidden");
+          $("admin-panel").classList.remove("hidden");
+
+          await Promise.all([
+            loadProducts(),
+            loadOrders()
+          ]);
+        } else {
+          $("login-panel").classList.remove("hidden");
+          $("admin-panel").classList.add("hidden");
+        }
+      } catch (error) {
+        showStatus(
+          "login-status",
+          error.message,
+          true
+        );
+      }
+    }
+
+    async function doLogin() {
+      showStatus("login-status", "Входим...");
+
+      try {
+        await api("/api/login", {
+          method: "POST",
+          body: JSON.stringify({
+            username: $("login-user").value,
+            password: $("login-password").value
+          })
+        });
+
+        $("login-password").value = "";
+        await checkLogin();
+      } catch (error) {
+        showStatus(
+          "login-status",
+          error.message,
+          true
+        );
+      }
+    }
+
+    async function logout() {
+      try {
+        await api("/api/logout", {
+          method: "POST"
+        });
+      } finally {
+        location.reload();
+      }
+    }
+
+    function parseSize(size) {
+      const numbers = String(size || "").match(/\d+(?:[.,]\d+)?/g) || [];
+
+      return {
+        width: numbers[0] || "",
+        height: numbers[1] || ""
+      };
+    }
+
+    function buildSize() {
+      const width = $("size-width").value.trim();
+      const height = $("size-height").value.trim();
+
+      if (width && height) {
+        return `${width} × ${height} см`;
+      }
+
+      if (width) {
+        return `${width} см`;
+      }
+
+      if (height) {
+        return `${height} см`;
+      }
+
+      return "";
+    }
+
+    function normalizePhotos(images, legacyImage = "") {
+      const source = Array.isArray(images) ? images : [];
+
+      let result = source.slice(0, 5).map((item, index) => ({
+        image: String(item.image || ""),
+        is_main: Boolean(item.is_main),
+        sort_order: index,
+        zoom: Number(item.zoom) || 1,
+        pos_x: Number(item.pos_x) || 0,
+        pos_y: Number(item.pos_y) || 0
+      })).filter(item => item.image);
+
+      if (!result.length && legacyImage) {
+        result = [{
+          image: legacyImage,
+          is_main: true,
+          sort_order: 0,
+          zoom: 1,
+          pos_x: 0,
+          pos_y: 0
+        }];
+      }
+
+      if (result.length && !result.some(item => item.is_main)) {
+        result[0].is_main = true;
+      }
+
+      return result;
+    }
+
+    function setMainPhoto(index) {
+      productPhotos.forEach((photo, photoIndex) => {
+        photo.is_main = photoIndex === index;
+      });
+
+      renderPhotoEditors();
+    }
+
+    function removePhoto(index) {
+      const wasMain = productPhotos[index]?.is_main;
+
+      productPhotos.splice(index, 1);
+
+      if (
+        productPhotos.length &&
+        (wasMain || !productPhotos.some(photo => photo.is_main))
+      ) {
+        productPhotos[0].is_main = true;
+      }
+
+      renderPhotoEditors();
+    }
+
+    function movePhoto(fromIndex, toIndex) {
+      if (
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= productPhotos.length ||
+        toIndex >= productPhotos.length
+      ) {
+        return;
+      }
+
+      const [photo] = productPhotos.splice(fromIndex, 1);
+      productPhotos.splice(toIndex, 0, photo);
+
+      productPhotos.forEach((item, index) => {
+        item.sort_order = index;
+      });
+
+      renderPhotoEditors();
+    }
+
+    function renderPhotoEditors() {
+      const list = $("photo-list");
+      $("photo-count").textContent = `${productPhotos.length} из 5`;
+
+      if (!productPhotos.length) {
+        list.innerHTML = `
+          <p class="empty-photos">
+            Фотографии ещё не добавлены.
+          </p>
+        `;
+
+        return;
+      }
+
+      list.innerHTML = productPhotos.map((photo, index) => `
+        <article
+          class="photo-editor"
+          draggable="true"
+          data-photo-index="${index}"
+        >
+          <div class="photo-drag">
+            Перетащите карточку, чтобы изменить порядок
+          </div>
+
+          <div
+            class="crop-window"
+            data-crop-index="${index}"
+          >
+            ${photo.is_main
+              ? '<span class="main-badge">Главное фото</span>'
+              : ""}
+
+            <img
+              src="${escapeHtml(photo.image)}"
+              alt=""
+              style="
+                transform:
+                  translate(${photo.pos_x}%, ${photo.pos_y}%)
+                  scale(${photo.zoom});
+              "
+            >
+          </div>
+
+          <label class="zoom-row">
+            <span>Масштаб</span>
+
+            <input
+              type="range"
+              min="1"
+              max="2.5"
+              step="0.01"
+              value="${photo.zoom}"
+              data-zoom-index="${index}"
+            >
+
+            <span>${Number(photo.zoom).toFixed(2)}</span>
+          </label>
+
+          <div class="photo-actions">
+            <button
+              type="button"
+              class="secondary"
+              onclick="setMainPhoto(${index})"
+            >
+              Сделать главным
+            </button>
+
+            <button
+              type="button"
+              class="danger"
+              onclick="removePhoto(${index})"
+            >
+              Удалить
+            </button>
+          </div>
+        </article>
+      `).join("");
+
+      bindPhotoEditorEvents();
+    }
+      function bindPhotoEditorEvents() {
+  document.querySelectorAll("[data-zoom-index]").forEach(input => {
+    input.addEventListener("input", event => {
+      const index = Number(event.target.dataset.zoomIndex);
+      const photo = productPhotos[index];
+
+      if (!photo) return;
+
+      photo.zoom = Number(event.target.value);
+
+      const editor = event.target.closest(".photo-editor");
+      const image = editor.querySelector(".crop-window img");
+      const valueLabel = event.target.nextElementSibling;
+
+      image.style.transform = `
+        translate(${photo.pos_x}%, ${photo.pos_y}%)
+        scale(${photo.zoom})
+      `;
+
+      valueLabel.textContent = photo.zoom.toFixed(2);
+    });
+  });
+
+  document.querySelectorAll("[data-crop-index]").forEach(crop => {
+    let startX = 0;
+    let startY = 0;
+    let startPosX = 0;
+    let startPosY = 0;
+    let moving = false;
+
+    crop.addEventListener("pointerdown", event => {
+      const index = Number(crop.dataset.cropIndex);
+      const photo = productPhotos[index];
+
+      if (!photo) return;
+
+      moving = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      startPosX = photo.pos_x;
+      startPosY = photo.pos_y;
+
+      crop.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+
+    crop.addEventListener("pointermove", event => {
+      if (!moving) return;
+
+      const index = Number(crop.dataset.cropIndex);
+      const photo = productPhotos[index];
+
+      if (!photo) return;
+
+      const rect = crop.getBoundingClientRect();
+
+      const deltaX =
+        ((event.clientX - startX) / rect.width) * 100;
+
+      const deltaY =
+        ((event.clientY - startY) / rect.height) * 100;
+
+      photo.pos_x = Math.max(
+        -50,
+        Math.min(50, startPosX + deltaX)
+      );
+
+      photo.pos_y = Math.max(
+        -50,
+        Math.min(50, startPosY + deltaY)
+      );
+
+      const image = crop.querySelector("img");
+
+      image.style.transform = `
+        translate(${photo.pos_x}%, ${photo.pos_y}%)
+        scale(${photo.zoom})
+      `;
+    });
+
+    const stopMoving = event => {
+      if (!moving) return;
+
+      moving = false;
+
+      if (crop.hasPointerCapture(event.pointerId)) {
+        crop.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    crop.addEventListener("pointerup", stopMoving);
+    crop.addEventListener("pointercancel", stopMoving);
+  });
+
+  document.querySelectorAll(".photo-editor").forEach(editor => {
+    editor.addEventListener("dragstart", event => {
+      draggedPhotoIndex = Number(
+        editor.dataset.photoIndex
+      );
+
+      editor.classList.add("dragging");
+
+      event.dataTransfer.effectAllowed = "move";
+    });
+
+    editor.addEventListener("dragend", () => {
+      draggedPhotoIndex = null;
+      editor.classList.remove("dragging");
+
+      document
+        .querySelectorAll(".photo-editor")
+        .forEach(item => {
+          item.classList.remove("drag-over");
+        });
+    });
+
+    editor.addEventListener("dragover", event => {
+      event.preventDefault();
+      editor.classList.add("drag-over");
+    });
+
+    editor.addEventListener("dragleave", () => {
+      editor.classList.remove("drag-over");
+    });
+
+    editor.addEventListener("drop", event => {
+      event.preventDefault();
+      editor.classList.remove("drag-over");
+
+      const targetIndex = Number(
+        editor.dataset.photoIndex
+      );
+
+      if (draggedPhotoIndex !== null) {
+        movePhoto(draggedPhotoIndex, targetIndex);
+      }
+    });
+  });
+}
+
+async function uploadPhoto(file) {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await fetch("/api/admin/upload", {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
+
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.error || "Ошибка");
+    throw new Error(
+      data.error || "Не удалось загрузить фото"
+    );
   }
 
-  return data;
+  return data.url;
 }
 
-async function checkAuth() {
-  const me = await request("/api/me");
+$("image-files").addEventListener("change", async event => {
+  const files = [...event.target.files];
+  const freePlaces = 5 - productPhotos.length;
 
-  document.getElementById("login-panel")
-    .classList.toggle("hidden", me.isAdmin);
+  if (!freePlaces) {
+    showStatus(
+      "product-status",
+      "Можно добавить не больше 5 фотографий",
+      true
+    );
 
-  document.getElementById("admin-panel")
-    .classList.toggle("hidden", !me.isAdmin);
-
-  if (me.isAdmin) {
-    await loadProducts();
-    await loadOrders();
+    event.target.value = "";
+    return;
   }
-}
 
-async function doLogin() {
-  const status = document.getElementById("login-status");
+  const selectedFiles = files.slice(0, freePlaces);
+
+  showStatus(
+    "product-status",
+    `Загружаем фото: ${selectedFiles.length}...`
+  );
 
   try {
-    await request("/api/login", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        username: document.getElementById("login-user").value,
-        password: document.getElementById("login-password").value
-      })
-    });
+    for (const file of selectedFiles) {
+      const url = await uploadPhoto(file);
 
-    status.textContent = "";
-    await checkAuth();
+      productPhotos.push({
+        image: url,
+        is_main: productPhotos.length === 0,
+        sort_order: productPhotos.length,
+        zoom: 1,
+        pos_x: 0,
+        pos_y: 0
+      });
 
+      renderPhotoEditors();
+    }
+
+    showStatus(
+      "product-status",
+      "Фотографии загружены"
+    );
   } catch (error) {
-    status.textContent = error.message;
+    showStatus(
+      "product-status",
+      error.message,
+      true
+    );
+  } finally {
+    event.target.value = "";
+  }
+});
+
+async function loadProducts() {
+  try {
+    products = await api("/api/admin/products");
+    renderProducts();
+  } catch (error) {
+    $("products-list").innerHTML = `
+      <p style="color:#b84d57">
+        ${escapeHtml(error.message)}
+      </p>
+    `;
   }
 }
 
-async function logout() {
-  await request("/api/logout", {method: "POST"});
-  location.reload();
-}
+function renderProducts() {
+  const list = $("products-list");
 
-async function loadProducts() {
-  products = await request("/api/admin/products");
+  if (!products.length) {
+    list.innerHTML = "<p>Товаров пока нет.</p>";
+    return;
+  }
 
-  const box = document.getElementById("products");
+  list.innerHTML = products.map(product => {
+    const mainImage =
+      product.images?.find(image => image.is_main)?.image ||
+      product.image ||
+      "";
 
-  box.innerHTML = products.length
-    ? products.map(product => `
-      <div class="product">
-        <img src="${product.image || ""}" alt="">
+    return `
+      <article class="product">
+        ${mainImage
+          ? `
+            <img
+              src="${escapeHtml(mainImage)}"
+              alt="${escapeHtml(product.name)}"
+            >
+          `
+          : "<div></div>"}
 
         <div>
-          <strong>${product.name}</strong>
+          <strong>${escapeHtml(product.name)}</strong>
 
-          <div>
-            ${Number(product.price).toLocaleString("ru-RU")} ₽
-            · ${product.category || "Букеты"}
+          <div>${formatPrice(product.price)}</div>
+
+          <div class="muted">
+            ${escapeHtml(product.category || "Букеты")}
+            ·
+            ${product.visible ? "показывается" : "скрыт"}
+            ·
+            фото: ${product.images?.length || (product.image ? 1 : 0)}
           </div>
-
-          <small>
-            ${product.visible ? "Показывается на сайте" : "Скрыт"}
-          </small>
         </div>
 
         <div class="actions">
-          <button onclick="editProduct(${product.id})">
+          <button
+            class="secondary"
+            onclick="editProduct(${product.id})"
+          >
             Изменить
           </button>
 
@@ -252,183 +767,322 @@ async function loadProducts() {
             Удалить
           </button>
         </div>
-      </div>
-    `).join("")
-    : "<p>Товаров пока нет.</p>";
+      </article>
+    `;
+  }).join("");
 }
 
 function editProduct(id) {
-  const product = products.find(item => item.id === id);
+  const product = products.find(
+    item => Number(item.id) === Number(id)
+  );
+
   if (!product) return;
 
-  document.getElementById("product-id").value = product.id;
-  document.getElementById("name").value = product.name;
-  document.getElementById("price").value = product.price;
-  document.getElementById("category").value = product.category || "Букеты";
-  document.getElementById("short-description").value = product.short_description || "";
-  document.getElementById("sort-order").value = product.sort_order || 0;
-  document.getElementById("image").value = product.image || "";
-  document.getElementById("description").value = product.description || "";
-  document.getElementById("composition").value = product.composition || "";
-const size = (product.size || "").match(/(\d+)\D+(\d+)/);
+  const size = parseSize(product.size);
 
-document.getElementById("size-width").value = size ? size[1] : "";
-document.getElementById("size-height").value = size ? size[2] : "";
-document.getElementById("care").value = product.care || "";
-  document.getElementById("visible").checked = Boolean(product.visible);
+  $("product-id").value = product.id;
+  $("name").value = product.name || "";
+  $("price").value = product.price || "";
+  $("category").value = product.category || "Букеты";
+  $("sort-order").value = product.sort_order || 0;
 
-  document.getElementById("form-title").textContent =
-    "Редактировать товар";
+  $("short-description").value =
+    product.short_description || "";
 
-  scrollTo({top: 0, behavior: "smooth"});
+  $("description").value = product.description || "";
+  $("composition").value = product.composition || "";
+  $("size-width").value = size.width;
+  $("size-height").value = size.height;
+  $("care").value = product.care || "";
+  $("visible").checked = Boolean(product.visible);
+
+  productPhotos = normalizePhotos(
+    product.images,
+    product.image
+  );
+
+  renderPhotoEditors();
+
+  $("form-title").textContent = "Редактировать товар";
+  $("cancel-edit").classList.remove("hidden");
+
+  showStatus("product-status", "");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
 function resetForm() {
-  document.getElementById("product-id").value = "";
-  document.getElementById("name").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("category").value = "Букеты";
-  document.getElementById("sort-order").value = "0";
-  document.getElementById("image").value = "";
-  document.getElementById("image-file").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("composition").value = "";
-document.getElementById("size-width").value = "";
-document.getElementById("size-height").value = "";
-  document.getElementById("care").value = "";
-  document.getElementById("visible").checked = true;
+  $("product-id").value = "";
+  $("name").value = "";
+  $("price").value = "";
+  $("category").value = "Букеты";
+  $("sort-order").value = "0";
+  $("short-description").value = "";
+  $("description").value = "";
+  $("composition").value = "";
+  $("size-width").value = "";
+  $("size-height").value = "";
+  $("care").value = "";
+  $("visible").checked = true;
 
-  document.getElementById("form-title").textContent =
-    "Добавить товар";
+  productPhotos = [];
+  renderPhotoEditors();
+
+  $("form-title").textContent = "Добавить товар";
+  $("cancel-edit").classList.add("hidden");
+
+  showStatus("product-status", "");
 }
+      async function saveProduct() {
+  const id = $("product-id").value;
 
-async function uploadImage() {
-  const file = document.getElementById("image-file").files[0];
+  const payload = {
+    name: $("name").value.trim(),
+    price: Number($("price").value),
+    category: $("category").value.trim() || "Букеты",
+    sort_order: Number($("sort-order").value) || 0,
+    short_description: $("short-description").value.trim(),
+    description: $("description").value.trim(),
+    composition: $("composition").value.trim(),
+    size: buildSize(),
+    care: $("care").value.trim(),
+    visible: $("visible").checked,
+    images: productPhotos.map((photo, index) => ({
+      image: photo.image,
+      is_main: Boolean(photo.is_main),
+      sort_order: index,
+      zoom: Number(photo.zoom) || 1,
+      pos_x: Number(photo.pos_x) || 0,
+      pos_y: Number(photo.pos_y) || 0
+    }))
+  };
 
-  if (!file) {
-    return document.getElementById("image").value.trim();
+  if (!payload.name || !payload.price) {
+    showStatus(
+      "product-status",
+      "Укажите название и цену",
+      true
+    );
+    return;
   }
 
-  const formData = new FormData();
-  formData.append("image", file);
-
-  const result = await request("/api/admin/upload", {
-    method: "POST",
-    body: formData
-  });
-
-  return result.url;
-}
-
-async function saveProduct() {
-  const status = document.getElementById("form-status");
+  showStatus("product-status", "Сохраняем...");
 
   try {
-    status.textContent = "Сохраняем…";
-
-    const id = document.getElementById("product-id").value;
-    const image = await uploadImage();
-
-    const payload = {
-      name: document.getElementById("name").value.trim(),
-      price: Number(document.getElementById("price").value),
-      category: document.getElementById("category").value.trim(),
-      short_description: document.getElementById("short-description").value.trim(),
-      sort_order: Number(document.getElementById("sort-order").value),
-      image,
-      description: document.getElementById("description").value.trim(),
-      composition: document.getElementById("composition").value.trim(),
-size: (() => {
-    const w = document.getElementById("size-width").value.trim();
-    const h = document.getElementById("size-height").value.trim();
-
-    if (!w || !h) return "";
-
-    return `${w} × ${h} см`;
-})(),
-care: document.getElementById("care").value.trim(),
-      visible: document.getElementById("visible").checked
-    };
-
-    await request(
-      id ? `/api/admin/products/${id}` : "/api/admin/products",
+    await api(
+      id
+        ? `/api/admin/products/${id}`
+        : "/api/admin/products",
       {
         method: id ? "PUT" : "POST",
-        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
       }
     );
 
-    status.textContent = "Сохранено";
-
     resetForm();
     await loadProducts();
 
+    showStatus(
+      "product-status",
+      id
+        ? "Товар изменён"
+        : "Товар добавлен"
+    );
   } catch (error) {
-    status.textContent = error.message;
+    showStatus(
+      "product-status",
+      error.message,
+      true
+    );
   }
 }
 
 async function deleteProduct(id) {
-  if (!confirm("Удалить товар?")) return;
+  const product = products.find(
+    item => Number(item.id) === Number(id)
+  );
 
-  await request(`/api/admin/products/${id}`, {
-    method: "DELETE"
-  });
+  if (!confirm(
+    `Удалить товар «${product?.name || ""}»?`
+  )) {
+    return;
+  }
 
-  await loadProducts();
+  try {
+    await api(`/api/admin/products/${id}`, {
+      method: "DELETE"
+    });
+
+    if (
+      Number($("product-id").value) === Number(id)
+    ) {
+      resetForm();
+    }
+
+    await loadProducts();
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 async function loadOrders() {
-  const orders = await request("/api/admin/orders");
-  const box = document.getElementById("orders");
+  try {
+    const orders = await api("/api/admin/orders");
+    renderOrders(orders);
+  } catch (error) {
+    $("orders-list").innerHTML = `
+      <p style="color:#b84d57">
+        ${escapeHtml(error.message)}
+      </p>
+    `;
+  }
+}
 
-  box.innerHTML = orders.length
-    ? orders.map(order => `
-      <div class="order">
-        <strong>
-          Заказ №${order.id} · ${order.customer_name}
-        </strong>
+function renderOrders(orders) {
+  const list = $("orders-list");
 
-        <div>
-          ${order.phone}
-          · ${Number(order.total).toLocaleString("ru-RU")} ₽
+  if (!orders.length) {
+    list.innerHTML = "<p>Заказов пока нет.</p>";
+    return;
+  }
+
+  const statuses = [
+    "Новый",
+    "Принят",
+    "В работе",
+    "Готов",
+    "Доставлен",
+    "Завершён",
+    "Отменён"
+  ];
+
+  list.innerHTML = orders.map(order => {
+    const items = Array.isArray(order.items)
+      ? order.items
+      : [];
+
+    const itemsHtml = items.length
+      ? `
+        <ul>
+          ${items.map(item => `
+            <li>
+              ${escapeHtml(item.name)}
+              × ${Number(item.qty || 1)}
+              ·
+              ${formatPrice(
+                Number(item.price || 0) *
+                Number(item.qty || 1)
+              )}
+            </li>
+          `).join("")}
+        </ul>
+      `
+      : "<p class=\"muted\">Состав заказа не сохранён.</p>";
+
+    return `
+      <article class="order">
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            gap:14px;
+            flex-wrap:wrap;
+          "
+        >
+          <div>
+            <strong>Заказ №${order.id}</strong>
+
+            <div class="muted">
+              ${escapeHtml(
+                order.created_at_formatted ||
+                order.created_at ||
+                "Дата не указана"
+              )}
+            </div>
+          </div>
+
+          <strong>${formatPrice(order.total)}</strong>
         </div>
 
-        <div>
-          ${order.items
-            .map(item => `${item.name} × ${item.qty}`)
-            .join(", ")}
-        </div>
+        <p>
+          <strong>Клиент:</strong>
+          ${escapeHtml(order.customer_name)}
+        </p>
 
-        <div class="actions">
+        <p>
+          <strong>Телефон:</strong>
+          <a href="tel:${escapeHtml(order.phone)}">
+            ${escapeHtml(order.phone)}
+          </a>
+        </p>
+
+        ${itemsHtml}
+
+        <p>
+          <strong>Комментарий:</strong>
+          ${order.comment
+            ? escapeHtml(order.comment)
+            : "Не указан"}
+        </p>
+
+        <label style="max-width:260px">
+          Статус заказа
+
           <select
-            onchange="changeStatus(${order.id}, this.value)"
+            onchange="
+              updateOrderStatus(
+                ${order.id},
+                this.value,
+                this
+              )
+            "
           >
-            ${["Новый", "Принят", "Готов", "Доставлен", "Отменён"]
-              .map(status => `
-                <option
-                  ${status === order.status ? "selected" : ""}
-                >
-                  ${status}
-                </option>
-              `).join("")}
+            ${statuses.map(status => `
+              <option
+                value="${status}"
+                ${status === order.status ? "selected" : ""}
+              >
+                ${status}
+              </option>
+            `).join("")}
           </select>
-        </div>
-      </div>
-    `).join("")
-    : "<p>Заказов пока нет.</p>";
+        </label>
+      </article>
+    `;
+  }).join("");
 }
 
-async function changeStatus(id, status) {
-  await request(`/api/admin/orders/${id}/status`, {
-    method: "PUT",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({status})
+async function updateOrderStatus(id, status, select) {
+  select.disabled = true;
+
+  try {
+    await api(`/api/admin/orders/${id}/status`, {
+      method: "PUT",
+      body: JSON.stringify({ status })
+    });
+  } catch (error) {
+    alert(error.message);
+    await loadOrders();
+  } finally {
+    select.disabled = false;
+  }
+}
+
+document
+  .getElementById("login-password")
+  .addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      doLogin();
+    }
   });
-}
 
-checkAuth();
+renderPhotoEditors();
+checkLogin();
 </script>
+
 </body>
 </html>
