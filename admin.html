@@ -1052,7 +1052,13 @@ function renderOrders(orders) {
             `).join("")}
           </select>
         </label>
-      </article>
+        <button
+  type="button"
+  class="danger"
+  onclick="deleteOrder(${order.id})"
+>
+  Удалить заказ
+</button>      </article>
     `;
   }).join("");
 }
