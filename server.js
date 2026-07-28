@@ -1063,7 +1063,34 @@ app.put(
     });
   }
 );
+app.delete(
+  "/api/admin/orders/:id",
+  requireAdmin,
+  (req, res) => {
+    const id = Number(req.params.id);
 
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        error: "Некорректный заказ"
+      });
+    }
+
+    const result = db.prepare(`
+      DELETE FROM orders
+      WHERE id = ?
+    `).run(id);
+
+    if (!result.changes) {
+      return res.status(404).json({
+        error: "Заказ не найден"
+      });
+    }
+
+    res.json({
+      success: true
+    });
+  }
+);
 app.get("/admin", (_, res) => {
   res.sendFile(
     path.join(__dirname, "admin.html")
