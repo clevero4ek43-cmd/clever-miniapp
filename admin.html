@@ -1078,6 +1078,25 @@ async function updateOrderStatus(id, status, select) {
     select.disabled = false;
   }
 }
+  async function deleteOrder(id) {
+  const confirmed = confirm(
+    "Удалить этот заказ?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await api(`/api/admin/orders/${id}`, {
+      method: "DELETE"
+    });
+
+    await loadOrders();
+  } catch (error) {
+    alert(error.message);
+  }
+}    
 
 document
   .getElementById("login-password")
