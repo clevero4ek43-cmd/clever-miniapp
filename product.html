@@ -199,7 +199,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: opacity 0.2s ease;
+      transform-origin: center;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
     .image-label {
@@ -235,7 +238,7 @@
 
     .thumbnail:hover {
       transform: translateY(-2px);
-    }
+          }
 
     .thumbnail.active {
       border-color: var(--pink);
@@ -245,6 +248,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transform-origin: center;
     }
 
     .product-card {
@@ -398,7 +402,8 @@
       border-radius: 999px;
       background: var(--white);
     }
-        .quantity-button {
+
+    .quantity-button {
       width: 38px;
       height: 38px;
       border: 0;
@@ -467,8 +472,7 @@
       color: var(--green);
       font-size: 18px;
     }
-
-    .error-box h1 {
+        .error-box h1 {
       margin: 0 0 14px;
       color: var(--green);
       font-family: Georgia, "Times New Roman", serif;
@@ -778,17 +782,18 @@
 
     <section class="error-box hidden" id="errorBox">
       <h1>Товар не найден</h1>
+
       <p>
         Возможно, товар был скрыт или ссылка указана неверно.
         Вернитесь в каталог и выберите другой букет.
       </p>
+
       <a class="error-link" href="/">
         Вернуться в каталог
       </a>
     </section>
   </main>
-
-  <script>
+    <script>
     const loadingElement =
       document.getElementById("loading");
 
@@ -824,7 +829,8 @@
 
     const productCompositionElement =
       document.getElementById("productComposition");
-        const productDescriptionElement =
+
+    const productDescriptionElement =
       document.getElementById("productDescription");
 
     const productCareElement =
@@ -925,8 +931,83 @@
       return "/" + imagePath;
     }
 
-    function getProductImages(product) {
-      const possibleImages = [
+    function normalizePhoto(photo, fallbackOrder = 0) {
+      const source =
+        typeof photo === "string"
+          ? { image: photo }
+          : photo || {};
+
+      const imagePath =
+        source.image ||
+        source.url ||
+        source.src ||
+        "";
+
+      if (!imagePath) {
+        return null;
+      }
+
+      const zoom = Number(source.zoom);
+      const posX = Number(source.pos_x);
+      const posY = Number(source.pos_y);
+      const sortOrder = Number(source.sort_order);
+
+      return {
+        src: normalizeImagePath(imagePath),
+
+        isMain:
+          source.is_main === true ||
+          Number(source.is_main) === 1,
+
+        sortOrder:
+          Number.isFinite(sortOrder)
+            ? sortOrder
+            : fallbackOrder,
+
+        zoom:
+          Number.isFinite(zoom)
+            ? Math.max(1, Math.min(2.5, zoom))
+            : 1,
+
+        posX:
+          Number.isFinite(posX)
+            ? Math.max(-50, Math.min(50, posX))
+            : 0,
+
+        posY:
+          Number.isFinite(posY)
+            ? Math.max(-50, Math.min(50, posY))
+            : 0
+      };
+    }
+
+    function getProductPhotos(product) {
+      const savedPhotos =
+        Array.isArray(product.images)
+          ? product.images
+              .map((photo, index) => {
+                return normalizePhoto(photo, index);
+              })
+              .filter(Boolean)
+          : [];
+
+      savedPhotos.sort((first, second) => {
+        return first.sortOrder - second.sortOrder;
+      });
+
+      const mainPhotoIndex =
+        savedPhotos.findIndex((photo) => {
+          return photo.isMain;
+        });
+
+      if (mainPhotoIndex > 0) {
+        const [mainPhoto] =
+          savedPhotos.splice(mainPhotoIndex, 1);
+
+        savedPhotos.unshift(mainPhoto);
+      }
+
+      const legacyImages = [
         product.image,
         product.image2,
         product.image3,
@@ -934,208 +1015,220 @@
         product.image5
       ];
 
-      const uniqueImages = [];
+      const allPhotos = [...savedPhotos];
 
-      possibleImages.forEach((imagePath) => {
-        if (!imagePath) {
-          return;
-        }
+      legacyImages.forEach((imagePath, index) => {
+        const photo =
+          normalizePhoto(
+            imagePath,
+            allPhotos.length + index
+          );
 
-        const normalizedPath =
-          normalizeImagePath(imagePath);
-
-        if (!uniqueImages.includes(normalizedPath)) {
-          uniqueImages.push(normalizedPath);
+        if (
+          photo &&
+          !allPhotos.some((item) => item.src === photo.src)
+        ) {
+          allPhotos.push(photo);
         }
       });
 
-      if (uniqueImages.length === 0) {
-        uniqueImages.push(FALLBACK_IMAGE);
+      if (!allPhotos.length) {
+        allPhotos.push({
+          src: FALLBACK_IMAGE,
+          isMain: true,
+          sortOrder: 0,
+          zoom: 1,
+          posX: 0,
+          posY: 0
+        });
       }
 
-      while (uniqueImages.length < 5) {
-        uniqueImages.push(uniqueImages[0]);
-      }
-
-      return uniqueImages.slice(0, 5);
+      return allPhotos.slice(0, 5);
     }
 
-    function renderGallery(product) {
-      const images = getProductImages(product);
+    function applyPhotoSettings(image, photo) {
+      image.src = photo.src;
 
-      mainImage.src = images[0];
-      mainImage.alt =
-        product.name || "Букет КЛЕВЕР";
+      image.style.transform =
+        `translate(${photo.posX}%, ${photo.posY}%) ` +
+        `scale(${photo.zoom})`;
+    }
+              function renderGallery(product) {
+          const photos = getProductPhotos(product);
 
-      thumbnailsContainer.innerHTML = "";
+          applyPhotoSettings(mainImage, photos[0]);
 
-      images.forEach((imagePath, index) => {
-        const button =
-          document.createElement("button");
+          mainImage.alt =
+            product.name || "Букет КЛЕВЕР";
 
-        button.type = "button";
+          thumbnailsContainer.innerHTML = "";
 
-        button.className =
-          index === 0
-            ? "thumbnail active"
-            : "thumbnail";
+          photos.forEach((photo, index) => {
+            const button =
+              document.createElement("button");
 
-        button.setAttribute(
-          "aria-label",
-          "Показать фотографию " + (index + 1)
-        );
+            button.type = "button";
 
-        const image =
-          document.createElement("img");
+            button.className =
+              index === 0
+                ? "thumbnail active"
+                : "thumbnail";
 
-        image.src = imagePath;
+            button.setAttribute(
+              "aria-label",
+              "Показать фотографию " + (index + 1)
+            );
 
-        image.alt =
-          (product.name || "Букет") +
-          " — фотография " +
-          (index + 1);
+            const image =
+              document.createElement("img");
 
-        image.onerror = () => {
-          image.src = FALLBACK_IMAGE;
-        };
+            applyPhotoSettings(image, photo);
 
-        button.appendChild(image);
+            image.alt =
+              (product.name || "Букет") +
+              " — фотография " +
+              (index + 1);
 
-        button.addEventListener("click", () => {
-          mainImage.style.opacity = "0.35";
+            image.onerror = () => {
+              image.src = FALLBACK_IMAGE;
+            };
 
-          window.setTimeout(() => {
-            mainImage.src = imagePath;
-            mainImage.style.opacity = "1";
-          }, 120);
+            button.appendChild(image);
 
-          document
-            .querySelectorAll(".thumbnail")
-            .forEach((thumbnail) => {
-              thumbnail.classList.remove("active");
+            button.addEventListener("click", () => {
+              mainImage.style.opacity = "0.35";
+
+              window.setTimeout(() => {
+                applyPhotoSettings(mainImage, photo);
+                mainImage.style.opacity = "1";
+              }, 120);
+
+              document
+                .querySelectorAll(".thumbnail")
+                .forEach((thumbnail) => {
+                  thumbnail.classList.remove("active");
+                });
+
+              button.classList.add("active");
             });
 
-          button.classList.add("active");
-        });
+            thumbnailsContainer.appendChild(button);
+          });
 
-        thumbnailsContainer.appendChild(button);
-      });
+          mainImage.onerror = () => {
+            mainImage.src = FALLBACK_IMAGE;
+          };
+        }
 
-      mainImage.onerror = () => {
-        mainImage.src = FALLBACK_IMAGE;
-      };
-    }
+        function renderProduct(product) {
+          currentProduct = product;
 
-    function renderProduct(product) {
-      currentProduct = product;
+          const productName =
+            product.name || "Букет КЛЕВЕР";
 
-      const productName =
-        product.name || "Букет КЛЕВЕР";
+          const category =
+            product.category || "Букеты";
 
-      const category =
-        product.category || "Букеты";
+          document.title =
+            productName + " — КЛЕВЕР";
 
-      document.title =
-        productName + " — КЛЕВЕР";
+          productNameElement.textContent =
+            productName;
 
-      productNameElement.textContent =
-        productName;
+          breadcrumbNameElement.textContent =
+            productName;
 
-      breadcrumbNameElement.textContent =
-        productName;
+          productCategoryElement.textContent =
+            category;
 
-      productCategoryElement.textContent =
-        category;
+          productShortDescriptionElement.textContent =
+            product.short_description ||
+            product.shortDescription ||
+            "Букет, собранный флористами КЛЕВЕР с вниманием к каждой детали.";
 
-      productShortDescriptionElement.textContent =
-        product.short_description ||
-        product.shortDescription ||
-        "Букет, собранный флористами КЛЕВЕР с вниманием к каждой детали.";
+          productPriceElement.textContent =
+            formatPrice(product.price);
 
-      productPriceElement.textContent =
-        formatPrice(product.price);
+          productSizeElement.textContent =
+            product.size ||
+            "Размер зависит от состава и сезонности цветов.";
 
-      productSizeElement.textContent =
-        product.size ||
-        "Размер зависит от состава и сезонности цветов.";
+          productCompositionElement.textContent =
+            product.composition ||
+            "Точный состав уточнит флорист после оформления заказа.";
 
-      productCompositionElement.textContent =
-        product.composition ||
-        "Точный состав уточнит флорист после оформления заказа.";
+          productDescriptionElement.textContent =
+            product.description ||
+            product.short_description ||
+            "Живой букет, который мы соберём специально для вашего заказа.";
 
-      productDescriptionElement.textContent =
-        product.description ||
-        product.short_description ||
-        "Живой букет, который мы соберём специально для вашего заказа.";
+          productCareElement.textContent =
+            product.care ||
+            "Подрежьте стебли на 1–2 см и поставьте букет в чистую прохладную воду. Меняйте воду каждый день. Не ставьте цветы рядом с батареей, под прямые солнечные лучи или возле фруктов.";
 
-      productCareElement.textContent =
-        product.care ||
-        "Подрежьте стебли на 1–2 см и поставьте букет в чистую прохладную воду. Меняйте воду каждый день. Не ставьте цветы рядом с батареей, под прямые солнечные лучи или возле фруктов.";
+          renderGallery(product);
 
-      renderGallery(product);
+          loadingElement.classList.add("hidden");
+          errorBox.classList.add("hidden");
+          productLayout.classList.remove("hidden");
+        }
 
-      loadingElement.classList.add("hidden");
-      errorBox.classList.add("hidden");
-      productLayout.classList.remove("hidden");
-    }
+        function showError() {
+          loadingElement.classList.add("hidden");
+          productLayout.classList.add("hidden");
+          errorBox.classList.remove("hidden");
+        }
 
-    function showError() {
-      loadingElement.classList.add("hidden");
-      productLayout.classList.add("hidden");
-      errorBox.classList.remove("hidden");
-    }
+        function getCart() {
+          try {
+            const savedCart =
+              localStorage.getItem("cleverCart") ||
+              localStorage.getItem("cart") ||
+              "[]";
 
-    function getCart() {
-      try {
-        const savedCart =
-          localStorage.getItem("cleverCart") ||
-          localStorage.getItem("cart") ||
-          "[]";
+            const parsedCart =
+              JSON.parse(savedCart);
 
-        const parsedCart =
-          JSON.parse(savedCart);
+            const cart =
+              Array.isArray(parsedCart)
+                ? parsedCart.map((item) => ({
+                    id: item.id,
+                    name: item.name || "Товар",
+                    price: Number(item.price) || 0,
+                    image: item.image || "",
+                    qty:
+                      Number(item.qty) ||
+                      Number(item.quantity) ||
+                      1
+                  }))
+                : [];
 
-        const cart =
-          Array.isArray(parsedCart)
-            ? parsedCart.map((item) => ({
-                id: item.id,
-                name: item.name || "Товар",
-                price: Number(item.price) || 0,
-                image: item.image || "",
-                qty:
-                  Number(item.qty) ||
-                  Number(item.quantity) ||
-                  1
-              }))
-            : [];
+            localStorage.setItem(
+              "cleverCart",
+              JSON.stringify(cart)
+            );
 
-        localStorage.setItem(
-          "cleverCart",
-          JSON.stringify(cart)
-        );
+            localStorage.removeItem("cart");
 
-        localStorage.removeItem("cart");
+            return cart;
+          } catch (error) {
+            localStorage.removeItem("cart");
+            localStorage.removeItem("cleverCart");
+            return [];
+          }
+        }
 
-        return cart;
-      } catch (error) {
-        localStorage.removeItem("cart");
-        localStorage.removeItem("cleverCart");
-        return [];
-      }
-    }
+        function saveCart(cart) {
+          localStorage.setItem(
+            "cleverCart",
+            JSON.stringify(cart)
+          );
 
-    function saveCart(cart) {
-      localStorage.setItem(
-        "cleverCart",
-        JSON.stringify(cart)
-      );
+          localStorage.removeItem("cart");
 
-      localStorage.removeItem("cart");
-
-      updateCartCount();
-    }
-
-    function updateCartCount() {
+          updateCartCount();
+        }
+          function updateCartCount() {
       const cart = getCart();
 
       const totalQuantity =
@@ -1172,13 +1265,17 @@
       } else {
         cart.push({
           id: currentProduct.id,
+
           name:
             currentProduct.name ||
             "Букет КЛЕВЕР",
+
           price:
             Number(currentProduct.price) || 0,
+
           image:
-            currentProduct.image || "",
+            getProductPhotos(currentProduct)[0].src,
+
           qty: quantity
         });
       }
@@ -1195,6 +1292,7 @@
 
       window.setTimeout(() => {
         cartMessageElement.textContent = "";
+
         addToCartButton.textContent =
           "Добавить в корзину";
       }, 2200);
