@@ -1029,6 +1029,41 @@ function renderOrders(orders) {
             ? escapeHtml(order.comment)
             : "Не указан"}
         </p>
+        <p>
+  <strong>Получение:</strong>
+  ${order.delivery_method === "delivery"
+    ? "Доставка"
+    : "Самовывоз"}
+</p>
+
+${order.delivery_method === "delivery" ? `
+  <p>
+    <strong>Адрес:</strong>
+    ${escapeHtml(order.delivery_address || "Не указан")}
+  </p>
+
+  <p>
+    <strong>Получатель:</strong>
+    ${escapeHtml(order.recipient_name || "Не указан")}
+  </p>
+
+  <p>
+    <strong>Телефон получателя:</strong>
+    ${escapeHtml(order.recipient_phone || "Не указан")}
+  </p>
+` : ""}
+
+<p>
+  <strong>Открытка:</strong>
+  ${order.card_needed === "yes" ? "Да" : "Нет"}
+</p>
+
+${order.card_needed === "yes" ? `
+  <p>
+    <strong>Текст открытки:</strong>
+    ${escapeHtml(order.card_text || "Не указан")}
+  </p>
+` : ""}
 
         <label style="max-width:260px">
           Статус заказа
