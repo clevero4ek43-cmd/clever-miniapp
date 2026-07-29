@@ -79,6 +79,41 @@ addColumnIfMissing("products", "care", "TEXT DEFAULT ''");
 addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
 addColumnIfMissing("orders", "status", "TEXT NOT NULL DEFAULT 'Новый'");
 addColumnIfMissing("orders", "created_at", "TEXT DEFAULT ''");
+addColumnIfMissing(
+  "orders",
+  "delivery_method",
+  "TEXT NOT NULL DEFAULT 'pickup'"
+);
+
+addColumnIfMissing(
+  "orders",
+  "delivery_address",
+  "TEXT DEFAULT ''"
+);
+
+addColumnIfMissing(
+  "orders",
+  "recipient_name",
+  "TEXT DEFAULT ''"
+);
+
+addColumnIfMissing(
+  "orders",
+  "recipient_phone",
+  "TEXT DEFAULT ''"
+);
+
+addColumnIfMissing(
+  "orders",
+  "card_needed",
+  "TEXT NOT NULL DEFAULT 'no'"
+);
+
+addColumnIfMissing(
+  "orders",
+  "card_text",
+  "TEXT DEFAULT ''"
+);
 
 db.prepare(`
   INSERT INTO product_images (
@@ -943,28 +978,74 @@ app.post("/api/orders", (req, res) => {
   const createdAt = db.prepare(`
     SELECT datetime('now', '+3 hours') AS value
   `).get().value;
+  const deliveryMethod =
+  req.body?.delivery_method === "delivery"
+    ? "delivery"
+    : "pickup";
 
+const deliveryAddress =
+  String(req.body?.delivery_address || "").trim();
+
+const recipientName =
+  String(req.body?.recipient_name || "").trim();
+
+const recipientPhone =
+  String(req.body?.recipient_phone || "").trim();
+
+const cardNeeded =
+  req.body?.card_needed === "yes"
+    ? "yes"
+    : "no";
+
+const cardText =
+  String(req.body?.card_text || "").trim();
+
+if (
+  deliveryMethod === "delivery" &&
+  (!deliveryAddress || !recipientName || !recipientPhone)
+) {
+  return res.status(400).json({
+    error: "Укажите адрес, имя и телефон получателя"
+  });
+}
+
+if (cardNeeded === "yes" && !cardText) {
+  return res.status(400).json({
+    error: "Укажите текст для открытки"
+  });
+}
   const result = db.prepare(`
-    INSERT INTO orders (
-      customer_name,
-      phone,
-      comment,
-      total,
-      items_json,
-      status,
-      created_at
-    )
-    VALUES (?, ?, ?, ?, ?, 'Новый', ?)
-  `).run(
-    customerName,
+  INSERT INTO orders (
+    customer_name,
     phone,
     comment,
+    delivery_method,
+    delivery_address,
+    recipient_name,
+    recipient_phone,
+    card_needed,
+    card_text,
     total,
-    JSON.stringify(normalizedItems),
-    createdAt
-  );
-
-  const order = {
+    items_json,
+    status,
+    created_at
+  )
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`).run(
+  customerName,
+  phone,
+  comment,
+  deliveryMethod,
+  deliveryAddress,
+  recipientName,
+  recipientPhone,
+  cardNeeded,
+  cardText,
+  total,
+  JSON.stringify(normalizedItems),
+  "Новый",
+  createdAt
+);  const order = {
     id: Number(result.lastInsertRowid),
     customer_name: customerName,
     phone,
@@ -1045,6 +1126,7 @@ app.put(
       });
     }
 
+    
     const result = db.prepare(`
       UPDATE orders
       SET status = ?
