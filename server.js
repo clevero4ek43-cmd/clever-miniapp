@@ -1072,7 +1072,12 @@ app.get("/api/admin/orders", requireAdmin, (_, res) => {
       customer_name,
       phone,
       comment,
-      total,
+      delivery_method,
+delivery_address,
+recipient_name,
+recipient_phone,
+card_needed,
+card_text,      total,
       items_json,
       status,
       created_at
