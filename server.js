@@ -373,7 +373,31 @@ function buildTelegramMessage(order) {
     "",
     `👤 ${order.customer_name}`,
     `📞 ${order.phone}`,
-    "",
+    `🚚 Получение: ${
+  order.delivery_method === "delivery"
+    ? "Доставка"
+    : "Самовывоз"
+}`,
+
+order.delivery_method === "delivery"
+  ? `📍 Адрес: ${order.delivery_address || "Не указан"}`
+  : "",
+
+order.delivery_method === "delivery"
+  ? `👤 Получатель: ${order.recipient_name || "Не указан"}`
+  : "",
+
+order.delivery_method === "delivery"
+  ? `📞 Телефон получателя: ${order.recipient_phone || "Не указан"}`
+  : "",
+
+`💌 Открытка: ${
+  order.card_needed === "yes" ? "Да" : "Нет"
+}`,
+
+order.card_needed === "yes"
+  ? `✍️ Текст открытки: ${order.card_text || "Не указан"}`
+  : "",    "",
     itemsText,
     "",
     `💰 Итого: ${formatPrice(order.total)}`,
