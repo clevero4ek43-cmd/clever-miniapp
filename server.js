@@ -1074,7 +1074,12 @@ if (cardNeeded === "yes" && !cardText) {
     customer_name: customerName,
     phone,
     comment,
-    total,
+    delivery_method: deliveryMethod,
+delivery_address: deliveryAddress,
+recipient_name: recipientName,
+recipient_phone: recipientPhone,
+card_needed: cardNeeded,
+card_text: cardText,    total,
     items: normalizedItems,
     status: "Новый",
     created_at: createdAt
