@@ -504,6 +504,36 @@
     .checkout-status.success {
       color: #2f6e3d;
     }
+    .checkout-form select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  background: var(--white);
+  color: #333333;
+  outline: none;
+}
+
+.checkout-form select:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(216, 168, 181, 0.18);
+}
+
+.checkout-label {
+  margin: 8px 0 0;
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.conditional-fields {
+  display: grid;
+  gap: 10px;
+}
+
+.conditional-fields.hidden {
+  display: none;
+}
 
     @media (max-width: 1200px) {
       .catalog-grid {
@@ -689,6 +719,53 @@
     <div class="checkout-form">
       <input id="customer-name" autocomplete="name" placeholder="Ваше имя">
       <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
+      <p class="checkout-label">Как получить заказ?</p>
+
+<select id="delivery-method">
+  <option value="pickup">Самовывоз</option>
+  <option value="delivery">Доставка</option>
+</select>
+
+<div
+  id="delivery-fields"
+  class="conditional-fields hidden"
+>
+  <input
+    id="delivery-address"
+    type="text"
+    placeholder="Адрес доставки"
+  >
+
+  <input
+    id="recipient-name"
+    type="text"
+    placeholder="Имя получателя"
+  >
+
+  <input
+    id="recipient-phone"
+    type="tel"
+    placeholder="Телефон получателя"
+  >
+</div>
+
+<p class="checkout-label">Подписать открытку?</p>
+
+<select id="card-needed">
+  <option value="no">Нет</option>
+  <option value="yes">Да</option>
+</select>
+
+<div
+  id="card-fields"
+  class="conditional-fields hidden"
+>
+  <textarea
+    id="card-text"
+    rows="3"
+    placeholder="Текст для открытки"
+  ></textarea>
+</div>    
       <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
 
       <button id="checkout-btn" class="checkout-btn" type="button">
@@ -961,6 +1038,37 @@
         openCart();
       }
     }
+    const deliveryMethod =
+  document.getElementById("delivery-method");
+
+const deliveryFields =
+  document.getElementById("delivery-fields");
+
+const cardNeeded =
+  document.getElementById("card-needed");
+
+const cardFields =
+  document.getElementById("card-fields");
+
+deliveryMethod.addEventListener("change", () => {
+  const isDelivery =
+    deliveryMethod.value === "delivery";
+
+  deliveryFields.classList.toggle(
+    "hidden",
+    !isDelivery
+  );
+});
+
+cardNeeded.addEventListener("change", () => {
+  const needsCard =
+    cardNeeded.value === "yes";
+
+  cardFields.classList.toggle(
+    "hidden",
+    !needsCard
+  );
+});
 
     async function sendOrder() {
       const status = document.getElementById("checkout-status");
@@ -968,7 +1076,17 @@
       const customerName = document.getElementById("customer-name").value.trim();
       const phone = document.getElementById("customer-phone").value.trim();
       const comment = document.getElementById("customer-comment").value.trim();
+      const deliveryAddress =
+  document.getElementById("delivery-address").value.trim();
 
+const recipientName =
+  document.getElementById("recipient-name").value.trim();
+
+const recipientPhone =
+  document.getElementById("recipient-phone").value.trim();
+
+const cardText =
+  document.getElementById("card-text").value.trim();
       status.textContent = "";
       status.className = "checkout-status";
 
@@ -983,6 +1101,23 @@
         status.classList.add("error");
         return;
       }
+      if (
+  deliveryMethod.value === "delivery" &&
+  (!deliveryAddress || !recipientName || !recipientPhone)
+) {
+  status.textContent =
+    "Укажите адрес, имя и телефон получателя.";
+  return;
+}
+
+if (
+  cardNeeded.value === "yes" &&
+  !cardText
+) {
+  status.textContent =
+    "Напишите текст для открытки.";
+  return;
+}
 
       checkoutButton.disabled = true;
       checkoutButton.textContent = "Отправляем…";
@@ -999,7 +1134,12 @@
             customer_name: customerName,
             phone,
             comment,
-            items: cart.map(item => ({
+            delivery_method: deliveryMethod.value,
+delivery_address: deliveryAddress,
+recipient_name: recipientName,
+recipient_phone: recipientPhone,
+card_needed: cardNeeded.value,
+card_text: cardText,            items: cart.map(item => ({
               id: Number(item.id),
               qty: Number(item.qty)
             }))
