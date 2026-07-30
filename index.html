@@ -1604,7 +1604,65 @@ recipientTypeInputs.forEach(input => {
     recipientFields.hidden = input.value !== "other" || !input.checked;
   });
 });
-    loadProducts();
+    const deliveryDateInput = document.getElementById("delivery-date");
+const deliveryTimeInput = document.getElementById("delivery-time");
+
+function formatLocalDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function formatLocalTime(date) {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${hours}:${minutes}`;
+}
+
+function getEarliestDelivery() {
+  const now = new Date();
+  const earliest = new Date(now);
+
+  if (now.getHours() < 8) {
+    earliest.setHours(9, 30, 0, 0);
+  } else if (now.getHours() >= 19) {
+    earliest.setDate(earliest.getDate() + 1);
+    earliest.setHours(9, 30, 0, 0);
+  } else {
+    earliest.setMinutes(earliest.getMinutes() + 90);
+  }
+
+  return earliest;
+}
+
+function updateDeliveryLimits() {
+  const earliest = getEarliestDelivery();
+  const earliestDate = formatLocalDate(earliest);
+
+  deliveryDateInput.min = earliestDate;
+
+  if (!deliveryDateInput.value ||
+      deliveryDateInput.value < earliestDate) {
+    deliveryDateInput.value = earliestDate;
+  }
+
+  if (deliveryDateInput.value === earliestDate) {
+    deliveryTimeInput.min = formatLocalTime(earliest);
+
+    if (!deliveryTimeInput.value ||
+        deliveryTimeInput.value < deliveryTimeInput.min) {
+      deliveryTimeInput.value = deliveryTimeInput.min;
+    }
+  } else {
+    deliveryTimeInput.removeAttribute("min");
+  }
+}
+
+deliveryDateInput.addEventListener("change", updateDeliveryLimits);
+updateDeliveryLimits();    loadProducts();
     renderCart();
 
     if (window.location.hash === "#cart") {
