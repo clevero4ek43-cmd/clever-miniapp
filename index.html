@@ -1581,6 +1581,16 @@ card_text: cardText,            items: cart.map(item => ({
       renderCart();
     });
 
+    const recipientFields = document.getElementById("recipient-fields");
+const recipientTypeInputs = document.querySelectorAll(
+  'input[name="recipient-type"]'
+);
+
+recipientTypeInputs.forEach(input => {
+  input.addEventListener("change", () => {
+    recipientFields.hidden = input.value !== "other" || !input.checked;
+  });
+});
     loadProducts();
     renderCart();
 
