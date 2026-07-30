@@ -661,6 +661,59 @@
     padding: 36px 20px;
   }
 }
+    .contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.contact-buttons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #47664f;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-buttons a:hover {
+  background: #385240;
+}
+
+.contacts-section > p a {
+  color: #47664f;
+}
+
+.seller-details {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #d9dfda;
+}
+
+.seller-details p {
+  margin: 6px 0;
+}
+
+.copyright {
+  margin-top: 32px;
+  color: #777777;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .contact-buttons {
+    flex-direction: column;
+  }
+
+  .contact-buttons a {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
   </style>
 </head>
 
@@ -745,7 +798,50 @@
 </section>
   </main>
 
-  <footer id="contacts">КЛЕВЕР © 2026</footer>
+  <footer id="contacts" class="contacts-section">
+  <h2>Контакты</h2>
+
+  <p><strong>Адрес:</strong> Иваново, ул. Свободы, 39Б</p>
+
+  <p>
+    <strong>Телефон:</strong>
+    <a href="tel:+79206789480">+7 920 678-94-80</a>
+  </p>
+
+  <p><strong>Режим работы:</strong> круглосуточно</p>
+
+  <p>
+    <strong>Электронная почта:</strong>
+    <a href="mailto:cleverIvanovo@yandex.ru">cleverIvanovo@yandex.ru</a>
+  </p>
+
+  <div class="contact-buttons">
+    <a href="https://t.me/CLEVER_37" target="_blank" rel="noopener">
+      Написать в Telegram
+    </a>
+
+    <a href="https://t.me/clever_ivanovo" target="_blank" rel="noopener">
+      Наша группа в Telegram
+    </a>
+
+    <a href="https://max.ru/u/f9LHodD0cOJ4S7In_D0ajPelAvOEaZHVIY-5_n__eU3Xjk27l6hbq3hZQSQ"
+       target="_blank" rel="noopener">
+      Написать в MAX
+    </a>
+
+    <a href="https://ya.cc/t/EA4tEaXm6kfbTL" target="_blank" rel="noopener">
+      Оставить отзыв на Яндексе
+    </a>
+  </div>
+
+  <div class="seller-details">
+    <p><strong>Индивидуальный предприниматель Маркова Людмила Владимировна</strong></p>
+    <p>ИНН: 372501520938</p>
+    <p>ОГРНИП: 307370631300028</p>
+  </div>
+
+  <p class="copyright">КЛЕВЕР © 2026</p>
+</footer>
 
   <div id="cart-overlay" class="cart-overlay"></div>
 
