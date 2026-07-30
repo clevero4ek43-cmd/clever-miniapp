@@ -1094,7 +1094,7 @@
 
   <label>
     Желаемое время
-    <input id="delivery-time" type="time">
+    <select id="delivery-time"></select> 
   </label>
 </div>
       
@@ -1604,7 +1604,7 @@ recipientTypeInputs.forEach(input => {
     recipientFields.hidden = input.value !== "other" || !input.checked;
   });
 });
-    const deliveryDateInput = document.getElementById("delivery-date");
+   const deliveryDateInput = document.getElementById("delivery-date");
 const deliveryTimeInput = document.getElementById("delivery-time");
 
 function formatLocalDate(date) {
@@ -1615,11 +1615,12 @@ function formatLocalDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-function formatLocalTime(date) {
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-
-  return `${hours}:${minutes}`;
+function formatTime(hours, minutes) {
+  return (
+    String(hours).padStart(2, "0") +
+    ":" +
+    String(minutes).padStart(2, "0")
+  );
 }
 
 function getEarliestDelivery() {
@@ -1633,36 +1634,74 @@ function getEarliestDelivery() {
     earliest.setHours(9, 30, 0, 0);
   } else {
     earliest.setMinutes(earliest.getMinutes() + 90);
+
+    const minutes = earliest.getMinutes();
+
+    if (minutes > 0 && minutes <= 30) {
+      earliest.setMinutes(30, 0, 0);
+    } else if (minutes > 30) {
+      earliest.setHours(earliest.getHours() + 1);
+      earliest.setMinutes(0, 0, 0);
+    } else {
+      earliest.setSeconds(0, 0);
+    }
   }
 
   return earliest;
 }
 
-function updateDeliveryLimits() {
+function createDeliveryIntervals() {
   const earliest = getEarliestDelivery();
   const earliestDate = formatLocalDate(earliest);
 
   deliveryDateInput.min = earliestDate;
 
-  if (!deliveryDateInput.value ||
-      deliveryDateInput.value < earliestDate) {
+  if (
+    !deliveryDateInput.value ||
+    deliveryDateInput.value < earliestDate
+  ) {
     deliveryDateInput.value = earliestDate;
   }
 
-  if (deliveryDateInput.value === earliestDate) {
-    deliveryTimeInput.min = formatLocalTime(earliest);
+  deliveryTimeInput.innerHTML = "";
 
-    if (!deliveryTimeInput.value ||
-        deliveryTimeInput.value < deliveryTimeInput.min) {
-      deliveryTimeInput.value = deliveryTimeInput.min;
-    }
-  } else {
-    deliveryTimeInput.removeAttribute("min");
+  let startMinutes = 0;
+
+  if (deliveryDateInput.value === earliestDate) {
+    startMinutes =
+      earliest.getHours() * 60 + earliest.getMinutes();
+  }
+
+  for (
+    let minutes = startMinutes;
+    minutes < 24 * 60;
+    minutes += 30
+  ) {
+    const startHours = Math.floor(minutes / 60);
+    const startMins = minutes % 60;
+
+    const endTotal = minutes + 60;
+    const endHours = Math.floor((endTotal % (24 * 60)) / 60);
+    const endMins = endTotal % 60;
+
+    const startTime = formatTime(startHours, startMins);
+    const endTime = formatTime(endHours, endMins);
+
+    const option = document.createElement("option");
+    option.value = `${startTime}-${endTime}`;
+    option.textContent = `с ${startTime} до ${endTime}`;
+
+    deliveryTimeInput.appendChild(option);
   }
 }
 
-deliveryDateInput.addEventListener("change", updateDeliveryLimits);
-updateDeliveryLimits();    loadProducts();
+deliveryDateInput.addEventListener(
+  "change",
+  createDeliveryIntervals
+);
+
+createDeliveryIntervals();
+    loadProducts();
     renderCart();
 
     if (window.location.hash === "#cart") {
