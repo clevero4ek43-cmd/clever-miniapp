@@ -742,6 +742,69 @@
   #contacts {
     scroll-margin-top: 120px;
   }
+.info-section {
+  padding: 70px 20px;
+  background: #f6f3ee;
+}
+
+.info-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.info-section h2 {
+  margin: 0 0 32px;
+  text-align: center;
+  font-size: 36px;
+  color: #24362a;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.info-card {
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(36, 54, 42, 0.07);
+}
+
+.info-card h3 {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: #47664f;
+}
+
+.info-card p {
+  margin: 0 0 14px;
+  line-height: 1.6;
+  color: #444444;
+}
+
+.info-card p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .info-section {
+    padding: 48px 16px;
+  }
+
+  .info-section h2 {
+    font-size: 28px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card {
+    padding: 22px;
+  }
+}
 } 
   </style>
 </head>
@@ -824,6 +887,68 @@
   <p>
     Вы можете выбрать готовый букет в каталоге или заказать индивидуальную композицию.
   </p>
+</section>
+    <section class="info-section" id="delivery">
+  <div class="info-container">
+    <h2>Оплата и доставка</h2>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Доставка</h3>
+
+        <p>
+          <strong>Доставка по Иванову от 300 ₽.</strong>
+          Итоговая стоимость зависит от района и выбранного времени.
+          Менеджер уточнит и согласует её до оплаты.
+        </p>
+
+        <p>
+          Доставка по Ивановской области также возможна.
+          Стоимость рассчитывается индивидуально.
+        </p>
+
+        <p>
+          Доставка возможна круглосуточно по предварительному согласованию.
+          Обычно на подготовку и доставку требуется от 1,5 часа после
+          подтверждения заказа менеджером.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>Самовывоз</h3>
+
+        <p>
+          Самовывоз бесплатный из салона КЛЕВЕР:
+          Иваново, ул. Свободы, 39Б.
+        </p>
+
+        <p>
+          Забрать заказ можно круглосуточно после подтверждения
+          его готовности менеджером.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>Оплата</h3>
+
+        <p>
+          Оплата на сайте не производится. После оформления заказа
+          менеджер свяжется с вами и подтвердит состав, стоимость
+          и время готовности.
+        </p>
+
+        <p>
+          При самовывозе можно оплатить заказ наличными,
+          банковской картой или через СБП.
+        </p>
+
+        <p>
+          Для дистанционной оплаты менеджер отправит QR-код СБП
+          в мессенджере. Покупателю предоставляется кассовый чек.
+        </p>
+      </div>
+    </div>
+  </div>
 </section>
   </main>
 
