@@ -918,7 +918,7 @@
         <h3>Самовывоз</h3>
 
         <p>
-          Самовывоз из салона КЛЕВЕР:
+          Самовывоз из салона цветов КЛЕВЕР:
           Иваново, ул. Свободы, 39Б.
         </p>
 
@@ -1024,6 +1024,25 @@
     <div class="checkout-form">
       <input id="customer-name" autocomplete="name" placeholder="Ваше имя">
       <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
+      <p class="checkout-label">Кто получит заказ?</p>
+
+<div class="recipient-choice">
+  <label>
+    <input type="radio" name="recipient-type" value="self" checked>
+    Я получатель
+  </label>
+
+  <label>
+    <input type="radio" name="recipient-type" value="other">
+    Получатель другой человек
+  </label>
+</div>  
+<div id="recipient-fields" class="recipient-fields" hidden>
+  <input id="recipient-name" type="text" placeholder="Имя получателя">
+
+  <input id="recipient-phone" type="tel" placeholder="Телефон получателя">
+</div>
+      
       <p class="checkout-label">Как получить заказ?</p>
 
 <select id="delivery-method">
