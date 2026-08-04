@@ -1035,6 +1035,19 @@ function renderOrders(orders) {
     ? "Доставка"
     : "Самовывоз"}
 </p>
+<p>
+  <strong>Дата получения:</strong>
+  ${escapeHtml(order.delivery_date || "Не указана")}
+</p>
+
+<p>
+  <strong>Время получения:</strong>
+  ${escapeHtml(
+    order.delivery_time
+      ? order.delivery_time.replace("-", " до ")
+      : "Не указано"
+  )}
+</p>
 
 ${order.delivery_method === "delivery" ? `
   <p>
