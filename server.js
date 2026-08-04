@@ -395,6 +395,13 @@ function buildTelegramMessage(order) {
     ? "Доставка"
     : "Самовывоз"
 }`,
+    order.delivery_date
+  ? `📅 Дата получения: ${order.delivery_date}`
+  : "",
+
+order.delivery_time
+  ? `⏰ Интервал: ${order.delivery_time.replace("-", " до ")}`
+  : "",
 
 order.delivery_method === "delivery"
   ? `📍 Адрес: ${order.delivery_address || "Не указан"}`
