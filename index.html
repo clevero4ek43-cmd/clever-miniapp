@@ -1514,11 +1514,17 @@ if (
             phone,
             comment,
             delivery_method: deliveryMethod.value,
+            delivery_date: document.getElementById("delivery-date").value,
+delivery_time: document.getElementById("delivery-time").value,
+recipient_type: document.querySelector(
+  'input[name="recipient-type"]:checked'
+).value,
 delivery_address: deliveryAddress,
 recipient_name: recipientName,
 recipient_phone: recipientPhone,
 card_needed: cardNeeded.value,
-card_text: cardText,            items: cart.map(item => ({
+card_text: cardText,         
+            items: cart.map(item => ({
               id: Number(item.id),
               qty: Number(item.qty)
             }))
