@@ -114,6 +114,23 @@ addColumnIfMissing(
   "card_text",
   "TEXT DEFAULT ''"
 );
+addColumnIfMissing(
+  "orders",
+  "delivery_date",
+  "TEXT DEFAULT ''"
+);
+
+addColumnIfMissing(
+  "orders",
+  "delivery_time",
+  "TEXT DEFAULT ''"
+);
+
+addColumnIfMissing(
+  "orders",
+  "recipient_type",
+  "TEXT DEFAULT 'self'"
+);
 
 db.prepare(`
   INSERT INTO product_images (
