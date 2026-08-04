@@ -919,6 +919,9 @@ app.post("/api/orders", (req, res) => {
   const phone = cleanText(req.body?.phone, 100);
   const comment = cleanText(req.body?.comment, 2000);
   const items = req.body?.items;
+  const deliveryDate = cleanText(req.body?.delivery_date, 20);
+const deliveryTime = cleanText(req.body?.delivery_time, 30);
+const recipientType = cleanText(req.body?.recipient_type, 20);
 
   if (!customerName || !phone) {
     return res.status(400).json({
