@@ -1064,6 +1064,9 @@ if (cardNeeded === "yes" && !cardText) {
     phone,
     comment,
     delivery_method,
+    delivery_date,
+    delivery_time,
+    recipient_type,
     delivery_address,
     recipient_name,
     recipient_phone,
@@ -1074,13 +1077,16 @@ if (cardNeeded === "yes" && !cardText) {
     status,
     created_at
   )
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `).run(
   customerName,
   phone,
   comment,
   deliveryMethod,
-  deliveryAddress,
+    deliveryDate,
+deliveryTime,
+recipientType,
+    deliveryAddress,
   recipientName,
   recipientPhone,
   cardNeeded,
@@ -1089,12 +1095,16 @@ if (cardNeeded === "yes" && !cardText) {
   JSON.stringify(normalizedItems),
   "Новый",
   createdAt
-);  const order = {
+);  
+  const order = {
     id: Number(result.lastInsertRowid),
     customer_name: customerName,
     phone,
     comment,
     delivery_method: deliveryMethod,
+    delivery_date: deliveryDate,
+delivery_time: deliveryTime,
+recipient_type: recipientType,
 delivery_address: deliveryAddress,
 recipient_name: recipientName,
 recipient_phone: recipientPhone,
