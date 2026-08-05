@@ -173,6 +173,29 @@
 
     .button,
     .card-button,
+   .personal-data-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #555;
+}
+
+.personal-data-consent input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+
+.personal-data-consent a {
+  color: var(--pink-dark);
+  text-decoration: underline;
+}
     .checkout-btn {
       border: 0;
       border-radius: 999px;
@@ -1139,6 +1162,15 @@
 </div>    
       <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
 
+      <label class="personal-data-consent">
+  <input id="personal-data-consent" type="checkbox">
+  <span>
+    Я даю согласие на
+    <a href="/consent.html" target="_blank">обработку персональных данных</a>
+    и ознакомилась с
+    <a href="/privacy.html" target="_blank">Политикой конфиденциальности</a>
+  </span>
+</label>
       <button id="checkout-btn" class="checkout-btn" type="button">
         Оформить заказ
       </button>
@@ -1461,6 +1493,12 @@ const cardText =
       status.textContent = "";
       status.className = "checkout-status";
 
+      if (!document.getElementById("personal-data-consent").checked) {
+  status.textContent = "Подтвердите согласие на обработку персональных данных.";
+  status.classList.add("error");
+  document.getElementById("personal-data-consent").focus();
+  return;
+}
       if (!cart.length) {
         status.textContent = "Корзина пуста.";
         status.classList.add("error");
