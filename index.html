@@ -185,13 +185,19 @@
 
 .personal-data-consent input {
   width: 18px;
+  min-width: 18px;
+  max-width: 18px;
   height: 18px;
+  padding: 0;
   margin: 1px 0 0;
-  flex-shrink: 0;
+  flex: 0 0 18px;
   accent-color: var(--pink);
   cursor: pointer;
 }
-
+    .personal-data-consent span {
+  flex: 1;
+  min-width: 0;
+}
 .personal-data-consent a {
   color: var(--pink-dark);
   text-decoration: underline;
