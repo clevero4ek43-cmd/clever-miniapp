@@ -754,7 +754,14 @@ function renderProducts() {
         </div>
 
         <div class="actions">
-          <button
+        <button
+  class="${product.in_stock ? "secondary" : "danger"}"
+  onclick="toggleStock(${product.id}, ${product.in_stock ? "false" : "true"})"
+>
+  ${product.in_stock ? "В наличии" : "Нет в наличии"}
+</button>
+
+<button
             class="secondary"
             onclick="editProduct(${product.id})"
           >
@@ -901,7 +908,27 @@ function resetForm() {
     );
   }
 }
+async function toggleStock(id, inStock) {
+  const product = products.find(
+    item => Number(item.id) === Number(id)
+  );
 
+  if (!product) return;
+
+  try {
+    await api(`/api/admin/products/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        ...product,
+        in_stock: inStock
+      })
+    });
+
+    await loadProducts();
+  } catch (error) {
+    alert(error.message);
+  }
+}
 async function deleteProduct(id) {
   const product = products.find(
     item => Number(item.id) === Number(id)
