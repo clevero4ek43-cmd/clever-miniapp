@@ -76,6 +76,7 @@ addColumnIfMissing("products", "short_description", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "composition", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "size", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "care", "TEXT DEFAULT ''");
+addColumnIfMissing("products", "in_stock", "INTEGER NOT NULL DEFAULT 1");
 addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
 addColumnIfMissing("orders", "status", "TEXT NOT NULL DEFAULT 'Новый'");
 addColumnIfMissing("orders", "created_at", "TEXT DEFAULT ''");
@@ -633,6 +634,7 @@ app.get("/api/products", (_, res) => {
       image,
       category,
       visible,
+      in_stock,
       sort_order
     FROM products
     WHERE visible = 1
@@ -656,6 +658,7 @@ app.get("/api/admin/products", requireAdmin, (_, res) => {
       image,
       category,
       visible,
+      in_stock,
       sort_order,
       created_at
     FROM products
@@ -720,6 +723,7 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
   );
 
   const visible = req.body?.visible ? 1 : 0;
+  const inStock = req.body?.in_stock === false ? 0 : 1;
   const sortOrder = Math.round(
     Number(req.body?.sort_order) || 0
   );
@@ -747,10 +751,11 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
         image,
         category,
         visible,
+        in_stock,
         sort_order
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     `).run(
       name,
       price,
       shortDescription,
@@ -761,6 +766,7 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
       image,
       category,
       visible,
+      inStock,
       sortOrder
     );
 
@@ -821,6 +827,7 @@ app.put(
     );
 
     const visible = req.body?.visible ? 1 : 0;
+    const inStock = req.body?.in_stock === false ? 0 : 1;
 
     const sortOrder = Math.round(
       Number(req.body?.sort_order) || 0
@@ -856,6 +863,7 @@ app.put(
           image = ?,
           category = ?,
           visible = ?,
+          in_stock = ?,
           sort_order = ?
         WHERE id = ?
       `).run(
@@ -869,6 +877,7 @@ app.put(
         image,
         category,
         visible,
+        inStock,
         sortOrder,
         id
       );
