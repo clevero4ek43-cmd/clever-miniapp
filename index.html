@@ -40,7 +40,8 @@
       background: linear-gradient(180deg, var(--milk), var(--soft-pink));
     }
 
-    body.cart-open {
+    body.cart-open,
+    body.order-confirmation-open {
       overflow: hidden;
     }
 
@@ -250,7 +251,7 @@
 
     .catalog-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 380px));
+      grid-template-columns: repeat(3,, minmax(0, 380px));
       justify-content: center;
       gap: 32px;
     }
@@ -297,6 +298,7 @@
     }
 
     .product-card h3 {
+          .product-card h3 {
       margin: 0 0 10px;
       font-size: 26px;
       line-height: 1.25;
@@ -389,7 +391,7 @@
 
     .cart-overlay.open {
       visibility: visible;
-       opacity: 1;
+      opacity: 1;
     }
 
     .cart-panel {
@@ -533,1222 +535,1732 @@
     .checkout-status.success {
       color: #2f6e3d;
     }
-    .checkout-form select {
-  width: 100%;
-  padding: 13px 14px;
-  border: 1px solid #dddddd;
-  border-radius: 12px;
-  background: var(--white);
-  color: #333333;
-  outline: none;
-}
 
-.checkout-form select:focus {
-  border-color: var(--pink);
-  box-shadow: 0 0 0 3px rgba(216, 168, 181, 0.18);
-}
-
-.checkout-label {
-  margin: 8px 0 0;
-  color: var(--green);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.conditional-fields {
-  display: grid;
-  gap: 10px;
-}
-
-.conditional-fields.hidden {
-  display: none;
-}
-
-    @media (max-width: 1200px) {
-      .catalog-grid {
-        grid-template-columns: repeat(2, minmax(0, 380px));
-      }
+    .order-confirmation {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(24, 38, 28, 0.58);
     }
 
-    @media (max-width: 800px) {
-      .catalog-grid {
-        grid-template-columns: minmax(0, 520px);
-      }
+    .order-confirmation.open {
+      display: flex;
     }
 
-    @media (max-width: 760px) {
-      .topbar {
-        height: 68px;
-        padding: 0 12px 0 16px;
-      }
-
-      .menu {
-        display: none;
-      }
-
-      .hero {
-        padding: 34px 16px 48px;
-      }
-
-      .hero-logo {
-        width: 170px;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-        letter-spacing: 6px;
-      }
-
-      .brand-sub {
-        font-size: 18px;
-        letter-spacing: 5px;
-      }
-
-      .hero-title {
-        font-size: 29px;
-      }
-
-      .subtitle {
-        font-size: 17px;
-      }
-
-      .button {
-        width: min(100%, 320px);
-        padding: 17px 28px;
-      }
-
-      .catalog {
-        padding: 42px 14px 70px;
-      }
-
-      .catalog-title {
-        font-size: 22px;
-        letter-spacing: 4px;
-      }
-
-      .catalog-subtitle {
-        margin-bottom: 30px;
-      }
-
-      .product-card {
-        border-radius: 22px;
-      }
-
-      .product-content {
-        padding: 19px 18px 20px;
-      }
-
-      .product-card h3 {
-        font-size: 23px;
-      }
-
-      .price {
-        font-size: 33px;
-      }
-
-      .card-actions {
-        gap: 9px;
-      }
-
-      .card-button,
-      .details-button {
-        height: 48px;
-        font-size: 15px;
-      }
-
-      .cart-panel {
-        top: 78px;
-        max-height: calc(100vh - 90px);
-        border-radius: 20px;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .card-actions {
-        flex-direction: column;
-      }
-
-      .card-button,
-      .details-button {
-        width: 100%;
-      }
-    }
-    .delivery-section,
-.about-section,
-.contacts-section {
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 48px 24px;
-  box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  .delivery-section,
-  .about-section,
-  .contacts-section {
-    padding: 36px 20px;
-  }
-}
-    .contact-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 28px 0;
-}
-
-.contact-buttons a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 18px;
-  border-radius: 12px;
-  background: #47664f;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.contact-buttons a:hover {
-  background: #385240;
-}
-
-.contacts-section > p a {
-  color: #47664f;
-}
-
-.seller-details {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid #d9dfda;
-}
-
-.seller-details p {
-  margin: 6px 0;
-}
-
-.copyright {
-  margin-top: 32px;
-  color: #777777;
-  font-size: 14px;
-}
-
-@media (max-width: 600px) {
-  .contact-buttons {
-    flex-direction: column;
-  }
-
-  .contact-buttons a {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-   @media (max-width: 760px) {
-  .topbar {
-    height: auto;
-    min-height: 68px;
-    padding: 12px 16px 10px;
-    flex-wrap: wrap;
-    row-gap: 10px;
-  }
-
-  .menu {
-    display: flex;
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .menu a {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  #catalog,
-  #delivery,
-  #about,
-  #contacts {
-    scroll-margin-top: 120px;
-  }
-}
-     .info-section {
-  padding: 70px 20px;
-  background: #f6f3ee;
-}
-
-.info-container {
-  max-width: 1180px;
-  margin: 0 auto;
-}
-
-.info-section h2 {
-  margin: 0 0 32px;
-  text-align: center;
-  font-size: 36px;
-  color: #24362a;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.info-card {
-  padding: 28px;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(36, 54, 42, 0.07);
-}
-
-.info-card h3 {
-  margin: 0 0 18px;
-  font-size: 22px;
-  color: #47664f;
-}
-
-.info-card p {
-  margin: 0 0 14px;
-  line-height: 1.6;
-  color: #444444;
-}
-
-.info-card p:last-child {
-  margin-bottom: 0;
-}
-
-@media (max-width: 760px) {
-  .info-section {
-    padding: 48px 16px;
-  }
-
-  .info-section h2 {
-    font-size: 28px;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .info-card {
-    padding: 22px;
-  }
-}
-  .checkout-label {
-  margin: 16px 0 10px;
-  font-weight: 600;
-  color: #24362a;
-}
-
-.recipient-choice {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.recipient-choice label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  padding: 12px 14px;
-  background: #f6f3ee;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.recipient-choice input[type="radio"] {
-  width: auto;
-  margin: 0;
-  accent-color: #47664f;
-}
-
-    .recipient-fields[hidden] {
-  display: none;
-}.recipient-fields {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-@media (max-width: 520px) {
-  .recipient-choice {
-    flex-direction: column;
-  }
-}  
-  </style>
-</head>
-
-<body>
-  <nav class="topbar">
-    <div class="logo-small">КЛЕВЕР</div>
-
-    <div class="menu">
-      <a href="#catalog">Каталог</a>
-      <a href="#delivery">Доставка</a>
-      <a href="#about">О нас</a>
-      <a href="#contacts">Контакты</a>
-    </div>
-
-    <button id="cart-button" class="cart" type="button" aria-label="Открыть корзину">
-      🛒
-      <span id="cart-count">0</span>
-    </button>
-  </nav>
-
-  <header class="hero">
-    <img
-      class="hero-logo"
-      src="assets/ChatGPT Image 20 июн. 2026 г., 00_55_50.png"
-      alt="Логотип салона цветов КЛЕВЕР"
-    >
-
-    <h1>КЛЕВЕР</h1>
-    <div class="brand-sub">салон цветов</div>
-
-    <div class="hero-title">
-      Соберём букет,<br>
-      который точно понравится!
-    </div>
-
-    <div class="subtitle">
-      Авторская флористика, свежие цветы<br>
-      и бережная доставка каждый день.
-    </div>
-
-    <a class="button" href="#catalog">Перейти в каталог</a>
-  </header>
-
-  <main>
-    <section class="catalog" id="catalog">
-      <h2 class="catalog-title">Популярные букеты</h2>
-      <p class="catalog-subtitle">Самые любимые композиции наших покупателей</p>
-
-      <div class="catalog-grid" id="catalog-grid">
-        <div class="message">Загружаем букеты…</div>
-      </div>
-    </section>
-    <section class="delivery-section" id="delivery">
-  <h2>Доставка</h2>
-
-  <p>
-    Доставляем цветы и букеты по Иванову бережно и точно к согласованному времени.
-  </p>
-
-  <p>
-    Стоимость доставки зависит от адреса. Мы уточним её после оформления заказа.
-  </p>
-
-  <p>
-    Также вы можете забрать заказ самостоятельно из салона КЛЕВЕР.
-  </p>
-</section>
-    <section class="about-section" id="about">
-  <h2>О нас</h2>
-
-  <p>
-    КЛЕВЕР — салон цветов в Иванове, где мы создаём букеты для важных событий и тёплых поводов.
-  </p>
-
-  <p>
-    Бережно подбираем цветы, продумываем каждую деталь и собираем букеты с любовью.
-  </p>
-
-  <p>
-    Вы можете выбрать готовый букет в каталоге или заказать индивидуальную композицию.
-  </p>
-</section>
-    <section class="info-section" id="delivery">
-  <div class="info-container">
-    <h2>Оплата и доставка</h2>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <h3>Доставка</h3>
-
-        <p>
-          <strong>Доставка по Иванову от 300 ₽.</strong>
-          Итоговая стоимость зависит от района и выбранного времени.
-          Менеджер уточнит и согласует её до оплаты.
-        </p>
-
-        <p>
-          Доставка по Ивановской области также возможна.
-          Стоимость рассчитывается индивидуально.
-        </p>
-
-        <p>
-          Доставка возможна круглосуточно по предварительному согласованию.
-          Обычно на подготовку и доставку требуется от 1,5 часа после
-          подтверждения заказа менеджером.
-        </p>
-      </div>
-
-      <div class="info-card">
-        <h3>Самовывоз</h3>
-
-        <p>
-          Самовывоз из салона цветов КЛЕВЕР:
-          Иваново, ул. Свободы, 39Б.
-        </p>
-
-        <p>
-          Забрать заказ можно круглосуточно после подтверждения
-          его готовности менеджером.
-        </p>
-      </div>
-
-      <div class="info-card">
-        <h3>Оплата</h3>
-
-        <p>
-          Оплата на сайте не производится. После оформления заказа
-          менеджер свяжется с вами и подтвердит состав, стоимость
-          и время готовности.
-        </p>
-
-        <p>
-          При самовывозе можно оплатить заказ наличными,
-          банковской картой или через СБП.
-        </p>
-
-        <p>
-          Для дистанционной оплаты менеджер отправит QR-код СБП
-          в мессенджере. Покупателю предоставляется кассовый чек.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-  </main>
-
-  <footer id="contacts" class="contacts-section">
-  <h2>Контакты</h2>
-
-  <p><strong>Адрес:</strong> Иваново, ул. Свободы, 39Б</p>
-
-  <p>
-    <strong>Телефон:</strong>
-    <a href="tel:+79206789480">+7 920 678-94-80</a>
-  </p>
-
-  <p><strong>Режим работы:</strong> круглосуточно</p>
-
-  <p>
-    <strong>Электронная почта:</strong>
-    <a href="mailto:cleverIvanovo@yandex.ru">cleverIvanovo@yandex.ru</a>
-  </p>
-
-  <div class="contact-buttons">
-    
-    <a href="https://max.ru/u/f9LHodD0cOJ4S7In_D0ajPelAvOEaZHVIY-5_n__eU3Xjk27l6hbq3hZQSQ"
-       target="_blank" rel="noopener">
-      Написать в MAX
-    </a>
-    <a href="tel:+79206789480" target="_blank" rel="noopener">
-  Позвонить
-</a>
-    <a href="https://vk.com/clever_ivanovo" target="_blank" rel="noopener">
-  Мы ВКонтакте
-</a>
-    <a href="https://t.me/CLEVER_37" target="_blank" rel="noopener">
-      Написать в Telegram
-    </a>
-
-    <a href="https://t.me/clever_ivanovo" target="_blank" rel="noopener">
-      Наша группа в Telegram
-    </a>
-
-    
-
-    <a href="https://ya.cc/t/EA4tEaXm6kfbTL" target="_blank" rel="noopener">
-      Оставить отзыв на Яндексе
-    </a>
-  </div>
-
-    <div class="legal-links">
-  <a href="/offer.html">Публичная оферта</a>
-  <a href="/privacy.html">Политика конфиденциальности</a>
-  <a href="/consent.html">Согласие на обработку персональных данных</a>
-</div>  <div class="seller-details">
-    <p><strong>Индивидуальный предприниматель Маркова Людмила Владимировна</strong></p>
-    <p>ИНН: 372501520938</p>
-    <p>ОГРНИП: 307370631300028</p>
-  </div>
-
-  <p class="copyright">КЛЕВЕР © 2026</p>
-</footer>
-
-  <div id="cart-overlay" class="cart-overlay"></div>
-
-  <aside id="cart-panel" class="cart-panel" aria-label="Корзина">
-    <div class="cart-heading">
-      <h2>Корзина</h2>
-      <button id="cart-close" class="cart-close" type="button" aria-label="Закрыть корзину">
-        ×
-      </button>
-    </div>
-
-    <div id="cart-items"></div>
-
-    <div class="cart-total">
-      Итого: <span id="cart-sum">0 ₽</span>
-    </div>
-
-    <div class="checkout-form">
-      <input id="customer-name" autocomplete="name" placeholder="Ваши Фамилия и имя">
-      <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
-      <p class="checkout-label">Кто получит заказ?</p>
-
-<div class="recipient-choice">
-  <label>
-    <input type="radio" name="recipient-type" value="self" checked>
-    Я получатель
-  </label>
-
-  <label>
-    <input type="radio" name="recipient-type" value="other">
-    Получатель другой человек
-  </label>
-</div>  
-<div id="recipient-fields" class="recipient-fields" hidden>
-  <input id="recipient-name" type="text" placeholder="Имя получателя">
-
-  <input id="recipient-phone" type="tel" placeholder="Номер телефона получателя">
-</div>
-<p class="checkout-label">Когда получить заказ?</p>
-
-<div class="delivery-datetime">
-  <label>
-    Дата
-    <input id="delivery-date" type="date">
-  </label>
-
-  <label>
-    Желаемое время
-    <select id="delivery-time"></select> 
-  </label>
-</div>
-      
-      <p class="checkout-label">Как получить заказ?</p>
-
-<select id="delivery-method">
-  <option value="pickup">Самовывоз</option>
-  <option value="delivery">Доставка</option>
-</select>
-
-<div
-  id="delivery-fields"
-  class="conditional-fields hidden"
->
-  <input
-    id="delivery-address"
-    type="text"
-    placeholder="Адрес доставки"
-  >
-</div>
-
-<p class="checkout-label">Подписать открытку?</p>
-
-<select id="card-needed">
-  <option value="no">Нет</option>
-  <option value="yes">Да</option>
-</select>
-
-<div
-  id="card-fields"
-  class="conditional-fields hidden"
->
-  <textarea
-    id="card-text"
-    rows="3"
-    placeholder="Текст для открытки"
-  ></textarea>
-</div>    
-      <textarea id="customer-comment" placeholder="Комментарий к заказу"></textarea>
-
-      <label class="personal-data-consent">
-  <input id="personal-data-consent" type="checkbox">
-  <span>
-    Я даю согласие на
-    <a href="/consent.html" target="_blank">обработку персональных данных</a>
-    и и подтверждаю ознакомление с
-    <a href="/privacy.html" target="_blank">Политикой конфиденциальности</a>
-  </span>
-</label>
-      <button id="checkout-btn" class="checkout-btn" type="button">
-        Оформить заказ
-      </button>
-
-      <div id="checkout-status" class="checkout-status" aria-live="polite"></div>
-    </div>
-  </aside>
-
-  <script>
-    const FALLBACK_IMAGE = "assets/2026-04-09_08-14-12.png";
-
-    let products = [];
-    let cart = loadCart();
-
-    function loadCart() {
-      try {
-        const savedCart =
-          localStorage.getItem("cleverCart") ||
-          localStorage.getItem("cart") ||
-          "[]";
-
-        const parsedCart = JSON.parse(savedCart);
-
-        if (!Array.isArray(parsedCart)) {
-          return [];
+    .order-confirmation-card {
+      width: min(100%, 560px);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      padding: 30px;
+      border-radius: 24px;
+      background: var(--white);
+      box-shadow: 0 24px 70px rgba(24, 38, 28, 0.24);
+              }
+
+        .order-confirmation-card h2 {
+          margin: 0 0 10px;
+          color: var(--green);
+          font-size: 28px;
         }
 
-        return parsedCart
-          .map(item => ({
-            id: Number(item.id),
-            name: String(item.name || "Товар"),
-            price: Number(item.price) || 0,
-            image: String(item.image || ""),
-            qty: Math.max(
-              1,
-              Math.round(Number(item.qty ?? item.quantity) || 1)
-            )
-          }))
-          .filter(item => Number.isInteger(item.id) && item.id > 0);
-      } catch (error) {
-        console.error("Не удалось прочитать корзину:", error);
-        return [];
-      }
-    }
+        .order-confirmation-number {
+          margin: 0 0 20px;
+          color: var(--pink-dark);
+          font-size: 18px;
+          font-weight: 700;
+        }
 
-    function saveCart() {
-      localStorage.setItem("cleverCart", JSON.stringify(cart));
-      localStorage.removeItem("cart");
-    }
+        .order-confirmation-details {
+          display: grid;
+          gap: 12px;
+          margin: 20px 0;
+          padding: 18px;
+          border-radius: 16px;
+          background: var(--milk);
+          color: #444444;
+          line-height: 1.5;
+        }
 
-    function escapeHtml(value = "") {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
+        .order-confirmation-details p {
+          margin: 0;
+        }
 
-    function money(value) {
-      return Number(value || 0).toLocaleString("ru-RU") + " ₽";
-    }
+        .order-confirmation-products {
+          margin: 8px 0 0;
+          padding-left: 20px;
+        }
 
-    async function loadProducts() {
-      const grid = document.getElementById("catalog-grid");
+        .order-confirmation-products li {
+          margin-bottom: 6px;
+        }
 
-      try {
-        const response = await fetch("/api/products", {
-          cache: "no-store",
-          headers: {
-            Accept: "application/json"
+        .order-confirmation-close {
+          width: 100%;
+          padding: 15px 20px;
+          border: 0;
+          border-radius: 999px;
+          background: var(--pink);
+          color: var(--white);
+          font-size: 17px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.25s ease;
+        }
+
+        .order-confirmation-close:hover {
+          background: var(--pink-dark);
+        }
+
+        .delivery-box {
+          display: grid;
+          gap: 10px;
+          margin: 6px 0;
+          padding: 14px;
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          background: #fcfbfa;
+        }
+
+        .delivery-title {
+          margin: 0 0 2px;
+          font-size: 15px;
+          font-weight: 700;
+        }
+
+        .delivery-options,
+        .recipient-options,
+        .postcard-options {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .delivery-option,
+        .recipient-option,
+        .postcard-option {
+          flex: 1;
+          min-width: 135px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 11px 12px;
+          border: 1px solid #dddddd;
+          border-radius: 12px;
+          background: var(--white);
+          cursor: pointer;
+        }
+
+        .delivery-option input,
+        .recipient-option input,
+        .postcard-option input {
+          width: auto;
+          margin: 0;
+          accent-color: var(--pink);
+        }
+
+        .delivery-fields,
+        .recipient-fields,
+        .postcard-fields {
+          display: grid;
+          gap: 10px;
+        }
+
+        .hidden {
+          display: none !important;
+        }
+
+        .date-time-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+
+        .field-label {
+          display: grid;
+          gap: 6px;
+          color: #555555;
+          font-size: 13px;
+        }
+
+        .field-label span {
+          font-weight: 600;
+        }
+
+        .delivery-note {
+          margin: 0;
+          color: var(--text-muted);
+          font-size: 12px;
+          line-height: 1.45;
+        }
+
+        .empty-cart {
+          padding: 24px 0 12px;
+          text-align: center;
+          color: var(--text-muted);
+        }
+
+        .clear-cart {
+          width: 100%;
+          margin-top: 10px;
+          padding: 12px;
+          border: 1px solid #e7d8dc;
+          border-radius: 999px;
+          background: transparent;
+          color: #a05d6e;
+          cursor: pointer;
+        }
+
+        .clear-cart:hover {
+          background: #fdf4f6;
+        }
+
+        .about-section,
+        .delivery-section,
+        .contacts-section {
+          padding: 75px 20px;
+        }
+
+        .about-section {
+          background: var(--white);
+        }
+
+        .delivery-section {
+          background: #f7f3ef;
+        }
+
+        .contacts-section {
+          background: var(--white);
+        }
+
+        .section-inner {
+          width: min(100%, 1050px);
+          margin: 0 auto;
+        }
+
+        .section-title {
+          margin: 0 0 16px;
+          text-align: center;
+          color: var(--pink);
+          font: 400 34px / 1.2 Georgia, serif;
+        }
+
+        .section-text {
+          max-width: 780px;
+          margin: 0 auto;
+          text-align: center;
+          color: #59665d;
+          font-size: 17px;
+          line-height: 1.7;
+        }
+
+        .delivery-cards {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          margin-top: 35px;
+        }
+
+        .info-card {
+          padding: 25px;
+          border-radius: 20px;
+          background: var(--white);
+          box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+          margin: 0 0 10px;
+          font-size: 20px;
+        }
+
+        .info-card p {
+          margin: 0;
+          color: #657168;
+          line-height: 1.6;
+        }
+
+        .contacts-list {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 14px;
+          margin-top: 30px;
+        }
+
+        .contact-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 48px;
+          padding: 12px 20px;
+          border-radius: 999px;
+          background: var(--green);
+          color: var(--white);
+          text-decoration: none;
+          transition: 0.25s ease;
+        }
+
+        .contact-link:hover {
+          background: var(--green-dark);
+          transform: translateY(-2px);
+        }
+
+        .legal-links {
+          margin-top: 25px;
+          text-align: center;
+          color: #777777;
+          font-size: 13px;
+          line-height: 1.8;
+        }
+
+        .legal-links a {
+          color: #66756a;
+        }
+
+        @media (max-width: 900px) {
+          .topbar {
+            padding: 0 22px;
           }
-        });
 
-        const responseText = await response.text();
-        let data = [];
+          .menu {
+            gap: 18px;
+          }
 
-        try {
-          data = responseText ? JSON.parse(responseText) : [];
-        } catch (error) {
-          throw new Error("Сервер вернул некорректный ответ.");
+          .catalog-grid {
+            grid-template-columns: repeat(2, minmax(0, 380px));
+          }
+
+          .delivery-cards {
+            grid-template-columns: 1fr;
+          }
         }
 
-        if (!response.ok) {
-          throw new Error(data.error || "Не удалось загрузить каталог.");
+        @media (max-width: 650px) {
+          .topbar {
+            height: auto;
+            min-height: 72px;
+            padding: 12px 14px;
+            gap: 10px;
+          }
+
+          .logo-small {
+            font-size: 14px;
+            letter-spacing: 2px;
+          }
+
+          .menu {
+            display: none;
+          }
+
+          .cart {
+            font-size: 25px;
+          }
+
+          .hero {
+            padding: 34px 16px 45px;
+          }
+
+          .hero-logo {
+            width: 170px;
+          }
+
+          .hero h1 {
+            font-size: 38px;
+            letter-spacing: 5px;
+          }
+
+          .brand-sub {
+            font-size: 18px;
+            letter-spacing: 5px;
+          }
+
+          .hero-title {
+            font-size: 27px;
+          }
+
+          .subtitle {
+            font-size: 17px;
+          }
+
+          .button {
+            padding: 16px 38px;
+            font-size: 17px;
+          }
+
+          .catalog {
+            padding: 45px 14px 65px;
+          }
+
+          .catalog-title {
+            letter-spacing: 5px;
+          }
+
+          .catalog-grid {
+            grid-template-columns: 1fr;
+            gap: 22px;
+          }
+
+          .product-card {
+            border-radius: 22px;
+          }
+
+          .product-content {
+            padding: 19px;
+          }
+
+          .card-actions {
+            flex-direction: column;
+          }
+
+          .cart-panel {
+            top: 82px;
+            right: -110%;
+            width: calc(100vw - 16px);
+            max-height: calc(100vh - 94px);
+            padding: 18px;
+            border-radius: 20px;
+          }
+
+          .cart-panel.open {
+            right: 8px;
+          }
+
+          .date-time-row {
+            grid-template-columns: 1fr;
+          }
+
+          .order-confirmation-card {
+            padding: 22px 18px;
+            border-radius: 20px;
+          }
+
+          .about-section,
+          .delivery-section,
+          .contacts-section {
+            padding: 55px 16px;
+          }
         }
+      </style>
+    </head>
 
-        products = Array.isArray(data) ? data : [];
+    <body>
+      <header class="topbar">
+        <div class="logo-small">КЛЕВЕР</div>
 
-        if (!products.length) {
-          grid.innerHTML = '<div class="message">Товаров пока нет.</div>';
-          return;
-        }
+        <nav class="menu" aria-label="Основное меню">
+          <a href="#catalog">Каталог</a>
+          <a href="#delivery">Доставка</a>
+          <a href="#about">О нас</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
 
-        grid.innerHTML = products
-          .map(product => {
-            const id = Number(product.id);
-            const name = escapeHtml(product.name || "Букет");
-            const description = escapeHtml(
-              product.short_description || product.description || ""
-            );
-            const image = escapeHtml(product.image || FALLBACK_IMAGE);
-            const price = money(product.price);
+        <button
+          class="cart"
+          id="cart-button"
+          type="button"
+          aria-label="Открыть корзину"
+        >
+          🛒
+          <span id="cart-count">0</span>
+        </button>
+      </header>
 
-            return `
-              <article class="product-card">
-                <div class="product-image-wrap">
-                  <img
-                    src="${image}"
-                    alt="${name}"
-                    loading="lazy"
-                    onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
+      <section class="hero">
+        <img
+          class="hero-logo"
+          src="/images/logo.png"
+          alt="Логотип салона цветов КЛЕВЕР"
+        >
+
+        <h1>КЛЕВЕР</h1>
+        <div class="brand-sub">САЛОН ЦВЕТОВ</div>
+
+        <h2 class="hero-title">Цветы, которые говорят за вас</h2>
+
+        <div class="subtitle">
+          Авторские букеты и композиции<br>
+          с доставкой по Иванову
+        </div>
+
+        <a class="button" href="#catalog">Выбрать букет</a>
+      </section>
+
+      <main>
+        <section class="catalog" id="catalog">
+          <h2 class="catalog-title">Каталог</h2>
+          <p class="catalog-subtitle">
+            Выберите букет, а мы бережно соберём и доставим его
+          </p>
+
+          <div class="catalog-grid" id="catalog-grid">
+            <div class="message">Загружаем букеты…</div>
+          </div>
+        </section>
+                <section class="about-section" id="about">
+          <div class="section-inner">
+            <h2 class="section-title">О нас</h2>
+
+            <p class="section-text">
+              КЛЕВЕР — салон цветов в Иванове, где каждый букет создаётся
+              с вниманием к деталям. Мы выбираем свежие цветы, бережно
+              собираем букеты и помогаем выразить чувства без лишних слов.
+            </p>
+          </div>
+        </section>
+
+        <section class="delivery-section" id="delivery">
+          <div class="section-inner">
+            <h2 class="section-title">Доставка и оплата</h2>
+
+            <p class="section-text">
+              Доставляем цветы по Иванову и Ивановской области.
+              Точную стоимость и время доставки согласуем после оформления заказа.
+            </p>
+
+            <div class="delivery-cards">
+              <article class="info-card">
+                <h3>Доставка по городу</h3>
+                <p>
+                  Стоимость доставки по Иванову от 300 ₽.
+                  Она зависит от адреса, района и времени.
+                </p>
+              </article>
+
+              <article class="info-card">
+                <h3>Самовывоз</h3>
+                <p>
+                  Забрать заказ можно в салоне КЛЕВЕР:
+                  г. Иваново, ул. Свободы, д. 39Б.
+                </p>
+              </article>
+
+              <article class="info-card">
+                <h3>Оплата</h3>
+                <p>
+                  После оформления мы подтвердим заказ и отправим данные
+                  для оплаты через Систему быстрых платежей.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="contacts-section" id="contacts">
+          <div class="section-inner">
+            <h2 class="section-title">Контакты</h2>
+
+            <p class="section-text">
+              Иваново, ул. Свободы, д. 39Б<br>
+              Ежедневно с 9:00 до 20:00
+            </p>
+
+            <div class="contacts-list">
+              <a class="contact-link" href="tel:+79206789480">
+                Позвонить
+              </a>
+
+              <a
+                class="contact-link"
+                href="https://wa.me/79206789480"
+                target="_blank"
+                rel="noopener"
+              >
+                WhatsApp
+              </a>
+
+              <a
+                class="contact-link"
+                href="https://vk.com/"
+                target="_blank"
+                rel="noopener"
+              >
+                ВКонтакте
+              </a>
+            </div>
+
+            <div class="legal-links">
+              Индивидуальный предприниматель Маркова Людмила Владимировна<br>
+              ИНН 372501520938 · ОГРНИП 307370631300028<br>
+
+              <a href="/offer.html">Публичная оферта</a> ·
+              <a href="/privacy.html">Политика обработки персональных данных</a> ·
+              <a href="/consent.html">Согласие на обработку персональных данных</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        © КЛЕВЕР, салон цветов в Иванове
+      </footer>
+
+      <div class="cart-overlay" id="cart-overlay"></div>
+
+      <aside
+        class="cart-panel"
+        id="cart-panel"
+        aria-label="Корзина"
+        aria-hidden="true"
+      >
+        <div class="cart-heading">
+          <h2>Корзина</h2>
+
+          <button
+            class="cart-close"
+            id="cart-close"
+            type="button"
+            aria-label="Закрыть корзину"
+          >
+            ×
+          </button>
+        </div>
+
+        <div id="cart-items"></div>
+        <div class="cart-total" id="cart-total">Итого: 0 ₽</div>
+
+        <form class="checkout-form" id="checkout-form">
+          <input
+            id="customer-name"
+            name="customerName"
+            type="text"
+            placeholder="Ваше имя"
+            autocomplete="name"
+            required
+          >
+
+          <input
+            id="customer-phone"
+            name="customerPhone"
+            type="tel"
+            placeholder="Ваш телефон"
+            autocomplete="tel"
+            required
+          >
+
+          <div class="delivery-box">
+            <p class="delivery-title">Как получить заказ?</p>
+
+            <div class="delivery-options">
+              <label class="delivery-option">
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  value="pickup"
+                  checked
+                >
+                <span>Самовывоз</span>
+              </label>
+
+              <label class="delivery-option">
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  value="delivery"
+                >
+                <span>Доставка</span>
+              </label>
+            </div>
+
+            <div id="pickup-fields">
+              <p class="delivery-note">
+                Самовывоз: г. Иваново, ул. Свободы, д. 39Б.
+              </p>
+            </div>
+
+            <div class="delivery-fields hidden" id="delivery-fields">
+              <input
+                id="delivery-address"
+                name="deliveryAddress"
+                type="text"
+                placeholder="Адрес доставки"
+              >
+
+              <p class="delivery-title">Кому вручить заказ?</p>
+
+              <div class="recipient-options">
+                <label class="recipient-option">
+                  <input
+                    type="radio"
+                    name="recipientType"
+                    value="self"
+                    checked
                   >
-                </div>
+                  <span>Я получатель</span>
+                </label>
 
-                <div class="product-content">
-                  <h3>${name}</h3>
-                  <p class="short">${description}</p>
-                  <div class="price">${price}</div>
+                <label class="recipient-option">
+                  <input
+                    type="radio"
+                    name="recipientType"
+                    value="other"
+                  >
+                  <span>Другому человеку</span>
+                </label>
+              </div>
 
-                  <div class="card-actions">
-                    <button
-                      class="card-button"
-                      type="button"
-                      onclick="addToCart(${id})"
-                    >
-                      В корзину
-                    </button>
+              <div class="recipient-fields hidden" id="recipient-fields">
+                <input
+                  id="recipient-name"
+                  name="recipientName"
+                  type="text"
+                  placeholder="Имя получателя"
+                >
 
-                    <a class="details-button" href="/product.html?id=${id}">
-                      Подробнее
-                    </a>
+                <input
+                  id="recipient-phone"
+                  name="recipientPhone"
+                  type="tel"
+                  placeholder="Телефон получателя"
+                >
+              </div>
+                                <p class="delivery-title">Подписать открытку?</p>
+
+                  <div class="postcard-options">
+                    <label class="postcard-option">
+                      <input
+                        type="radio"
+                        name="postcardType"
+                        value="no"
+                        checked
+                      >
+                      <span>Нет</span>
+                    </label>
+
+                    <label class="postcard-option">
+                      <input
+                        type="radio"
+                        name="postcardType"
+                        value="yes"
+                      >
+                      <span>Да</span>
+                    </label>
+                  </div>
+
+                  <div class="postcard-fields hidden" id="postcard-fields">
+                    <textarea
+                      id="postcard-text"
+                      name="postcardText"
+                      placeholder="Текст для открытки"
+                    ></textarea>
                   </div>
                 </div>
-              </article>
-            `;
-          })
-          .join("");
-      } catch (error) {
-        console.error("Ошибка загрузки каталога:", error);
-        grid.innerHTML = `
-          <div class="message">
-            ${escapeHtml(error.message || "Не удалось загрузить каталог.")}
-          </div>
-        `;
-      }
-    }
 
-    function addToCart(id) {
-      const product = products.find(item => Number(item.id) === Number(id));
+                <div class="date-time-row">
+                  <label class="field-label">
+                    <span>Дата получения</span>
+                    <input
+                      id="delivery-date"
+                      name="deliveryDate"
+                      type="date"
+                      required
+                    >
+                  </label>
 
-      if (!product) {
-        return;
-      }
-
-      const existing = cart.find(item => Number(item.id) === Number(id));
-
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({
-          id: Number(product.id),
-          name: product.name || "Товар",
-          price: Number(product.price) || 0,
-          image: product.image || "",
-          qty: 1
-        });
-      }
-
-      renderCart();
-      openCart();
-    }
-
-    function changeQty(id, delta) {
-      const item = cart.find(product => Number(product.id) === Number(id));
-
-      if (!item) {
-        return;
-      }
-
-      item.qty += Number(delta);
-
-      if (item.qty <= 0) {
-        cart = cart.filter(product => Number(product.id) !== Number(id));
-      }
-
-      renderCart();
-    }
-
-    function renderCart() {
-      const itemsBox = document.getElementById("cart-items");
-      const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      const total = cart.reduce(
-        (sum, item) => sum + item.price * item.qty,
-        0
-      );
-
-      itemsBox.innerHTML = cart.length
-        ? cart
-            .map(item => `
-              <div class="cart-item">
-                <div class="cart-row">
-                  <strong>${escapeHtml(item.name)}</strong>
-                  <strong>${money(item.price * item.qty)}</strong>
+                  <label class="field-label">
+                    <span>Время получения</span>
+                    <input
+                      id="delivery-time"
+                      name="deliveryTime"
+                      type="text"
+                      placeholder="Например, с 14:00 до 15:00"
+                      readonly
+                      required
+                    >
+                  </label>
                 </div>
 
-                <div class="qty">
-                  <button
-                    type="button"
-                    onclick="changeQty(${item.id}, -1)"
-                    aria-label="Уменьшить количество"
-                  >
-                    −
-                  </button>
-
-                  <span>${item.qty}</span>
-
-                  <button
-                    type="button"
-                    onclick="changeQty(${item.id}, 1)"
-                    aria-label="Увеличить количество"
-                  >
-                    +
-                  </button>
-
-                  <small>${money(item.price)} за шт.</small>
-                </div>
+                <p class="delivery-note" id="delivery-time-note">
+                  Выберите дату, чтобы увидеть доступное время.
+                </p>
               </div>
-            `)
-            .join("")
-        : '<div class="message">Корзина пока пуста.</div>';
 
-      document.getElementById("cart-sum").textContent = money(total);
+              <textarea
+                id="order-comment"
+                name="comment"
+                placeholder="Комментарий к заказу"
+              ></textarea>
 
-      const badge = document.getElementById("cart-count");
-      badge.textContent = count;
-      badge.style.display = count ? "flex" : "none";
+              <label class="personal-data-consent">
+                <input
+                  id="personal-data-consent"
+                  type="checkbox"
+                  required
+                >
+                <span>
+                  Я согласен(а) на
+                  <a href="/consent.html" target="_blank">
+                    обработку персональных данных
+                  </a>
+                  и принимаю условия
+                  <a href="/offer.html" target="_blank">
+                    публичной оферты
+                  </a>
+                </span>
+              </label>
 
-      saveCart();
-    }
+              <button
+                class="checkout-btn"
+                id="checkout-button"
+                type="submit"
+              >
+                Оформить заказ
+              </button>
 
-    function openCart() {
-      document.getElementById("cart-panel").classList.add("open");
-      document.getElementById("cart-overlay").classList.add("open");
-      document.body.classList.add("cart-open");
-    }
+              <button
+                class="clear-cart"
+                id="clear-cart"
+                type="button"
+              >
+                Очистить корзину
+              </button>
 
-    function closeCart() {
-      document.getElementById("cart-panel").classList.remove("open");
-      document.getElementById("cart-overlay").classList.remove("open");
-      document.body.classList.remove("cart-open");
+              <div
+                class="checkout-status"
+                id="checkout-status"
+                aria-live="polite"
+              ></div>
+            </form>
+          </aside>
 
-      if (window.location.hash === "#cart") {
-        history.replaceState(
-          null,
-          "",
-          window.location.pathname + window.location.search
-        );
-      }
-    }
+          <div
+            class="order-confirmation"
+            id="order-confirmation"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="order-confirmation-title"
+          >
+            <div class="order-confirmation-card">
+              <h2 id="order-confirmation-title">Заказ оформлен</h2>
 
-    function toggleCart() {
-      const panel = document.getElementById("cart-panel");
+              <p
+                class="order-confirmation-number"
+                id="order-confirmation-number"
+              ></p>
 
-      if (panel.classList.contains("open")) {
-        closeCart();
-      } else {
-        openCart();
-      }
-    }
-    const deliveryMethod =
-  document.getElementById("delivery-method");
+              <p>
+                Спасибо! Мы свяжемся с вами для подтверждения заказа
+                и уточнения оплаты.
+              </p>
 
-const deliveryFields =
-  document.getElementById("delivery-fields");
+              <div
+                class="order-confirmation-details"
+                id="order-confirmation-details"
+              ></div>
 
-const cardNeeded =
-  document.getElementById("card-needed");
+              <button
+                class="order-confirmation-close"
+                id="order-confirmation-close"
+                type="button"
+              >
+                Вернуться в каталог
+              </button>
+            </div>
+          </div>
 
-const cardFields =
-  document.getElementById("card-fields");
+          <script>
+            const catalogGrid = document.getElementById("catalog-grid");
+            const cartButton = document.getElementById("cart-button");
+            const cartCount = document.getElementById("cart-count");
+            const cartPanel = document.getElementById("cart-panel");
+            const cartOverlay = document.getElementById("cart-overlay");
+            const cartClose = document.getElementById("cart-close");
+            const cartItems = document.getElementById("cart-items");
+            const cartTotal = document.getElementById("cart-total");
+            const checkoutForm = document.getElementById("checkout-form");
+            const checkoutButton = document.getElementById("checkout-button");
+            const checkoutStatus = document.getElementById("checkout-status");
+            const clearCartButton = document.getElementById("clear-cart");
 
-deliveryMethod.addEventListener("change", () => {
-  const isDelivery =
-    deliveryMethod.value === "delivery";
+            const customerNameInput =
+              document.getElementById("customer-name");
+            const customerPhoneInput =
+              document.getElementById("customer-phone");
+            const deliveryFields =
+              document.getElementById("delivery-fields");
+            const pickupFields =
+              document.getElementById("pickup-fields");
+            const deliveryAddressInput =
+              document.getElementById("delivery-address");
+            const recipientFields =
+              document.getElementById("recipient-fields");
+            const recipientNameInput =
+              document.getElementById("recipient-name");
+            const recipientPhoneInput =
+              document.getElementById("recipient-phone");
+            const postcardFields =
+              document.getElementById("postcard-fields");
+            const postcardTextInput =
+              document.getElementById("postcard-text");
+            const deliveryDateInput =
+              document.getElementById("delivery-date");
+            const deliveryTimeInput =
+              document.getElementById("delivery-time");
+            const deliveryTimeNote =
+              document.getElementById("delivery-time-note");
+            const orderCommentInput =
+              document.getElementById("order-comment");
+            const personalDataConsent =
+              document.getElementById("personal-data-consent");
 
-  deliveryFields.classList.toggle(
-    "hidden",
-    !isDelivery
-  );
-});
+            const orderConfirmation =
+              document.getElementById("order-confirmation");
+            const orderConfirmationNumber =
+              document.getElementById("order-confirmation-number");
+            const orderConfirmationDetails =
+              document.getElementById("order-confirmation-details");
+            const orderConfirmationClose =
+              document.getElementById("order-confirmation-close");
 
-cardNeeded.addEventListener("change", () => {
-  const needsCard =
-    cardNeeded.value === "yes";
+            let products = [];
+            let cart = [];
 
-  cardFields.classList.toggle(
-    "hidden",
-    !needsCard
-  );
-});
+            function escapeHtml(value) {
+              return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+            }
 
-    async function sendOrder() {
-      const status = document.getElementById("checkout-status");
-      const checkoutButton = document.getElementById("checkout-btn");
-      const customerName = document.getElementById("customer-name").value.trim();
-      const phone = document.getElementById("customer-phone").value.trim();
-      const comment = document.getElementById("customer-comment").value.trim();
-      const deliveryAddress =
-  document.getElementById("delivery-address").value.trim();
+            function formatPrice(value) {
+              return `${Number(value || 0).toLocaleString("ru-RU")} ₽`;
+            }
 
-const recipientName =
-  document.getElementById("recipient-name").value.trim();
+            function getImageUrl(product) {
+              if (Array.isArray(product.images) && product.images.length) {
+                const mainImage =
+                  product.images.find((image) => image.is_main) ||
+                  product.images[0];
 
-const recipientPhone =
-  document.getElementById("recipient-phone").value.trim();
+                return mainImage.url || mainImage.image || "";
+              }
 
-const cardText =
-  document.getElementById("card-text").value.trim();
-      status.textContent = "";
-      status.className = "checkout-status";
+              return product.image || "";
+            }
 
-      if (!document.getElementById("personal-data-consent").checked) {
-  status.textContent = "Подтвердите согласие на обработку персональных данных.";
-  status.classList.add("error");
-  document.getElementById("personal-data-consent").focus();
-  return;
-}
-      if (!cart.length) {
-        status.textContent = "Корзина пуста.";
-        status.classList.add("error");
-        return;
-      }
+            function saveCart() {
+              localStorage.setItem("cleverCart", JSON.stringify(cart));
+            }
 
-      if (!customerName || !phone) {
-        status.textContent = "Введите имя и телефон.";
-        status.classList.add("error");
-        return;
-      }
-      if (
-  deliveryMethod.value === "delivery" &&
-  (!deliveryAddress || !recipientName || !recipientPhone)
-) {
-  status.textContent =
-    "Укажите адрес, имя и телефон получателя.";
-  return;
-}
+            function loadCart() {
+              try {
+                const savedCart = JSON.parse(
+                  localStorage.getItem("cleverCart") || "[]"
+                );
 
-if (
-  cardNeeded.value === "yes" &&
-  !cardText
-) {
-  status.textContent =
-    "Напишите текст для открытки.";
-  return;
-}
+                cart = Array.isArray(savedCart) ? savedCart : [];
+              } catch (error) {
+                cart = [];
+              }
+            }
+                            function openCart() {
+                  cartPanel.classList.add("open");
+                  cartOverlay.classList.add("open");
+                  cartPanel.setAttribute("aria-hidden", "false");
+                  document.body.classList.add("cart-open");
+                }
 
-      checkoutButton.disabled = true;
-      checkoutButton.textContent = "Отправляем…";
-      status.textContent = "Сохраняем заказ…";
+                function closeCart() {
+                  cartPanel.classList.remove("open");
+                  cartOverlay.classList.remove("open");
+                  cartPanel.setAttribute("aria-hidden", "true");
+                  document.body.classList.remove("cart-open");
+                }
 
-      try {
-        const response = await fetch("/api/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({
-            customer_name: customerName,
-            phone,
-            comment,
-            delivery_method: deliveryMethod.value,
-            delivery_date: document.getElementById("delivery-date").value,
-delivery_time: document.getElementById("delivery-time").value,
-recipient_type: document.querySelector(
-  'input[name="recipient-type"]:checked'
-).value,
-delivery_address: deliveryAddress,
-recipient_name: recipientName,
-recipient_phone: recipientPhone,
-card_needed: cardNeeded.value,
-card_text: cardText,         
-            items: cart.map(item => ({
-              id: Number(item.id),
-              qty: Number(item.qty)
-            }))
-          })
-        });
+                function getCartCount() {
+                  return cart.reduce(
+                    (sum, item) => sum + Number(item.quantity || 0),
+                    0
+                  );
+                }
 
-        const responseText = await response.text();
-        let result = {};
+                function getCartTotal() {
+                  return cart.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.price || 0) *
+                        Number(item.quantity || 0),
+                    0
+                  );
+                }
 
-        try {
-          result = responseText ? JSON.parse(responseText) : {};
-        } catch (error) {
-          throw new Error("Сервер вернул некорректный ответ.");
-        }
+                function updateCartCount() {
+                  const count = getCartCount();
 
-        if (!response.ok || !result.success) {
-          throw new Error(result.error || "Не удалось оформить заказ.");
-        }
+                  cartCount.textContent = count;
+                  cartCount.style.display = count ? "flex" : "none";
+                }
 
-        cart = [];
-        localStorage.removeItem("cleverCart");
-        localStorage.removeItem("cart");
-        renderCart();
+                function renderCart() {
+                  updateCartCount();
 
-        document.getElementById("customer-name").value = "";
-        document.getElementById("customer-phone").value = "";
-        document.getElementById("customer-comment").value = "";
+                  if (!cart.length) {
+                    cartItems.innerHTML =
+                      '<div class="empty-cart">Корзина пока пуста</div>';
+                    cartTotal.textContent = "Итого: 0 ₽";
+                    checkoutForm.style.display = "none";
+                    return;
+                  }
 
-        status.textContent = `Заказ №${result.orderId} принят! Мы свяжемся с вами.`;
-        status.classList.add("success");
+                  checkoutForm.style.display = "grid";
 
-        setTimeout(closeCart, 1800);
-      } catch (error) {
-        console.error("Ошибка оформления заказа:", error);
-        status.textContent = error.message || "Не удалось оформить заказ.";
-        status.classList.add("error");
-      } finally {
-        checkoutButton.disabled = false;
-        checkoutButton.textContent = "Оформить заказ";
-      }
-    }
+                  cartItems.innerHTML = cart
+                    .map(
+                      (item) => `
+                        <div class="cart-item">
+                          <div class="cart-row">
+                            <strong>${escapeHtml(item.name)}</strong>
+                            <strong>
+                              ${formatPrice(
+                                Number(item.price) * Number(item.quantity)
+                              )}
+                            </strong>
+                          </div>
 
-    document
-      .getElementById("cart-button")
-      .addEventListener("click", toggleCart);
+                          <div class="qty">
+                            <button
+                              type="button"
+                              data-cart-action="decrease"
+                              data-product-id="${item.id}"
+                              aria-label="Уменьшить количество"
+                            >
+                              −
+                            </button>
 
-    document
-      .getElementById("cart-close")
-      .addEventListener("click", closeCart);
+                            <span>${item.quantity}</span>
 
-    document
-      .getElementById("cart-overlay")
-      .addEventListener("click", closeCart);
+                            <button
+                              type="button"
+                              data-cart-action="increase"
+                              data-product-id="${item.id}"
+                              aria-label="Увеличить количество"
+                            >
+                              +
+                            </button>
 
-    document
-      .getElementById("checkout-btn")
-      .addEventListener("click", sendOrder);
+                            <small>
+                              ${formatPrice(item.price)} за шт.
+                            </small>
+                          </div>
+                        </div>
+                      `
+                    )
+                    .join("");
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        closeCart();
-      }
-    });
+                  cartTotal.textContent =
+                    `Итого: ${formatPrice(getCartTotal())}`;
+                }
 
-    window.addEventListener("hashchange", () => {
-      if (window.location.hash === "#cart") {
-        openCart();
-      }
-    });
+                function addToCart(productId) {
+                  const product = products.find(
+                    (item) => Number(item.id) === Number(productId)
+                  );
 
-    window.addEventListener("pageshow", () => {
-      cart = loadCart();
-      renderCart();
-    });
+                  if (!product) {
+                    return;
+                  }
 
-    const recipientFields = document.getElementById("recipient-fields");
-const recipientTypeInputs = document.querySelectorAll(
-  'input[name="recipient-type"]'
-);
+                  const existingItem = cart.find(
+                    (item) => Number(item.id) === Number(productId)
+                  );
 
-recipientTypeInputs.forEach(input => {
-  input.addEventListener("change", () => {
-    recipientFields.hidden = input.value !== "other" || !input.checked;
-  });
-});
-   const deliveryDateInput = document.getElementById("delivery-date");
-const deliveryTimeInput = document.getElementById("delivery-time");
+                  if (existingItem) {
+                    existingItem.quantity += 1;
+                  } else {
+                    cart.push({
+                      id: product.id,
+                      name: product.name,
+                      price: Number(product.price),
+                      quantity: 1
+                    });
+                  }
 
-function formatLocalDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+                  saveCart();
+                  renderCart();
+                  openCart();
+                }
 
-  return `${year}-${month}-${day}`;
-}
+                function changeQuantity(productId, change) {
+                  const item = cart.find(
+                    (cartItem) =>
+                      Number(cartItem.id) === Number(productId)
+                  );
 
-function formatTime(hours, minutes) {
-  return (
-    String(hours).padStart(2, "0") +
-    ":" +
-    String(minutes).padStart(2, "0")
-  );
-}
+                  if (!item) {
+                    return;
+                  }
 
-function getEarliestDelivery() {
-  const now = new Date();
-  const earliest = new Date(now);
+                  item.quantity += change;
 
-  if (now.getHours() < 8) {
-    earliest.setHours(9, 30, 0, 0);
-  } else if (now.getHours() >= 19) {
-    earliest.setDate(earliest.getDate() + 1);
-    earliest.setHours(9, 30, 0, 0);
-  } else {
-    earliest.setMinutes(earliest.getMinutes() + 90);
+                  if (item.quantity <= 0) {
+                    cart = cart.filter(
+                      (cartItem) =>
+                        Number(cartItem.id) !== Number(productId)
+                    );
+                  }
 
-    const minutes = earliest.getMinutes();
+                  saveCart();
+                  renderCart();
+                }
 
-    if (minutes > 0 && minutes <= 30) {
-      earliest.setMinutes(30, 0, 0);
-    } else if (minutes > 30) {
-      earliest.setHours(earliest.getHours() + 1);
-      earliest.setMinutes(0, 0, 0);
-    } else {
-      earliest.setSeconds(0, 0);
-    }
-  }
+                function clearCart() {
+                  cart = [];
+                  saveCart();
+                  renderCart();
+                  checkoutStatus.textContent = "";
+                  checkoutStatus.className = "checkout-status";
+                }
 
-  return earliest;
-}
+                function renderProducts() {
+                  if (!products.length) {
+                    catalogGrid.innerHTML =
+                      '<div class="message">Сейчас товары обновляются. Загляните немного позже.</div>';
+                    return;
+                  }
 
-function createDeliveryIntervals() {
-  const earliest = getEarliestDelivery();
-  const earliestDate = formatLocalDate(earliest);
+                  catalogGrid.innerHTML = products
+                    .map((product) => {
+                      const imageUrl = getImageUrl(product);
 
-  deliveryDateInput.min = earliestDate;
+                      return `
+                        <article class="product-card">
+                          <div class="product-image-wrap">
+                            <img
+                              src="${escapeHtml(imageUrl)}"
+                              alt="${escapeHtml(product.name)}"
+                              loading="lazy"
+                            >
+                          </div>
 
-  if (
-    !deliveryDateInput.value ||
-    deliveryDateInput.value < earliestDate
-  ) {
-    deliveryDateInput.value = earliestDate;
-  }
+                          <div class="product-content">
+                            <h3>${escapeHtml(product.name)}</h3>
 
-  deliveryTimeInput.innerHTML = "";
+                            <p class="short">
+                              ${escapeHtml(
+                                product.short_description ||
+                                  product.description ||
+                                  ""
+                              )}
+                            </p>
 
-  let startMinutes = 0;
+                            <div class="price">
+                              ${formatPrice(product.price)}
+                            </div>
 
-  if (deliveryDateInput.value === earliestDate) {
-    startMinutes =
-      earliest.getHours() * 60 + earliest.getMinutes();
-  }
+                            <div class="card-actions">
+                              <button
+                                class="card-button"
+                                type="button"
+                                data-add-to-cart="${product.id}"
+                              >
+                                В корзину
+                              </button>
 
-  for (
-    let minutes = startMinutes;
-    minutes < 24 * 60;
-    minutes += 30
-  ) {
-    const startHours = Math.floor(minutes / 60);
-    const startMins = minutes % 60;
+                              <a
+                                class="details-button"
+                                href="/product.html?id=${product.id}"
+                              >
+                                Подробнее
+                              </a>
+                            </div>
+                          </div>
+                        </article>
+                      `;
+                    })
+                    .join("");
+                }
 
-    const endTotal = minutes + 60;
-    const endHours = Math.floor((endTotal % (24 * 60)) / 60);
-    const endMins = endTotal % 60;
+                async function loadProducts() {
+                  try {
+                    const response = await fetch("/api/products");
 
-    const startTime = formatTime(startHours, startMins);
-    const endTime = formatTime(endHours, endMins);
+                    if (!response.ok) {
+                      throw new Error("Не удалось загрузить товары");
+                    }
 
-    const option = document.createElement("option");
-    option.value = `${startTime}-${endTime}`;
-    option.textContent = `с ${startTime} до ${endTime}`;
+                    const data = await response.json();
+                    products = Array.isArray(data) ? data : [];
+                    renderProducts();
+                  } catch (error) {
+                    console.error(error);
 
-    deliveryTimeInput.appendChild(option);
-  }
-}
+                    catalogGrid.innerHTML =
+                      '<div class="message">Не удалось загрузить каталог. Обновите страницу немного позже.</div>';
+                  }
+                }
 
-deliveryDateInput.addEventListener(
-  "change",
-  createDeliveryIntervals
-);
+                function getSelectedValue(name) {
+                  return (
+                    document.querySelector(
+                      `input[name="${name}"]:checked`
+                    )?.value || ""
+                  );
+                }
 
-createDeliveryIntervals();
-    loadProducts();
-    renderCart();
+                function updateDeliveryFields() {
+                  const deliveryType =
+                    getSelectedValue("deliveryType");
 
-    if (window.location.hash === "#cart") {
-      openCart();
-    }
-  </script>
-</body>
-</html>
+                  const isDelivery = deliveryType === "delivery";
+
+                  deliveryFields.classList.toggle("hidden", !isDelivery);
+                  pickupFields.classList.toggle("hidden", isDelivery);
+
+                  deliveryAddressInput.required = isDelivery;
+                  deliveryDateInput.required = true;
+                  deliveryTimeInput.required = true;
+
+                  updateRecipientFields();
+                }
+
+                function updateRecipientFields() {
+                  const deliveryType =
+                    getSelectedValue("deliveryType");
+                  const recipientType =
+                    getSelectedValue("recipientType");
+
+                  const needsRecipientData =
+                    deliveryType === "delivery" &&
+                    recipientType === "other";
+
+                  recipientFields.classList.toggle(
+                    "hidden",
+                    !needsRecipientData
+                  );
+
+                  recipientNameInput.required = needsRecipientData;
+                  recipientPhoneInput.required = needsRecipientData;
+
+                  if (!needsRecipientData) {
+                    recipientNameInput.value = "";
+                    recipientPhoneInput.value = "";
+                  }
+                }
+
+                function updatePostcardFields() {
+                  const postcardType =
+                    getSelectedValue("postcardType");
+                  const needsPostcardText =
+                    postcardType === "yes";
+
+                  postcardFields.classList.toggle(
+                    "hidden",
+                    !needsPostcardText
+                  );
+
+                  postcardTextInput.required = needsPostcardText;
+
+                  if (!needsPostcardText) {
+                    postcardTextInput.value = "";
+                  }
+                }
+
+                function padNumber(value) {
+                  return String(value).padStart(2, "0");
+                }
+
+                function formatDateForInput(date) {
+                  return [
+                    date.getFullYear(),
+                    padNumber(date.getMonth() + 1),
+                    padNumber(date.getDate())
+                  ].join("-");
+                }
+
+                function getMinimumOrderDate() {
+                  const now = new Date();
+                  const minimumDate = new Date(now);
+
+                  if (now.getHours() >= 19) {
+                    minimumDate.setDate(minimumDate.getDate() + 1);
+                  }
+
+                  return minimumDate;
+                }
+
+                function setMinimumDeliveryDate() {
+                  const minimumDate = getMinimumOrderDate();
+                  const minimumDateValue =
+                    formatDateForInput(minimumDate);
+
+                  deliveryDateInput.min = minimumDateValue;
+
+                  if (
+                    !deliveryDateInput.value ||
+                    deliveryDateInput.value < minimumDateValue
+                  ) {
+                    deliveryDateInput.value = minimumDateValue;
+                  }
+
+                  updateDeliveryTime();
+                }
+
+                function roundUpToHalfHour(date) {
+                  const rounded = new Date(date);
+                  rounded.setSeconds(0, 0);
+
+                  const minutes = rounded.getMinutes();
+
+                  if (minutes === 0 || minutes === 30) {
+                    return rounded;
+                  }
+
+                  if (minutes < 30) {
+                    rounded.setMinutes(30);
+                  } else {
+                    rounded.setHours(rounded.getHours() + 1, 0, 0, 0);
+                  }
+
+                  return rounded;
+                }
+
+                function formatTime(date) {
+                  return `${padNumber(date.getHours())}:${padNumber(
+                    date.getMinutes()
+                  )}`;
+                }
+                                function updateDeliveryTime() {
+                      if (!deliveryDateInput.value) {
+                        deliveryTimeInput.value = "";
+                        deliveryTimeNote.textContent =
+                          "Выберите дату, чтобы увидеть доступное время.";
+                        return;
+                      }
+
+                      const now = new Date();
+                      const selectedDate = new Date(
+                        `${deliveryDateInput.value}T00:00:00`
+                      );
+
+                      const today = new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate()
+                      );
+
+                      let slotStart;
+
+                      if (selectedDate.getTime() === today.getTime()) {
+                        slotStart = new Date(
+                          now.getTime() + 90 * 60 * 1000
+                        );
+                        slotStart = roundUpToHalfHour(slotStart);
+
+                        const openingTime = new Date(selectedDate);
+                        openingTime.setHours(9, 30, 0, 0);
+
+                        if (slotStart < openingTime) {
+                          slotStart = openingTime;
+                        }
+                      } else {
+                        slotStart = new Date(selectedDate);
+                        slotStart.setHours(9, 30, 0, 0);
+                      }
+
+                      const slotEnd = new Date(
+                        slotStart.getTime() + 60 * 60 * 1000
+                      );
+
+                      deliveryTimeInput.value =
+                        `с ${formatTime(slotStart)} до ${formatTime(slotEnd)}`;
+
+                      deliveryTimeNote.textContent =
+                        "Это ближайшее доступное время. Если нужно другое, напишите его в комментарии.";
+                    }
+
+                    function showOrderConfirmation(order, payload) {
+                      const orderNumber =
+                        order?.id ||
+                        order?.orderId ||
+                        order?.order_id ||
+                        "";
+
+                      orderConfirmationNumber.textContent = orderNumber
+                        ? `Номер заказа: ${orderNumber}`
+                        : "Заказ успешно отправлен";
+
+                      const productsList = payload.items
+                        .map(
+                          (item) => `
+                            <li>
+                              ${escapeHtml(item.name)} ×
+                              ${Number(item.quantity)}
+                              — ${formatPrice(
+                                Number(item.price) *
+                                  Number(item.quantity)
+                              )}
+                            </li>
+                          `
+                        )
+                        .join("");
+
+                      const deliveryText =
+                        payload.deliveryType === "delivery"
+                          ? `Доставка: ${escapeHtml(
+                              payload.deliveryAddress
+                            )}`
+                          : "Самовывоз: г. Иваново, ул. Свободы, д. 39Б";
+
+                      const recipientText =
+                        payload.deliveryType === "delivery" &&
+                        payload.recipientType === "other"
+                          ? `
+                            <p>
+                              <strong>Получатель:</strong>
+                              ${escapeHtml(payload.recipientName)},
+                              ${escapeHtml(payload.recipientPhone)}
+                            </p>
+                          `
+                          : "";
+
+                      const postcardText = payload.postcardText
+                        ? `
+                          <p>
+                            <strong>Текст открытки:</strong>
+                            ${escapeHtml(payload.postcardText)}
+                          </p>
+                        `
+                        : "";
+
+                      const commentText = payload.comment
+                        ? `
+                          <p>
+                            <strong>Комментарий:</strong>
+                            ${escapeHtml(payload.comment)}
+                          </p>
+                        `
+                        : "";
+
+                      orderConfirmationDetails.innerHTML = `
+                        <p>
+                          <strong>Заказчик:</strong>
+                          ${escapeHtml(payload.customerName)}
+                        </p>
+
+                        <p>
+                          <strong>Телефон:</strong>
+                          ${escapeHtml(payload.customerPhone)}
+                        </p>
+
+                        <p>
+                          <strong>Получение:</strong>
+                          ${deliveryText}
+                        </p>
+
+                        <p>
+                          <strong>Дата и время:</strong>
+                          ${escapeHtml(payload.deliveryDate)},
+                          ${escapeHtml(payload.deliveryTime)}
+                        </p>
+
+                        ${recipientText}
+                        ${postcardText}
+                        ${commentText}
+
+                        <div>
+                          <strong>Состав заказа:</strong>
+                          <ul class="order-confirmation-products">
+                            ${productsList}
+                          </ul>
+                        </div>
+
+                        <p>
+                          <strong>Итого:</strong>
+                          ${formatPrice(payload.total)}
+                        </p>
+                      `;
+
+                      closeCart();
+                      orderConfirmation.classList.add("open");
+                      document.body.classList.add(
+                        "order-confirmation-open"
+                      );
+                    }
+
+                    function closeOrderConfirmation() {
+                      orderConfirmation.classList.remove("open");
+                      document.body.classList.remove(
+                        "order-confirmation-open"
+                      );
+
+                      document
+                        .getElementById("catalog")
+                        .scrollIntoView({ behavior: "smooth" });
+                    }
+
+                    catalogGrid.addEventListener("click", (event) => {
+                      const addButton = event.target.closest(
+                        "[data-add-to-cart]"
+                      );
+
+                      if (!addButton) {
+                        return;
+                      }
+
+                      addToCart(addButton.dataset.addToCart);
+                    });
+
+                    cartItems.addEventListener("click", (event) => {
+                      const actionButton = event.target.closest(
+                        "[data-cart-action]"
+                      );
+
+                      if (!actionButton) {
+                        return;
+                      }
+
+                      const productId =
+                        actionButton.dataset.productId;
+                      const action =
+                        actionButton.dataset.cartAction;
+
+                      changeQuantity(
+                        productId,
+                        action === "increase" ? 1 : -1
+                      );
+                    });
+
+                    cartButton.addEventListener("click", openCart);
+                    cartClose.addEventListener("click", closeCart);
+                    cartOverlay.addEventListener("click", closeCart);
+                    clearCartButton.addEventListener(
+                      "click",
+                      clearCart
+                    );
+
+                    document
+                      .querySelectorAll(
+                        'input[name="deliveryType"]'
+                      )
+                      .forEach((input) => {
+                        input.addEventListener(
+                          "change",
+                          updateDeliveryFields
+                        );
+                      });
+
+                    document
+                      .querySelectorAll(
+                        'input[name="recipientType"]'
+                      )
+                      .forEach((input) => {
+                        input.addEventListener(
+                          "change",
+                          updateRecipientFields
+                        );
+                      });
+
+                    document
+                      .querySelectorAll(
+                        'input[name="postcardType"]'
+                      )
+                      .forEach((input) => {
+                        input.addEventListener(
+                          "change",
+                          updatePostcardFields
+                        );
+                      });
+
+                    deliveryDateInput.addEventListener(
+                      "change",
+                      updateDeliveryTime
+                    );
+
+                    checkoutForm.addEventListener(
+                      "submit",
+                      async (event) => {
+                        event.preventDefault();
+
+                        checkoutStatus.textContent = "";
+                        checkoutStatus.className =
+                          "checkout-status";
+
+                        if (!cart.length) {
+                          checkoutStatus.textContent =
+                            "Корзина пуста.";
+                          checkoutStatus.classList.add("error");
+                          return;
+                        }
+
+                        if (!personalDataConsent.checked) {
+                          checkoutStatus.textContent =
+                            "Нужно подтвердить согласие на обработку персональных данных.";
+                          checkoutStatus.classList.add("error");
+                          personalDataConsent.focus();
+                          return;
+                        }
+
+                        const deliveryType =
+                          getSelectedValue("deliveryType");
+                        const recipientType =
+                          getSelectedValue("recipientType");
+                        const postcardType =
+                          getSelectedValue("postcardType");
+
+                        const payload = {
+                          customerName:
+                            customerNameInput.value.trim(),
+                          customerPhone:
+                            customerPhoneInput.value.trim(),
+                          deliveryType,
+                          deliveryAddress:
+                            deliveryType === "delivery"
+                              ? deliveryAddressInput.value.trim()
+                              : "",
+                          recipientType:
+                            deliveryType === "delivery"
+                              ? recipientType
+                              : "self",
+                          recipientName:
+                            deliveryType === "delivery" &&
+                            recipientType === "other"
+                              ? recipientNameInput.value.trim()
+                              : "",
+                          recipientPhone:
+                            deliveryType === "delivery" &&
+                            recipientType === "other"
+                              ? recipientPhoneInput.value.trim()
+                              : "",
+                          postcardType:
+                            deliveryType === "delivery"
+                              ? postcardType
+                              : "no",
+                          postcardText:
+                            deliveryType === "delivery" &&
+                            postcardType === "yes"
+                              ? postcardTextInput.value.trim()
+                              : "",
+                          deliveryDate:
+                            deliveryDateInput.value,
+                          deliveryTime:
+                            deliveryTimeInput.value,
+                          comment:
+                            orderCommentInput.value.trim(),
+                          items: cart.map((item) => ({
+                            id: item.id,
+                            productId: item.id,
+                            name: item.name,
+                            price: Number(item.price),
+                            quantity: Number(item.quantity)
+                          })),
+                          total: getCartTotal()
+                        };
+
+                        checkoutButton.disabled = true;
+                        checkoutButton.textContent =
+                          "Отправляем заказ…";
+
+                        try {
+                          const response = await fetch(
+                            "/api/orders",
+                            {
+                              method: "POST",
+                              headers: {
+                                "Content-Type":
+                                  "application/json"
+                              },
+                              body: JSON.stringify(payload)
+                            }
+                          );
+
+                          const result = await response
+                            .json()
+                            .catch(() => ({}));
+
+                          if (!response.ok) {
+                            throw new Error(
+                              result.error ||
+                                result.message ||
+                                "Не удалось оформить заказ"
+                            );
+                          }
+
+                          showOrderConfirmation(result, payload);
+
+                          cart = [];
+                          saveCart();
+                          renderCart();
+                          checkoutForm.reset();
+
+                          document.querySelector(
+                            'input[name="deliveryType"][value="pickup"]'
+                          ).checked = true;
+
+                          document.querySelector(
+                            'input[name="recipientType"][value="self"]'
+                          ).checked = true;
+
+                          document.querySelector(
+                            'input[name="postcardType"][value="no"]'
+                          ).checked = true;
+
+                          updateDeliveryFields();
+                          updateRecipientFields();
+                          updatePostcardFields();
+                          setMinimumDeliveryDate();
+
+                          checkoutStatus.textContent = "";
+                          checkoutStatus.className =
+                            "checkout-status";
+                        } catch (error) {
+                          console.error(error);
+
+                          checkoutStatus.textContent =
+                            error.message ||
+                            "Не удалось оформить заказ. Попробуйте ещё раз.";
+                          checkoutStatus.classList.add("error");
+                        } finally {
+                          checkoutButton.disabled = false;
+                          checkoutButton.textContent =
+                            "Оформить заказ";
+                        }
+                      }
+                    );
+
+                    orderConfirmationClose.addEventListener(
+                      "click",
+                      closeOrderConfirmation
+                    );
+
+                    orderConfirmation.addEventListener(
+                      "click",
+                      (event) => {
+                        if (event.target === orderConfirmation) {
+                          closeOrderConfirmation();
+                        }
+                      }
+                    );
+
+                    document.addEventListener(
+                      "keydown",
+                      (event) => {
+                        if (event.key !== "Escape") {
+                          return;
+                        }
+
+                        if (
+                          orderConfirmation.classList.contains(
+                            "open"
+                          )
+                        ) {
+                          closeOrderConfirmation();
+                          return;
+                        }
+
+                        closeCart();
+                      }
+                    );
+
+                    loadCart();
+                    renderCart();
+                    updateDeliveryFields();
+                    updatePostcardFields();
+                    setMinimumDeliveryDate();
+                    loadProducts();
+                  </script>
+                </body>
+              </html>
