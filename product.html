@@ -1150,13 +1150,9 @@
           productPriceElement.textContent =
             formatPrice(product.price);
 
-          productSizeElement.textContent =
+         productSizeElement.textContent =
   product.size ||
   "Размер зависит от состава и сезонности цветов.";
-          productCompositionElement.textContent =
-            product.composition ||
-            "Точный состав уточнит флорист после оформления заказа.";
-
           productDescriptionElement.textContent =
             product.description ||
             product.short_description ||
