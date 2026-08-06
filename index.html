@@ -1280,7 +1280,7 @@
             );
             const image = escapeHtml(product.image || FALLBACK_IMAGE);
             const price = money(product.price);
-
+            const in_stock = Number(product.in_stock) !== 0;
             return `
               <article class="product-card">
                 <div class="product-image-wrap">
@@ -1298,13 +1298,23 @@
                   <div class="price">${price}</div>
 
                   <div class="card-actions">
-                    <button
-                      class="card-button"
-                      type="button"
-                      onclick="addToCart(${id})"
-                    >
-                      В корзину
-                    </button>
+                   ${
+  in_stock
+    ? `<button
+        class="card-button"
+        type="button"
+        onclick="addToCart(${id})"
+      >
+        В корзину
+      </button>`
+    : `<button
+        class="card-button"
+        type="button"
+        disabled
+      >
+        Нет в наличии
+      </button>`
+}
 
                     <a class="details-button" href="/product.html?id=${id}">
                       Подробнее
