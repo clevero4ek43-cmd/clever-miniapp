@@ -1151,9 +1151,8 @@
             formatPrice(product.price);
 
           productSizeElement.textContent =
-  product.width && product.height
-    ? `${product.width} × ${product.height} см`
-    : "Размер зависит от состава и сезонности цветов.";
+  product.size ||
+  "Размер зависит от состава и сезонности цветов.";
           productCompositionElement.textContent =
             product.composition ||
             "Точный состав уточнит флорист после оформления заказа.";
