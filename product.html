@@ -1149,6 +1149,18 @@
 
           productPriceElement.textContent =
             formatPrice(product.price);
+          const inStock = Number(product.in_stock) !== 0;
+const availabilityElement =
+  document.querySelector(".availability");
+
+availabilityElement.innerHTML = inStock
+  ? `<span class="availability-dot"></span>Можно заказать`
+  : `Нет в наличии`;
+
+addToCartButton.disabled = !inStock;
+addToCartButton.textContent = inStock
+  ? "Добавить в корзину"
+  : "Нет в наличии";
 
          productSizeElement.textContent =
   product.size ||
