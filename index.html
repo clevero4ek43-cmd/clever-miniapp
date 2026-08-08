@@ -1793,6 +1793,18 @@ deliveryDateInput.addEventListener(
 );
 
 createDeliveryIntervals();
+    document.querySelectorAll(".category-button").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+
+    document.querySelectorAll(".category-button").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    loadProducts();
+  });
+});
     loadProducts();
     renderCart();
 
