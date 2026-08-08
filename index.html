@@ -1271,6 +1271,7 @@
       return Number(value || 0).toLocaleString("ru-RU") + " ₽";
     }
 
+    let selectedCategory = "Все";
     async function loadProducts() {
       const grid = document.getElementById("catalog-grid");
 
@@ -1297,12 +1298,20 @@
 
         products = Array.isArray(data) ? data : [];
 
-        if (!products.length) {
-          grid.innerHTML = '<div class="message">Товаров пока нет.</div>';
-          return;
-        }
+       const filteredProducts =
+  selectedCategory === "Все"
+    ? products
+    : products.filter(
+        product => product.category === selectedCategory
+      );
 
-        grid.innerHTML = products
+if (!filteredProducts.length) {
+  grid.innerHTML =
+    '<div class="message">В этом разделе пока нет товаров.</div>';
+  return;
+}
+
+grid.innerHTML = filteredProducts
           .map(product => {
             const id = Number(product.id);
             const name = escapeHtml(product.name || "Букет");
