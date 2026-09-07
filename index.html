@@ -297,11 +297,15 @@
     }
 
     .product-image-wrap {
-      overflow: hidden;
-      aspect-ratio: 1 / 1;
-      background: var(--milk);
-    }
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--milk);
+}
 
+.image-cart-button {
+  display: none;
+}
     .product-card img {
       width: 100%;
       height: 100%;
@@ -657,7 +661,38 @@
       .product-card {
         border-radius: 22px;
       }
+      .image-cart-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: none;
+  border-radius: 17px;
+  background: var(--pink);
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+   .product-card {
+  align-self: start;
+  cursor: pointer;
+}
 
+.product-content {
+  flex: none;
+}
+
+.product-card .short,
+.card-actions {
+  display: none;
+}   
       .product-content {
   padding: 12px 10px 14px;
 }
@@ -1344,14 +1379,24 @@ grid.innerHTML = filteredProducts
             const price = money(product.price);
             const in_stock = Number(product.in_stock) !== 0;
             return `
-              <article class="product-card">
-                <div class="product-image-wrap">
+              <article class="product-card" onclick="if (window.innerWidth <= 760) window.location.href='/product.html?id=${id}'">  
+              <div class="product-image-wrap">
                   <img
                     src="${image}"
                     alt="${name}"
                     loading="lazy"
                     onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
                   >
+                  ${
+  in_stock
+    ? `<button
+        class="image-cart-button"
+        type="button"
+        onclick="event.stopPropagation(); addToCart(${id})"
+        aria-label="Добавить в корзину"
+      >🛒</button>`
+    : ""
+}
                 </div>
 
                 <div class="product-content">
