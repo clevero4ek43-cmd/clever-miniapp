@@ -675,6 +675,7 @@
 
 .product-card .short {
   min-height: 36px;
+  flex: none;
   margin: 0 0 10px;
   font-size: 13px;
   line-height: 1.35;
@@ -706,15 +707,18 @@
     }
 
     @media (max-width: 430px) {
-      .card-actions {
-        flex-direction: column;
-      }
+  .card-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-      .card-button,
-      .details-button {
-        width: 100%;
-      }
-    }
+  .card-button,
+  .details-button {
+    width: 100%;
+    height: 48px;
+    font-size: 15px;
+  }
+}    }
     .delivery-section,
 .about-section,
 .contacts-section {
