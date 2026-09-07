@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
 const dns = require("dns");
+const crypto = require("crypto");
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -57,6 +58,15 @@ CREATE TABLE IF NOT EXISTS product_images (
   zoom REAL NOT NULL DEFAULT 1,
   pos_x REAL NOT NULL DEFAULT 0,
   pos_y REAL NOT NULL DEFAULT 0,
+  FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS product_imports (
+  source TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  product_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (source, source_id),
   FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 `);
@@ -341,6 +351,152 @@ function replaceProductImages(productId, images) {
       item.pos_y
     );
   });
+}
+
+const OLD_STORE_ORIGIN = "https://cveti-ivanovo.ru";
+const FLORIA_API = "https://admin.floria.pro/api";
+const FLORIA_PUBLIC_KEY = "1cOkQhtqh4Oj7vDLLFHHNAy9nUMmVZ39";
+
+function createFloriaProjectHeader() {
+  const payload = Buffer.from(JSON.stringify({
+    domain: OLD_STORE_ORIGIN,
+    timestamp: Date.now(),
+    platform: "floria",
+    nonce: crypto.randomBytes(16).toString("hex")
+  })).toString("base64");
+
+  const signature = crypto
+    .createHmac("sha256", FLORIA_PUBLIC_KEY)
+    .update(payload)
+    .digest("hex");
+
+  return `${payload}.${signature}`;
+}
+
+function stripHtml(value) {
+  return String(value || "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#039;/gi, "'")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function importedProductCategory(product) {
+  const name = String(product?.name || product?.pagetitle || "").toLowerCase();
+
+  if (name.includes("невест")) return "Букеты невесты";
+
+  if (
+    /компози|корзин|короб|сумоч|ящик|кашпо|шляпн/.test(name)
+  ) {
+    return "Композиции";
+  }
+
+  if (name.includes("роз")) return "Розы";
+
+  const composition = Array.isArray(product?.composition)
+    ? product.composition.filter(item => item?.sostav)
+    : [];
+
+  if (composition.length === 1) return "Монобукеты";
+
+  if (
+    /тюльпан|диантус|гербер|гипсофил|ромаш|хризантем|пион|альстромер/.test(name)
+  ) {
+    return "Монобукеты";
+  }
+
+  return "Сборные букеты";
+}
+
+function importedComposition(product) {
+  if (!Array.isArray(product?.composition)) return "";
+
+  return product.composition
+    .filter(item => item?.sostav)
+    .map(item => {
+      const quantity = Number(item?.kolichestvo);
+      return quantity > 0
+        ? `${item.sostav} — ${quantity} шт.`
+        : String(item.sostav);
+    })
+    .join("\n");
+}
+
+async function fetchFloriaProducts(offset, limit) {
+  const params = new URLSearchParams({
+    categoryId: "0",
+    sortBy: JSON.stringify({
+      name: "По умолчанию",
+      sortby: "rank",
+      dir: "asc"
+    }),
+    selectedStatus: JSON.stringify({
+      title: "Все товары",
+      name: "all",
+      count: 0,
+      condition: { deleted: 0 }
+    }),
+    limit: String(limit),
+    offset: String(offset),
+    needComposition: "1",
+    publishedOnly: "1"
+  });
+
+  const response = await fetch(`${FLORIA_API}/products?${params}`, {
+    headers: {
+      "Content-Type": "application/json",
+      customOrigin: OLD_STORE_ORIGIN,
+      "X-Floria-Project": createFloriaProjectHeader()
+    },
+    signal: AbortSignal.timeout(30000)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Старый сайт ответил с ошибкой ${response.status}`);
+  }
+
+  const data = await response.json();
+  return Array.isArray(data?.products) ? data.products : [];
+}
+
+async function downloadImportedImages(product) {
+  const sourceImages = Array.isArray(product?.images)
+    ? product.images.filter(item => item?.url).slice(0, 5)
+    : [];
+  const saved = [];
+
+  for (let index = 0; index < sourceImages.length; index += 1) {
+    const source = sourceImages[index];
+    const url = `${FLORIA_API}${source.url}?width=1200&height=1200&format=webp`;
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(30000)
+    });
+
+    if (!response.ok) continue;
+
+    const filename = `floria-${product.id}-${index}-${Date.now()}.webp`;
+    const filePath = path.join(UPLOAD_DIR, filename);
+    const buffer = Buffer.from(await response.arrayBuffer());
+
+    fs.writeFileSync(filePath, buffer);
+    saved.push({
+      image: `/uploads/${filename}`,
+      is_main: index === 0 ? 1 : 0,
+      sort_order: saved.length,
+      zoom: 1,
+      pos_x: 0,
+      pos_y: 0
+    });
+  }
+
+  if (saved.length) saved[0].is_main = 1;
+  return saved;
 }
 
 function formatPrice(value) {
@@ -666,6 +822,150 @@ app.get("/api/admin/products", requireAdmin, (_, res) => {
   `).all();
 
   res.json(attachImages(products));
+});
+
+app.post("/api/admin/import-floria", requireAdmin, async (req, res, next) => {
+  try {
+    const offset = Math.max(0, Math.round(Number(req.body?.offset) || 0));
+    const limit = Math.min(
+      10,
+      Math.max(1, Math.round(Number(req.body?.limit) || 4))
+    );
+    const sourceProducts = await fetchFloriaProducts(offset, limit);
+    let imported = 0;
+    let skipped = 0;
+    const errors = [];
+
+    for (const sourceProduct of sourceProducts) {
+      const sourceId = String(sourceProduct?.id || "");
+
+      if (!sourceId) {
+        errors.push("Товар без идентификатора пропущен");
+        continue;
+      }
+
+      const alreadyImported = db.prepare(`
+        SELECT product_id
+        FROM product_imports
+        WHERE source = ? AND source_id = ?
+      `).get("floria", sourceId);
+
+      if (alreadyImported) {
+        skipped += 1;
+        continue;
+      }
+
+      const name = cleanText(
+        sourceProduct.name || sourceProduct.pagetitle,
+        200
+      );
+      const price = Math.round(Number(sourceProduct.price));
+
+      if (!name || !Number.isFinite(price) || price <= 0) {
+        errors.push(`Товар ${sourceId}: нет названия или цены`);
+        continue;
+      }
+
+      const existing = db.prepare(`
+        SELECT id
+        FROM products
+        WHERE TRIM(name) = ? AND price = ?
+        LIMIT 1
+      `).get(name, price);
+
+      if (existing) {
+        db.prepare(`
+          INSERT OR IGNORE INTO product_imports
+            (source, source_id, product_id)
+          VALUES (?, ?, ?)
+        `).run("floria", sourceId, existing.id);
+        skipped += 1;
+        continue;
+      }
+
+      let images = [];
+
+      try {
+        images = await downloadImportedImages(sourceProduct);
+      } catch (error) {
+        console.error(`Ошибка фото товара ${sourceId}:`, error);
+      }
+
+      const createImportedProduct = db.transaction(() => {
+        const image = images[0]?.image || "";
+        const description = stripHtml(
+          sourceProduct.description || sourceProduct.introtext
+        );
+        const shortDescription = stripHtml(sourceProduct.introtext)
+          .slice(0, 500);
+        const result = db.prepare(`
+          INSERT INTO products (
+            name,
+            price,
+            short_description,
+            description,
+            composition,
+            size,
+            care,
+            image,
+            category,
+            visible,
+            in_stock,
+            sort_order
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).run(
+          name,
+          price,
+          shortDescription,
+          description,
+          importedComposition(sourceProduct),
+          "",
+          "",
+          image,
+          importedProductCategory(sourceProduct),
+          1,
+          sourceProduct.not_available ? 0 : 1,
+          Math.round(Number(sourceProduct.rank) || 0)
+        );
+        const productId = Number(result.lastInsertRowid);
+
+        replaceProductImages(productId, images);
+        db.prepare(`
+          INSERT INTO product_imports (source, source_id, product_id)
+          VALUES (?, ?, ?)
+        `).run("floria", sourceId, productId);
+
+        return productId;
+      });
+
+      try {
+        createImportedProduct();
+        imported += 1;
+      } catch (error) {
+        images.forEach(item => {
+          if (!item.image.startsWith("/uploads/")) return;
+          fs.unlink(
+            path.join(UPLOAD_DIR, path.basename(item.image)),
+            () => {}
+          );
+        });
+        errors.push(`Товар «${name}» не перенесён`);
+        console.error(`Ошибка импорта товара ${sourceId}:`, error);
+      }
+    }
+
+    res.json({
+      success: true,
+      imported,
+      skipped,
+      errors,
+      nextOffset: offset + sourceProducts.length,
+      done: sourceProducts.length < limit
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.post(

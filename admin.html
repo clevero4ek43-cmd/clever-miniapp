@@ -195,6 +195,19 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
         </section>
 
         <section class="panel">
+          <h2>Перенос со старого сайта</h2>
+          <p class="muted">
+            Перенесёт опубликованные товары с cveti-ivanovo.ru вместе
+            с ценами, составом и фотографиями. Уже перенесённые товары
+            повторно не добавятся.
+          </p>
+          <button id="import-floria-button" onclick="importFromFloria()">
+            Перенести товары
+          </button>
+          <div id="import-floria-status" class="status"></div>
+        </section>
+
+        <section class="panel">
           <h2>Товары</h2>
           <div id="products-list"></div>
         </section>
@@ -706,6 +719,64 @@ $("image-files").addEventListener("change", async event => {
     event.target.value = "";
   }
 });
+
+async function importFromFloria() {
+  const button = $("import-floria-button");
+  let offset = 0;
+  let imported = 0;
+  let skipped = 0;
+  let errorCount = 0;
+
+  if (!confirm(
+    "Перенести опубликованные товары со старого сайта? " +
+    "Существующие товары и заказы останутся на месте."
+  )) {
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Переносим...";
+
+  try {
+    while (true) {
+      showStatus(
+        "import-floria-status",
+        `Обработано ${offset} товаров. Пожалуйста, не закрывайте страницу.`
+      );
+
+      const result = await api("/api/admin/import-floria", {
+        method: "POST",
+        body: JSON.stringify({ offset, limit: 4 })
+      });
+
+      imported += Number(result.imported || 0);
+      skipped += Number(result.skipped || 0);
+      errorCount += Array.isArray(result.errors)
+        ? result.errors.length
+        : 0;
+      offset = Number(result.nextOffset || offset);
+
+      if (result.done) break;
+    }
+
+    await loadProducts();
+    showStatus(
+      "import-floria-status",
+      `Готово. Добавлено: ${imported}. Уже были на сайте: ${skipped}.` +
+      (errorCount ? ` Не удалось перенести: ${errorCount}.` : "")
+    );
+  } catch (error) {
+    showStatus(
+      "import-floria-status",
+      `Перенос остановлен: ${error.message}. Нажмите кнопку ещё раз, ` +
+      "чтобы продолжить. Повторов не будет.",
+      true
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Перенести товары";
+  }
+}
 
 async function loadProducts() {
   try {
