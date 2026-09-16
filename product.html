@@ -1176,6 +1176,10 @@ addToCartButton.textContent = inStock
          productSizeElement.textContent =
   product.size ||
   "Размер зависит от состава и сезонности цветов.";
+          productCompositionElement.textContent =
+            (product.composition || "").trim() ||
+            "Состав уточняется";
+
           productDescriptionElement.textContent =
             product.description ||
             product.short_description ||
