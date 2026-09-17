@@ -1359,11 +1359,26 @@
         products = Array.isArray(data) ? data : [];
 
        const filteredProducts =
+  const filteredProducts =
   selectedCategory === "Все"
     ? products
-    : products.filter(
-        product => product.category === selectedCategory
-      );
+    : products.filter(product => {
+        let categories = [];
+
+        try {
+          categories = JSON.parse(product.categories || "[]");
+        } catch {
+          categories = [];
+        }
+
+        if (!Array.isArray(categories) || !categories.length) {
+          categories = product.category
+            ? [product.category]
+            : [];
+        }
+
+        return categories.includes(selectedCategory);
+      });
 
 if (!filteredProducts.length) {
   grid.innerHTML =
