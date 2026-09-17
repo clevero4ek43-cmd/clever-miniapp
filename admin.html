@@ -30,6 +30,29 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
   transition:opacity .2s, background .2s;
 }
 
+  .category-checkboxes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  padding:10px 12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  background:#fff;
+}
+
+.category-checkboxes label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0;
+  cursor:pointer;
+  font-weight:400;
+}
+
+.category-checkboxes input{
+  width:auto;
+  margin:0;
+}
 .product-drag{
   font-size:24px;
   color:#9aa69d;
@@ -134,17 +157,36 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
           <input id="price" type="number" min="1">
         </label>
 
-        <label>
-  Категория
-  <select id="category">
-    <option value="Сборные букеты">Сборные букеты</option>
-    <option value="Монобукеты">Монобукеты</option>
-    <option value="Розы">Розы</option>
-    <option value="Композиции">Композиции</option>
-    <option value="Букеты невесты">Букеты невесты</option>
-  </select>
-</label>
+       <div>
+  <div style="margin-bottom:8px;">Категории</div>
 
+  <div id="categories" class="category-checkboxes">
+    <label>
+      <input type="checkbox" value="Сборные букеты">
+      Сборные букеты
+    </label>
+
+    <label>
+      <input type="checkbox" value="Монобукеты">
+      Монобукеты
+    </label>
+
+    <label>
+      <input type="checkbox" value="Розы">
+      Розы
+    </label>
+
+    <label>
+      <input type="checkbox" value="Композиции">
+      Композиции
+    </label>
+
+    <label>
+      <input type="checkbox" value="Букеты невесты">
+      Букеты невесты
+    </label>
+  </div>
+</div>
         <label>
           Порядок показа
           <input id="sort-order" type="number" value="0">
@@ -1000,7 +1042,25 @@ function editProduct(id) {
   $("product-id").value = product.id;
   $("name").value = product.name || "";
   $("price").value = product.price || "";
-  $("category").value = product.category || "Букеты";
+  let selectedCategories = [];
+
+try {
+  selectedCategories = JSON.parse(product.categories || "[]");
+} catch {
+  selectedCategories = [];
+}
+
+if (!Array.isArray(selectedCategories) || !selectedCategories.length) {
+  selectedCategories = product.category
+    ? [product.category]
+    : [];
+}
+
+document
+  .querySelectorAll("#categories input[type='checkbox']")
+  .forEach(input => {
+    input.checked = selectedCategories.includes(input.value);
+  });
   $("sort-order").value = product.sort_order || 0;
 
   $("short-description").value =
@@ -1035,8 +1095,11 @@ function resetForm() {
   $("product-id").value = "";
   $("name").value = "";
   $("price").value = "";
-  $("category").value = "Букеты";
-  $("sort-order").value = "0";
+  document
+  .querySelectorAll("#categories input[type='checkbox']")
+  .forEach(input => {
+    input.checked = false;
+  });  $("sort-order").value = "0";
   $("short-description").value = "";
   $("description").value = "";
   $("composition").value = "";
@@ -1059,7 +1122,10 @@ function resetForm() {
   const payload = {
     name: $("name").value.trim(),
     price: Number($("price").value),
-    category: $("category").value.trim() || "Букеты",
+   categories: [...document.querySelectorAll("#categories input:checked")]
+  .map(input => input.value),
+
+category: document.querySelector("#categories input:checked")?.value || "Букеты",
     sort_order: Number($("sort-order").value) || 0,
     short_description: $("short-description").value.trim(),
     description: $("description").value.trim(),
