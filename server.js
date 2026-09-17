@@ -90,11 +90,10 @@ addColumnIfMissing("products", "in_stock", "INTEGER NOT NULL DEFAULT 1");
 addColumnIfMissing("products", "categories", "TEXT DEFAULT ''");
 db.prepare(`
   UPDATE products
-  SET categories = json_array(category)
+  SET categories = '["' || REPLACE(category, '"', '\\"') || '"]'
   WHERE TRIM(COALESCE(categories, '')) = ''
     AND TRIM(COALESCE(category, '')) <> ''
-`).run();
-addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
+`).run();addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
 addColumnIfMissing("orders", "status", "TEXT NOT NULL DEFAULT 'Новый'");
 addColumnIfMissing("orders", "created_at", "TEXT DEFAULT ''");
 addColumnIfMissing(
