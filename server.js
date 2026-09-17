@@ -1198,6 +1198,42 @@ app.put(
     res.json({ success: true });
   }
 );
+app.put(
+  "/api/admin/products-order",
+  requireAdmin,
+  (req, res) => {
+    const ids = Array.isArray(req.body?.ids)
+      ? req.body.ids.map(Number)
+      : [];
+
+    if (
+      !ids.length ||
+      ids.some(id => !Number.isInteger(id) || id <= 0)
+    ) {
+      return res.status(400).json({
+        error: "Некорректный порядок товаров"
+      });
+    }
+
+    const updateOrder = db.transaction(() => {
+      const update = db.prepare(`
+        UPDATE products
+        SET sort_order = ?
+        WHERE id = ?
+      `);
+
+      ids.forEach((id, index) => {
+        update.run(index, id);
+      });
+    });
+
+    updateOrder();
+
+    res.json({
+      success: true
+    });
+  }
+);
 app.delete("/api/admin/products/:id", requireAdmin, (req, res) => {
   const id = Number(req.params.id);
 
