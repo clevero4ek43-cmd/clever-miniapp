@@ -1393,8 +1393,13 @@ grid.innerHTML = filteredProducts
             const description = escapeHtml(
               product.short_description || product.description || ""
             );
-            const image = escapeHtml(product.image || FALLBACK_IMAGE);
-            const price = money(product.price);
+           const mainPhoto = Array.isArray(product.images)
+  ? product.images.find(photo => Boolean(photo.is_main))
+  : null;
+
+const image = escapeHtml(
+  mainPhoto?.image || product.image || FALLBACK_IMAGE
+);            const price = money(product.price);
             const in_stock = Number(product.in_stock) !== 0;
             return `
               <article class="product-card" onclick="if (window.innerWidth <= 760) window.location.href='/product.html?id=${id}'">  
