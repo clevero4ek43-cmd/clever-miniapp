@@ -1030,7 +1030,19 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
     req.body?.category || "Букеты",
     100
   );
+const categories = Array.isArray(req.body?.categories)
+  ? [...new Set(
+      req.body.categories
+        .map(item => cleanText(item, 100))
+        .filter(Boolean)
+    )]
+  : [category];
 
+if (!categories.length) {
+  categories.push(category);
+}
+
+const categoriesJson = JSON.stringify(categories);
   const visible = req.body?.visible ? 1 : 0;
   const inStock = req.body?.in_stock === false ? 0 : 1;
   const sortOrder = Math.round(
@@ -1059,11 +1071,12 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
         care,
         image,
         category,
+        categories,
         visible,
         in_stock,
         sort_order
       )
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      `).run(
       name,
       price,
@@ -1074,6 +1087,7 @@ app.post("/api/admin/products", requireAdmin, (req, res) => {
       care,
       image,
       category,
+      categoriesJson,
       visible,
       inStock,
       sortOrder
@@ -1134,7 +1148,19 @@ app.put(
       req.body?.category || "Букеты",
       100
     );
+    const categories = Array.isArray(req.body?.categories)
+  ? [...new Set(
+      req.body.categories
+        .map(item => cleanText(item, 100))
+        .filter(Boolean)
+    )]
+  : [category];
 
+if (!categories.length) {
+  categories.push(category);
+}
+
+const categoriesJson = JSON.stringify(categories);
     const visible = req.body?.visible ? 1 : 0;
     const inStock = req.body?.in_stock === false ? 0 : 1;
 
@@ -1171,6 +1197,7 @@ app.put(
           care = ?,
           image = ?,
           category = ?,
+          categories = ?,
           visible = ?,
           in_stock = ?,
           sort_order = ?
@@ -1185,6 +1212,7 @@ app.put(
         care,
         image,
         category,
+        categoriesJson,
         visible,
         inStock,
         sortOrder,
