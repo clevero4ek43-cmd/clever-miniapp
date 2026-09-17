@@ -20,7 +20,35 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
 .danger{background:#b84d57}
 .muted{color:#6c7a70}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.product{display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #eee}
+.product{
+  display:grid;
+  grid-template-columns:32px 100px 1fr auto;
+  gap:16px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+  transition:opacity .2s, background .2s;
+}
+
+.product-drag{
+  font-size:24px;
+  color:#9aa69d;
+  cursor:grab;
+  user-select:none;
+  text-align:center;
+}
+
+.product-drag:active{
+  cursor:grabbing;
+}
+
+.product.dragging{
+  opacity:.4;
+}
+
+.product.drag-over{
+  background:#f3ecee;
+}
 .product img{width:100px;height:100px;object-fit:cover;border-radius:14px;background:#eee}
 .login{max-width:420px;margin:80px auto}
 .hidden{display:none!important}
@@ -806,7 +834,17 @@ function renderProducts() {
       "";
 
     return `
-      <article class="product">
+      <article
+  class="product"
+  draggable="true"
+  data-product-id="${product.id}"
+>
+  <div
+    class="product-drag"
+    title="Перетащить товар"
+  >
+    ⋮⋮
+  </div>
         ${mainImage
           ? `
             <img
@@ -855,8 +893,101 @@ function renderProducts() {
       </article>
     `;
   }).join("");
+  bindProductDragEvents();
 }
 
+    let draggedProductId = null;
+
+function bindProductDragEvents() {
+  const productElements =
+    document.querySelectorAll("#products-list .product");
+
+  productElements.forEach(productElement => {
+    productElement.addEventListener("dragstart", event => {
+      draggedProductId = Number(
+        productElement.dataset.productId
+      );
+
+      productElement.classList.add("dragging");
+      event.dataTransfer.effectAllowed = "move";
+    });
+
+    productElement.addEventListener("dragend", () => {
+      draggedProductId = null;
+      productElement.classList.remove("dragging");
+
+      productElements.forEach(item => {
+        item.classList.remove("drag-over");
+      });
+    });
+
+    productElement.addEventListener("dragover", event => {
+      event.preventDefault();
+
+      if (
+        Number(productElement.dataset.productId) !==
+        draggedProductId
+      ) {
+        productElement.classList.add("drag-over");
+      }
+    });
+
+    productElement.addEventListener("dragleave", () => {
+      productElement.classList.remove("drag-over");
+    });
+
+    productElement.addEventListener("drop", async event => {
+      event.preventDefault();
+      productElement.classList.remove("drag-over");
+
+      const targetId = Number(
+        productElement.dataset.productId
+      );
+
+      if (
+        !draggedProductId ||
+        draggedProductId === targetId
+      ) {
+        return;
+      }
+
+      const fromIndex = products.findIndex(
+        item => Number(item.id) === draggedProductId
+      );
+
+      const toIndex = products.findIndex(
+        item => Number(item.id) === targetId
+      );
+
+      if (fromIndex < 0 || toIndex < 0) {
+        return;
+      }
+
+      const [movedProduct] =
+        products.splice(fromIndex, 1);
+
+      products.splice(toIndex, 0, movedProduct);
+
+      renderProducts();
+
+      try {
+        await api("/api/admin/products-order", {
+          method: "PUT",
+          body: JSON.stringify({
+            ids: products.map(item => Number(item.id))
+          })
+        });
+      } catch (error) {
+        alert(
+          "Не удалось сохранить порядок товаров: " +
+          error.message
+        );
+
+        await loadProducts();
+      }
+    });
+  });
+}  
 function editProduct(id) {
   const product = products.find(
     item => Number(item.id) === Number(id)
