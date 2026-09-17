@@ -87,6 +87,13 @@ addColumnIfMissing("products", "composition", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "size", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "care", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "in_stock", "INTEGER NOT NULL DEFAULT 1");
+addColumnIfMissing("products", "categories", "TEXT DEFAULT ''");
+db.prepare(`
+  UPDATE products
+  SET categories = json_array(category)
+  WHERE TRIM(COALESCE(categories, '')) = ''
+    AND TRIM(COALESCE(category, '')) <> ''
+`).run();
 addColumnIfMissing("orders", "items_json", "TEXT NOT NULL DEFAULT '[]'");
 addColumnIfMissing("orders", "status", "TEXT NOT NULL DEFAULT 'Новый'");
 addColumnIfMissing("orders", "created_at", "TEXT DEFAULT ''");
@@ -789,6 +796,7 @@ app.get("/api/products", (_, res) => {
       care,
       image,
       category,
+      categories,
       visible,
       in_stock,
       sort_order
@@ -813,6 +821,7 @@ app.get("/api/admin/products", requireAdmin, (_, res) => {
       care,
       image,
       category,
+      categories,
       visible,
       in_stock,
       sort_order,
