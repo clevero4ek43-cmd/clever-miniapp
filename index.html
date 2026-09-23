@@ -1402,8 +1402,8 @@ const image = escapeHtml(
 );            const price = money(product.price);
             const in_stock = Number(product.in_stock) !== 0;
             return `
-              <article class="product-card" onclick="if (window.innerWidth <= 760) window.location.href='/product.html?id=${id}'">  
-              <div class="product-image-wrap">
+             <article class="product-card" onclick="window.location.href='/product.html?id=${id}'">
+             <div class="product-image-wrap">
                   <img
                     src="${image}"
                     alt="${name}"
@@ -1433,7 +1433,7 @@ const image = escapeHtml(
     ? `<button
         class="card-button"
         type="button"
-        onclick="addToCart(${id})"
+       onclick="event.stopPropagation(); addToCart(${id})"
       >
         В корзину
       </button>`
