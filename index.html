@@ -1399,13 +1399,18 @@ grid.innerHTML = filteredProducts
 
 const image = escapeHtml(
   mainPhoto?.image || product.image || FALLBACK_IMAGE
-);            const price = money(product.price);
+);         
+           const imageZoom = Number(mainPhoto?.zoom) || 1;
+const imagePosX = Number(mainPhoto?.pos_x) || 0;
+const imagePosY = Number(mainPhoto?.pos_y) || 0; 
+            const price = money(product.price);
             const in_stock = Number(product.in_stock) !== 0;
             return `
              <article class="product-card" onclick="window.location.href='/product.html?id=${id}'">
              <div class="product-image-wrap">
                   <img
                     src="${image}"
+                    style="transform: translate(${imagePosX}%, ${imagePosY}%) scale(${imageZoom});"
                     alt="${name}"
                     loading="lazy"
                     onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"
