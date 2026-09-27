@@ -138,7 +138,7 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
   <button id="tab-products" onclick="showSection('products')">Товары</button>
   <button id="tab-orders" class="secondary" onclick="showSection('orders')">Заказы</button>
 </div>
-      <p class="muted">
+      <p id="section-description" class="muted">
         Добавляйте товары и загружайте фотографии.
         Изменения сразу появляются в каталоге.
       </p>
@@ -307,17 +307,20 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
   const ordersSection = $("orders-section");
   const productsTab = $("tab-products");
   const ordersTab = $("tab-orders");
-
+        const description = $("section-description");
   if (section === "orders") {
     productsSection.classList.add("hidden");
     ordersSection.classList.remove("hidden");
     productsTab.classList.add("secondary");
     ordersTab.classList.remove("secondary");
-  } else {
+    description.textContent = "Здесь отображаются все заказы с сайта.";
+  } 
+  else {
     productsSection.classList.remove("hidden");
     ordersSection.classList.add("hidden");
     productsTab.classList.remove("secondary");
     ordersTab.classList.add("secondary");
+    description.textContent = "Добавляйте товары и загружайте фотографии. Изменения сразу появляются в каталоге.";
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
