@@ -1394,8 +1394,8 @@ grid.innerHTML = filteredProducts
               product.short_description || product.description || ""
             );
            const mainPhoto = Array.isArray(product.images)
-  ? product.images.find(photo => Boolean(photo.is_main))
-  : null;
+  ? product.images.find(photo => Number(photo.is_main) === 1)
+             : null;
 
 const image = escapeHtml(
   mainPhoto?.image || product.image || FALLBACK_IMAGE
