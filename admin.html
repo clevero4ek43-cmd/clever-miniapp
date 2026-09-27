@@ -134,14 +134,18 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
         <h1>Админка КЛЕВЕР</h1>
         <button class="secondary" onclick="logout()">Выйти</button>
       </div>
-
+      <div class="panel" style="display:flex;gap:12px">
+  <button id="tab-products" onclick="showSection('products')">Товары</button>
+  <button id="tab-orders" class="secondary" onclick="showSection('orders')">Заказы</button>
+</div>
       <p class="muted">
         Добавляйте товары и загружайте фотографии.
         Изменения сразу появляются в каталоге.
       </p>
     </div>
 
-    <section class="panel">
+    <div id="products-section">
+      <section class="panel">
       <h2 id="form-title">Добавить товар</h2>
 
       <input id="product-id" type="hidden">
@@ -281,12 +285,14 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
           <h2>Товары</h2>
           <div id="products-list"></div>
         </section>
-
-        <section class="panel">
+      </div>
+    <div id="orders-section" class="hidden">
+      <section class="panel">
           <h2>Заказы</h2>
           <div id="orders-list"></div>
         </section>
-
+      </div>
+    
       </main>
     </div>
 
@@ -296,7 +302,26 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
     let draggedPhotoIndex = null;
 
     const $ = id => document.getElementById(id);
+      function showSection(section) {
+  const productsSection = $("products-section");
+  const ordersSection = $("orders-section");
+  const productsTab = $("tab-products");
+  const ordersTab = $("tab-orders");
 
+  if (section === "orders") {
+    productsSection.classList.add("hidden");
+    ordersSection.classList.remove("hidden");
+    productsTab.classList.add("secondary");
+    ordersTab.classList.remove("secondary");
+  } else {
+    productsSection.classList.remove("hidden");
+    ordersSection.classList.add("hidden");
+    productsTab.classList.remove("secondary");
+    ordersTab.classList.add("secondary");
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
     function escapeHtml(value) {
       return String(value ?? "")
         .replaceAll("&", "&amp;")
@@ -343,7 +368,7 @@ button{border:0;border-radius:10px;padding:12px 18px;background:#35543d;color:#f
         if (data.isAdmin) {
           $("login-panel").classList.add("hidden");
           $("admin-panel").classList.remove("hidden");
-
+showSection("products");
           await Promise.all([
             loadProducts(),
             loadOrders()
