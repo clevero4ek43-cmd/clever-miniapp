@@ -641,7 +641,48 @@ function buildEmailHtml(order) {
             ? escapeHtml(order.comment)
             : "Не указан"}
         </p>
+        <p>
+  <strong>Получение:</strong>
+  ${order.delivery_method === "delivery" ? "Доставка" : "Самовывоз"}
+</p>
 
+<p>
+  <strong>Дата получения:</strong>
+  ${order.delivery_date ? escapeHtml(order.delivery_date) : "Не указана"}
+</p>
+
+<p>
+  <strong>Время получения:</strong>
+  ${order.delivery_time ? escapeHtml(order.delivery_time) : "Не указано"}
+</p>
+${order.delivery_method === "delivery" ? `
+<p>
+  <strong>Адрес:</strong>
+  ${escapeHtml(order.delivery_address || "Не указан")}
+</p>
+
+<p>
+  <strong>Получатель:</strong>
+  ${escapeHtml(order.recipient_name || "Не указан")}
+</p>
+
+<p>
+  <strong>Телефон получателя:</strong>
+  ${escapeHtml(order.recipient_phone || "Не указан")}
+</p>
+` : ""}
+
+<p>
+  <strong>Открытка:</strong>
+  ${order.card_needed === "yes" ? "Да" : "Нет"}
+</p>
+
+${order.card_needed === "yes" ? `
+<p>
+  <strong>Текст открытки:</strong>
+  ${escapeHtml(order.card_text || "Не указан")}
+</p>
+` : ""}
         <table style="width:100%;border-collapse:collapse;margin-top:20px">
           <thead>
             <tr>
