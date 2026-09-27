@@ -8,6 +8,7 @@ const path = require("path");
 const fs = require("fs");
 const dns = require("dns");
 const crypto = require("crypto");
+const { execFileSync } = require("child_process");
 
 dns.setDefaultResultOrder("ipv4first");
 
@@ -776,6 +777,30 @@ app.post("/api/logout", (req, res, next) => {
   });
 });
 
+app.get("/__backup_download", (req, res) => {
+  const key = req.query.key;
+
+  if (!process.env.BACKUP_KEY || key !== process.env.BACKUP_KEY) {
+    return res.status(403).send("Forbidden");
+  }
+
+  try {
+    const archivePath = path.join("/tmp", "clever-data-backup.tar.gz");
+
+    execFileSync("tar", [
+      "-czf",
+      archivePath,
+      "-C",
+      DATA_DIR,
+      "."
+    ]);
+
+    res.download(archivePath, "clever-data-backup.tar.gz");
+  } catch (err) {
+    console.error("Backup error:", err);
+    res.status(500).send("Backup error");
+  }
+});
 app.get("/api/me", (req, res) => {
   res.json({
     isAdmin: Boolean(req.session?.isAdmin)
