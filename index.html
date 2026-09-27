@@ -1733,7 +1733,14 @@ card_text: cardText,
         document.getElementById("customer-name").value = "";
         document.getElementById("customer-phone").value = "";
         document.getElementById("customer-comment").value = "";
-
+        document.getElementById("delivery-address").value = "";
+document.getElementById("recipient-name").value = "";
+document.getElementById("recipient-phone").value = "";
+document.getElementById("card-text").value = "";
+        document.getElementById("delivery-method").value = "pickup";
+document.getElementById("card-needed").value = "no";
+        deliveryFields.classList.add("hidden");
+cardFields.classList.add("hidden");       
         status.textContent = `Заказ №${result.orderId} принят! Мы свяжемся с вами.`;
         status.classList.add("success");
 
