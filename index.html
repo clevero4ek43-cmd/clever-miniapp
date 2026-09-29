@@ -630,20 +630,27 @@ background-size: 100% 100%, auto 100%;}
         display: none;
       }
 
-     .hero {
+  .hero {
+  position: relative;
   min-height: 0;
-  padding: 235px 24px 50px;
+  padding: 390px 24px 50px;
   background-color: #fffaf8;
   background-image: url("assets/hero-ranunculus.jpg");
   background-repeat: no-repeat;
-  background-position: right -35px top 0;
-  background-size: 74% auto;
+  background-position: right -70px top -20px;
+  background-size: 108% auto;
   justify-content: flex-start;
 }
-      .hero-logo {
-  width: 150px;
-  max-width: 150px;
-  margin: 0 auto 14px;
+     .hero-logo {
+  position: absolute;
+  top: 235px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 145px;
+  max-width: 145px;
+  margin: 0;
+  z-index: 2;
+  mix-blend-mode: multiply;
 }
       .hero h1 {
         font-size: 40px;
