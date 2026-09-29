@@ -658,6 +658,21 @@ background-position: center, center, right -45px top -95px;
 background-size: 100% 100%, 100% 100%, 100% auto; 
     justify-content: flex-start;
 }
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 560px;
+  height: 110px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 250, 248, 0),
+    #fffaf8
+  );
+  pointer-events: none;
+  z-index: 1;
+}
      .hero-logo {
   position: absolute;
   top: 125px;
@@ -666,7 +681,7 @@ background-size: 100% 100%, 100% 100%, 100% auto;
   width: 90px;
   max-width: 90px;
   margin: 0;
-  z-index: 2;
+  z-index: 3;
   mix-blend-mode: multiply;
 }
      .hero h1 {
