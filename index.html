@@ -632,18 +632,18 @@ background-size: 100% 100%, auto 100%;}
 
   .hero {
   position: relative;
-  min-height: 0;
-  padding: 390px 24px 50px;
+  min-height: calc(100svh - 68px);
+  padding: 225px 20px 24px;
   background-color: #fffaf8;
   background-image: url("assets/hero-ranunculus.jpg");
   background-repeat: no-repeat;
-  background-position: right -70px top -20px;
-  background-size: 108% auto;
+  background-position: right -45px top -95px;
+  background-size: 100% auto;
   justify-content: flex-start;
 }
      .hero-logo {
   position: absolute;
-  top: 235px;
+  top: 165px;
   left: 50%;
   transform: translateX(-50%);
   width: 145px;
@@ -652,29 +652,31 @@ background-size: 100% 100%, auto 100%;}
   z-index: 2;
   mix-blend-mode: multiply;
 }
-      .hero h1 {
-        font-size: 40px;
-        letter-spacing: 6px;
-      }
+     .hero h1 {
+  font-size: 34px;
+  letter-spacing: 6px;
+  line-height: 1;
+}
 
-      .brand-sub {
-        font-size: 18px;
-        letter-spacing: 5px;
-      }
+.brand-sub {
+  font-size: 16px;
+  letter-spacing: 5px;
+}
 
-      .hero-title {
-        font-size: 29px;
-      }
+.hero-title {
+  font-size: 25px;
+  line-height: 1.15;
+}
 
-      .subtitle {
-        font-size: 17px;
-      }
+.subtitle {
+  font-size: 15px;
+  line-height: 1.35;
+}
 
-      .button {
-        width: min(100%, 320px);
-        padding: 17px 28px;
-      }
-
+.button {
+  width: min(100%, 300px);
+  padding: 14px 24px;
+}
       .catalog {
         padding: 42px 14px 70px;
       }
