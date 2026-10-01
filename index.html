@@ -392,14 +392,19 @@ background-size: 100% 100%, auto 100%;}
       transition: 0.25s ease;
     }
 
-    .card-button {
-      background: var(--pink);
-      color: var(--white);
-    }
-
+   .card-button {
+  background: var(--pink);
+  color: var(--white);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+}
     .card-button:hover {
       background: var(--pink-dark);
-      transform: translateY(-2px);
+     transform: none;
     }
 
     .details-button {
@@ -627,6 +632,14 @@ background-size: 100% 100%, auto 100%;}
     }
 
     @media (max-width: 760px) {
+      .image-cart-button {
+  display: none;
+}
+  .card-button {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 12px;
+  }
       .topbar {
         height: 68px;
         padding: 0 12px 0 16px;
@@ -805,7 +818,7 @@ background-size: 100% 100%, 100% 100%, 100% auto;
 }
 
 .price {
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .card-actions {
@@ -833,6 +846,7 @@ background-size: 100% 100%, 100% 100%, 100% auto;
 
   .card-button,
   .details-button {
+    display: none;
     width: 100%;
     height: 48px;
     font-size: 15px;
@@ -1521,8 +1535,8 @@ const imagePosY = Number(mainPhoto?.pos_y) || 0;
         type="button"
        onclick="event.stopPropagation(); addToCart(${id})"
       >
-        В корзину
-      </button>`
+        Купить
+        </button>`
     : `<button
         class="card-button"
         type="button"
