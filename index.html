@@ -416,7 +416,19 @@ background-size: 100% 100%, auto 100%;}
       background: #e9e5e1;
       transform: translateY(-2px);
     }
+@media (min-width: 761px) {
+  .card-actions .details-button {
+    display: none;
+  }
+    .card-actions {
+    display: block;
+  }
 
+  .card-actions .card-button {
+    display: block;
+    width: 100%;
+  }
+}
     .message {
       grid-column: 1 / -1;
       padding: 35px;
