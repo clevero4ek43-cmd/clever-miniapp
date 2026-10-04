@@ -1301,6 +1301,12 @@ background-size: 100% 100%, 100% 100%, 100% auto;
     <div class="checkout-form">
       <input id="customer-name" autocomplete="name" placeholder="Ваши Фамилия и имя">
       <input id="customer-phone" type="tel" autocomplete="tel" placeholder="Телефон">
+      <input
+  id="customer-email"
+  type="email"
+  autocomplete="email"
+  placeholder="Электронная почта (для подтверждения заказа)"
+>
       <p class="checkout-label">Кто получит заказ?</p>
 
 <div class="recipient-choice">
@@ -1803,6 +1809,7 @@ if (
           },
           body: JSON.stringify({
             customer_name: customerName,
+            customer_email: document.getElementById("customer-email").value.trim(),
             phone,
             comment,
             delivery_method: deliveryMethod.value,
@@ -1843,6 +1850,7 @@ card_text: cardText,
 
         document.getElementById("customer-name").value = "";
         document.getElementById("customer-phone").value = "";
+        document.getElementById("customer-email").value = "";
         document.getElementById("customer-comment").value = "";
         document.getElementById("delivery-address").value = "";
 document.getElementById("recipient-name").value = "";
