@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   customer_name TEXT NOT NULL,
+  customer_email TEXT DEFAULT '',
   phone TEXT NOT NULL,
   comment TEXT DEFAULT '',
   total INTEGER NOT NULL,
@@ -89,6 +90,7 @@ addColumnIfMissing("products", "size", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "care", "TEXT DEFAULT ''");
 addColumnIfMissing("products", "in_stock", "INTEGER NOT NULL DEFAULT 1");
 addColumnIfMissing("products", "categories", "TEXT DEFAULT ''");
+addColumnIfMissing("orders", "customer_email", "TEXT DEFAULT ''");
 db.prepare(`
   UPDATE products
   SET categories = '["' || REPLACE(category, '"', '\\"') || '"]'
@@ -711,6 +713,68 @@ ${order.card_needed === "yes" ? `
   `;
 }
 
+function buildCustomerEmailHtml(order) {
+  const rows = order.items.map(item => `
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid #eee">
+        ${escapeHtml(item.name)}
+      </td>
+      <td style="padding:10px;border-bottom:1px solid #eee;text-align:center">
+        ${item.qty}
+      </td>
+      <td style="padding:10px;border-bottom:1px solid #eee;text-align:right">
+        ${formatPrice(item.price * item.qty)}
+      </td>
+    </tr>
+  `).join("");
+
+  return `
+    <div style="font-family:Arial,sans-serif;max-width:650px;margin:auto;background:#f6f3ee;padding:24px">
+      <div style="background:#fff;border-radius:20px;padding:28px">
+        <h1 style="color:#35543d;margin:0 0 8px">КЛЕВЕР</h1>
+
+        <h2 style="color:#35543d">
+          Ваш заказ №${order.id} получен
+        </h2>
+
+        <p>
+          ${escapeHtml(order.customer_name)}, спасибо за заказ!
+          Мы получили его и свяжемся с вами при необходимости.
+        </p>
+
+        <p><strong>Получение:</strong>
+          ${order.delivery_method === "delivery" ? "Доставка" : "Самовывоз"}
+        </p>
+
+        <p><strong>Дата:</strong> ${escapeHtml(order.delivery_date || "Не указана")}</p>
+        <p><strong>Время:</strong> ${escapeHtml(order.delivery_time || "Не указано")}</p>
+
+        ${order.delivery_method === "delivery" ? `
+          <p><strong>Адрес:</strong> ${escapeHtml(order.delivery_address || "Не указан")}</p>
+        ` : ""}
+
+        <table style="width:100%;border-collapse:collapse;margin-top:20px">
+          <thead>
+            <tr>
+              <th style="padding:10px;text-align:left;background:#fdf6f8">Товар</th>
+              <th style="padding:10px;text-align:center;background:#fdf6f8">Количество</th>
+              <th style="padding:10px;text-align:right;background:#fdf6f8">Сумма</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+
+        <p style="font-size:20px;color:#35543d">
+          <strong>Итого: ${formatPrice(order.total)}</strong>
+        </p>
+
+        <p style="margin-top:24px;color:#777">
+          Салон цветов КЛЕВЕР
+        </p>
+      </div>
+    </div>
+  `;
+}
 async function sendTelegramNotification(order) {
   if (!telegramBot || !TELEGRAM_CHAT_ID) return;
 
@@ -731,15 +795,31 @@ async function sendEmailNotification(order) {
     html: buildEmailHtml(order)
   });
 }
+async function sendCustomerEmailNotification(order) {
+  if (!mailTransporter || !order.customer_email) return;
+
+  await mailTransporter.sendMail({
+    from: `"КЛЕВЕР" <${SMTP_USER}>`,
+    to: order.customer_email,
+    subject: `Ваш заказ №${order.id} получен — КЛЕВЕР`,
+    text: `Ваш заказ №${order.id} получен. Спасибо за заказ! Итоговая сумма: ${formatPrice(order.total)}.`,
+    html: buildCustomerEmailHtml(order)
+  });
+}
 function sendOrderNotifications(order) {
   Promise.allSettled([
     sendTelegramNotification(order),
-    sendEmailNotification(order)
+    sendEmailNotification(order),
+    sendCustomerEmailNotification(order)
   ]).then(results => {
     results.forEach((result, index) => {
       if (result.status === "rejected") {
         console.error(
-          index === 0 ? "Ошибка Telegram:" : "Ошибка Email:",
+         index === 0
+  ? "Ошибка Telegram:"
+  : index === 1
+    ? "Ошибка Email магазина:"
+    : "Ошибка Email покупателю:",
           result.reason
         );
       }
@@ -1387,6 +1467,7 @@ app.post("/api/orders", (req, res) => {
     200
   );
 
+  const customerEmail = cleanText(req.body?.customer_email, 254).trim().toLowerCase();
   const phone = cleanText(req.body?.phone, 100);
   const comment = cleanText(req.body?.comment, 2000);
   const items = req.body?.items;
@@ -1400,6 +1481,11 @@ const recipientType = cleanText(req.body?.recipient_type, 20);
     });
   }
 
+  if (customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+  return res.status(400).json({
+    error: "Проверьте адрес электронной почты"
+  });
+} 
   if (!Array.isArray(items) || !items.length) {
     return res.status(400).json({
       error: "Корзина пуста"
@@ -1515,6 +1601,7 @@ if (cardNeeded === "yes" && !cardText) {
   const result = db.prepare(`
   INSERT INTO orders (
     customer_name,
+    customer_email,
     phone,
     comment,
     delivery_method,
@@ -1531,9 +1618,10 @@ if (cardNeeded === "yes" && !cardText) {
     status,
     created_at
   )
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `).run(
   customerName,
+  customerEmail,
   phone,
   comment,
   deliveryMethod,
@@ -1553,6 +1641,7 @@ recipientType,
   const order = {
     id: Number(result.lastInsertRowid),
     customer_name: customerName,
+    customer_email: customerEmail,
     phone,
     comment,
     delivery_method: deliveryMethod,
@@ -1583,6 +1672,7 @@ app.get("/api/admin/orders", requireAdmin, (_, res) => {
     SELECT
       id,
       customer_name,
+      customer_email,
       phone,
       comment,
       delivery_method,
@@ -1604,6 +1694,7 @@ card_text,      total,
     rows.map(row => ({
       id: row.id,
       customer_name: row.customer_name,
+      customer_email: row.customer_email || "",
       phone: row.phone,
       comment: row.comment || "",
       delivery_method: row.delivery_method || "pickup",
