@@ -1072,6 +1072,61 @@ background-size: 100% 100%, 100% 100%, 100% auto;
     flex-direction: column;
   }
 }  
+    .cookie-banner {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #ebe7e3;
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgba(53, 84, 61, 0.18);
+  display: none;
+}
+
+.cookie-banner.show {
+  display: block;
+}
+
+.cookie-banner p {
+  margin: 0 0 14px;
+  color: #35543d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-banner a {
+  color: #35543d;
+  text-decoration: underline;
+}
+
+.cookie-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cookie-actions button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cookie-accept {
+  background: #35543d;
+  color: #fff;
+}
+
+.cookie-reject {
+  background: #f3efec;
+  color: #35543d;
+}
   </style>
 </head>
 
@@ -1395,6 +1450,54 @@ background-size: 100% 100%, 100% 100%, 100% auto;
   </aside>
 
   <script>
+    const METRIKA_ID = 113446598;
+
+function loadYandexMetrika() {
+  if (window.ym) return;
+
+  (function(m,e,t,r,i,k,a){
+    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+
+    k=e.createElement(t);
+    a=e.getElementsByTagName(t)[0];
+    k.async=1;
+    k.src=r;
+    a.parentNode.insertBefore(k,a);
+  })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+  ym(METRIKA_ID, "init", {
+    clickmap: true,
+    trackLinks: true,
+    accurateTrackBounce: true,
+    ecommerce: "dataLayer"
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const banner = document.getElementById("cookie-banner");
+  const acceptButton = document.getElementById("cookie-accept");
+  const rejectButton = document.getElementById("cookie-reject");
+
+  const cookieChoice = localStorage.getItem("cookieConsent");
+
+  if (cookieChoice === "accepted") {
+    loadYandexMetrika();
+  } else if (cookieChoice !== "rejected") {
+    banner.classList.add("show");
+  }
+
+  acceptButton.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    banner.classList.remove("show");
+    loadYandexMetrika();
+  });
+
+  rejectButton.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    banner.classList.remove("show");
+  });
+});
     const FALLBACK_IMAGE = "assets/2026-04-09_08-14-12.png";
 
     let products = [];
@@ -2034,5 +2137,22 @@ createDeliveryIntervals();
       openCart();
     }
   </script>
+  <div id="cookie-banner" class="cookie-banner">
+  <p>
+    Мы используем файлы cookie и Яндекс Метрику для анализа работы сайта.
+    Подробнее — в
+    <a href="/privacy.html" target="_blank">Политике обработки персональных данных</a>.
+  </p>
+
+  <div class="cookie-actions">
+    <button id="cookie-accept" class="cookie-accept" type="button">
+      Принять
+    </button>
+
+    <button id="cookie-reject" class="cookie-reject" type="button">
+      Отказаться
+    </button>
+  </div>
+</div>
 </body>
 </html>
