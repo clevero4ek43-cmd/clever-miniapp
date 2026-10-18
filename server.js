@@ -193,6 +193,31 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 12
   }
 }));
+app.get("/sitemap.xml", (_req, res) => {
+  const products = db.prepare(`
+    SELECT id
+    FROM products
+    WHERE visible = 1
+    ORDER BY id ASC
+  `).all();
+
+  const urls = [
+    "https://clever37.ru/",
+    "https://clever37.ru/privacy.html",
+    "https://clever37.ru/consent.html",
+    "https://clever37.ru/offer.html",
+    ...products.map(
+      (product) => `https://clever37.ru/product.html?id=${product.id}`
+    )
+  ];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((url) => `  <url><loc>${url}</loc></url>`).join("\n")}
+</urlset>`;
+
+  res.type("application/xml").send(xml);
+});
 
 app.use("/uploads", express.static(UPLOAD_DIR));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
