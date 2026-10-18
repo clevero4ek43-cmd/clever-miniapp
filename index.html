@@ -1713,6 +1713,13 @@ const imagePosY = Number(mainPhoto?.pos_y) || 0;
           qty: 1
         });
       }
+            try {
+        if (typeof window.ym === "function") {
+          window.ym(113446598, "reachGoal", "add_to_cart");
+        }
+      } catch (metrikaError) {
+        console.warn("Метрика: событие корзины не отправлено", metrikaError);
+      }
 
       renderCart();
       openCart();
@@ -1785,6 +1792,26 @@ const imagePosY = Number(mainPhoto?.pos_y) || 0;
 
       saveCart();
     }
+        let metrikaCheckoutStarted = false;
+
+    function trackCheckoutStart(event) {
+      if (!event.isTrusted || metrikaCheckoutStarted || !cart.length) return;
+
+      try {
+        if (typeof window.ym === "function") {
+          window.ym(113446598, "reachGoal", "begin_checkout");
+          metrikaCheckoutStarted = true;
+        }
+      } catch (metrikaError) {
+        console.warn("Метрика: начало оформления не отправлено", metrikaError);
+      }
+    }
+
+    const metrikaCheckoutForm =
+      document.querySelector("#cart-panel .checkout-form");
+
+    metrikaCheckoutForm?.addEventListener("input", trackCheckoutStart);
+    metrikaCheckoutForm?.addEventListener("change", trackCheckoutStart);
 
     function openCart() {
       document.getElementById("cart-panel").classList.add("open");
@@ -1968,6 +1995,7 @@ document.getElementById("card-needed").value = "no";
 cardFields.classList.add("hidden");       
         status.textContent = `Заказ №${result.orderId} принят! Мы свяжемся с вами.`;
         status.classList.add("success");
+        metrikaCheckoutStarted = false;
         try {
   if (typeof window.ym === "function") {
     window.ym(113446598, "reachGoal", "order_success");
