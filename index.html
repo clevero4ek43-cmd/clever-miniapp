@@ -1967,6 +1967,13 @@ document.getElementById("card-needed").value = "no";
 cardFields.classList.add("hidden");       
         status.textContent = `Заказ №${result.orderId} принят! Мы свяжемся с вами.`;
         status.classList.add("success");
+        try {
+  if (typeof window.ym === "function") {
+    window.ym(113446598, "reachGoal", "order_success");
+  }
+} catch (metrikaError) {
+  console.warn("Метрика: событие заказа не отправлено", metrikaError);
+}
 
         setTimeout(closeCart, 1800);
       } catch (error) {
