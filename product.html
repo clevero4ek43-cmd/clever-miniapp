@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta
+  name="description"
+  content="Авторский букет от Салона цветов КЛЕВЕР в Иванове. Свежие цветы, аккуратная сборка и доставка."
+>
   <title>Карточка товара — КЛЕВЕР</title>
   <link rel="icon" href="/favicon.png" type="image/png">
   
@@ -1144,6 +1147,14 @@
 
           document.title =
             productName + " — КЛЕВЕР";
+          const metaDescription = document.querySelector('meta[name="description"]');
+
+if (metaDescription) {
+  metaDescription.setAttribute(
+    "content",
+    `${productName} — заказать в Салоне цветов КЛЕВЕР в Иванове. ${product.short_description || product.shortDescription || "Свежие цветы, аккуратная сборка и доставка."}`
+  );
+}
 
           productNameElement.textContent =
             productName;
